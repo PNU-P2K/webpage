@@ -1,47 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>회원가입</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
 
-    <!-- 나의 스타일 추가 -->
-    <link rel="stylesheet" href="css/login.css?v=1234">
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="/css/login.css" rel="stylesheet">
 </head>
+
 <body class="text-center">
 
-<!--  html 전체 영역을 지정하는 container -->
-<div id="container">
-    <!--  login 폼 영역을 : loginBox -->
-    <div id="loginBox">
+<main class="form-signin">
+    <form th:action="@{/user/join}" th:object="${user}" method="POST">
+        <img class="mb-4" src="/assets/cloud.png" alt="" width="120" height="120">
+        <h1 class="h3 mb-3 fw-normal">회원 가입</h1>
 
-        <!-- 로그인 페이지 타이틀 -->
-        <div id="loginBoxTitle">회원가입</div>
-        <!-- 아이디, 비번, 버튼 박스 -->
-        <div id="inputBox">
-            <div class="input-form-box">
-                <span>아이디 </span><input type="text" name="uid" class="form-control">
-                <button type="button" class="id_overlap_button" onclick="id_overlap_check()">중복검사</button>
-            </div>
-            <div class="input-form-box"><span>비밀번호 </span><input type="password" name="upw" class="form-control"></div>
-            <div class="input-form-box"><span>비밀번호 확인 </span><input type="password" name="upw" class="form-control"></div>
-            <div class="input-form-box"><span>이름 </span><input type="text" name="upw" class="form-control"></div>
-            <div class="input-form-box"><span>이메일 </span><input type="text" name="upw" class="form-control"></div>
-            <div class="button-login-box" >
-                <button type="button" class="btn btn-primary btn-xs" style="width:100%">회원가입</button>
-            </div>
-
+        <div class="form-floating">
+            <input type="text" class="form-control" id="email" th:field="*{email}" placeholder="email" required>
+            <label for="email">EMAIL</label>
+        </div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="name" required>
+            <label for="name">Name</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="password" required>
+            <label for="password">password</label>
+        </div>
+<!--        <div class="form-floating">-->
+<!--            <input type="password" class="form-control" id="password2" placeholder="Password" required>-->
+<!--            <label for="password2">password</label>-->
+<!--        </div>-->
+<!--        <div class="form-floating">-->
+<!--            <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Email" required>-->
+<!--            <label for="email">email</label>-->
+<!--        </div>-->
+        <div>
+<!--            <label><input type="radio" name="role" value="student" checked> 학생</label>-->
+<!--            <label><input type="radio" name="role" value="instructor" > 교육자</label>-->
         </div>
 
-    </div>
-</div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit" id="join-btn">회원가입</button>
+        <!--        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>-->
+    </form>
 
-<!-- Bootstrap Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
+</main>
+<!--<script src="/js/scripts.js"></script>-->
+<script type="text/javascript" th:src="@{/js/scripts.js}"></script>
 </body>
 </html>

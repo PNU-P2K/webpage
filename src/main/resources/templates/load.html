@@ -1,31 +1,30 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <!-- Header -->
-    <div th:replace="/fragments/header.html::fragment-header"></div>
-</head>
+
+<!-- 공통 header -->
+<div th:replace="/fragments/header.html::fragment-header"></div>
+
 <body>
 <div class="d-flex" id="wrapper">
-    <!-- Sidebar-->
+    <!-- 공통 sidebar-->
     <div th:replace="/fragments/sidebar.html::fragment-sidebar"></div>
-    <!-- Page content wrapper-->
-    <div id="page-content-wrapper">
 
-        <!-- Top navigation-->
+    <div id="page-content-wrapper">
+        <!-- 공통 navigation-->
         <div th:replace="/fragments/nav.html::fragment-nav"></div>
 
         <!-- Page content-->
         <div class="container-fluid">
-            <h1 class="mt-4">가상 환경 로드하기</h1>
+            <h1 class="mt-4">가상환경 로드하기</h1>
             <p>
-                가상 환경 로드하기
+
             </p>
         </div>
     </div>
 </div>
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="js/scripts.js"></script>
+
+<!-- 공통 script -->
+<div th:replace="/fragments/script.html::fragment-script"></div>
 </body>
+
 </html>
