@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 header -->
+<div th:replace="/fragments/header.html::fragment-header"></div>
+<style>
+    .container {
+        max-width: 700px;
+    }
+</style>
+<body>
+<div class="d-flex" id="wrapper">
+    <!-- 공통 sidebar-->
+    <div th:replace="/fragments/course/innerStudent.html::fragment-sidebar(${courseDTO.id})"></div>
+
+    <div id="page-content-wrapper">
+        <!-- 공통 navigation-->
+        <div th:replace="/fragments/nav.html::fragment-nav"></div>
+
+        <!-- Page content-->
+        <div class="container-fluid">
+            <div class="py-5 text-center">
+                <h1 class="mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
+                <h2 class="mt-4">질문 글 작성하기</h2>
+            </div>
+            <div class="container mx-auto">
+                <form action="questionBoard.html" th:action th:object="${postDTO}" method="post" class="g-3 needs-validation" novalidate>
+                    <div class="row mb-3">
+                        <label for="title"  class="col-sm-2 col-form-label">제목</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="title" th:field="*{title}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="content" class="col-sm-2 col-form-label">내용</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="content" th:field="*{content}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-sm-6 text-center">
+                            <button class="btn btn-outline-primary" type="submit">저장</button>
+                            <button class="btn btn-outline-danger"
+                                    th:onclick="|location.href='@{/courses/{courseId}/question-board(courseId=${courseDTO.id})}'|"
+                                    type="button">취소</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 공통 script -->
+<div th:replace="/fragments/script.html::fragment-script"></div>
+</body>
+
+</html>
