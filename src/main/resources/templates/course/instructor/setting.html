@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 header -->
+<div th:replace="/fragments/header.html::fragment-header"></div>
+<style>
+    .container {
+        max-width: 700px;
+    }
+</style>
+<body>
+<div class="d-flex" id="wrapper">
+    <!-- 공통 sidebar-->
+    <div th:replace="/fragments/course/innerInstructor.html::fragment-sidebar(${courseDTO.id})"></div>
+
+    <div id="page-content-wrapper">
+        <!-- 공통 navigation-->
+        <div th:replace="/fragments/nav.html::fragment-nav"></div>
+
+        <!-- Page content-->
+        <div class="container-fluid">
+            <div class="py-5 text-center">
+                <h1 class="col mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
+                <h2 class="mt-4">설정 및 관리</h2>
+            </div>
+            <div class="row container mx-auto">
+                <h4 class="mt-4">강좌 가입 신청</h4>
+                <hr class="my-4">
+
+                <h4 class="mt-4">강좌 구성원</h4>
+                <hr class="my-4">
+                <div th:each="studentDTO : ${studentDTOs.getStudents()}">
+                    <div class="border rounded p-4">
+                        <p th:text="${studentDTO.name}">강좌 구성원 이름</p>
+                    </div>
+                </div>
+
+                <h4 class="mt-4">강좌 관리</h4>
+                <hr class="my-4">
+                <div class="border rounded p-4">
+                    <p>강좌 삭제하기</p>
+                    <button type="button" class="btn btn-outline-danger"
+                            th:onclick="'javascript:deleteCourse('+${courseDTO.id}+')'">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 공통 script -->
+<div th:replace="/fragments/script.html::fragment-script"></div>
+</body>
+<script>
+    function deleteCourse(id) {
+        const form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/courses/" + id + "/delete");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</html>
