@@ -66,7 +66,7 @@ public class CourseController {
         }
     }
 
-    //관리자의 가상 환경 조회
+    //교육자의 가상 환경 조회
     @GetMapping("/{courseId}/instructor-vm")
     public String findInstructorVm(@PathVariable Long courseId, Model model){
         List<CourseResponse.FindInstructorVmDTO> instructorVms = courseService.findInstructorVm(courseId);
