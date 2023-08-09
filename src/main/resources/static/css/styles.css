@@ -10863,3 +10863,8 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
     margin-left: -15rem;
   }
 }
+
+.swal2-popup {
+  font-size: 1rem !important;
+  font-family: var(--bs-font-monospace) !important;
+}
