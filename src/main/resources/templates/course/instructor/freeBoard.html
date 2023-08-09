@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 header -->
+<div th:replace="/fragments/header.html::fragment-header"></div>
+<style>
+    .container {
+        max-width: 700px;
+    }
+    .table th {
+        width: 33.3%;
+    }
+    .table td {
+        height: 50px;
+    }
+</style>
+<body>
+<div class="d-flex" id="wrapper">
+    <!-- 공통 sidebar-->
+    <div th:replace="/fragments/course/innerInstructor.html::fragment-sidebar(${courseDTO.id})"></div>
+
+    <div id="page-content-wrapper">
+        <!-- 공통 navigation-->
+        <div th:replace="/fragments/nav.html::fragment-nav"></div>
+
+        <!-- Page content-->
+        <div class="container-fluid">
+            <div class="py-5 text-center">
+                <h1 class="col mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
+                <h2 class="mt-4">자유 게시판</h2>
+            </div>
+            <div class="row container mx-auto">
+                <div class="col">
+                    <button type="button" class="btn btn-outline-primary float-end"
+                            th:onclick="'javascript:createPost('+${courseDTO.id}+')'">글쓰기</button>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>제목</th>
+                            <th>작성자</th>
+                            <th>날짜</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="postDTO : ${postDTOs.getPosts()}">
+                            <td class="align-middle"><a th:href="@{/courses/__${courseDTO.id}__/free-board/__${postDTO.id}__}" th:text="${postDTO.title}">게시물 제목</a></td>
+                            <td class="align-middle" th:text="${postDTO.author}">게시물 작성자</td>
+                            <td class="align-middle" th:text="${postDTO.createdDate}">게시물 날짜</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 공통 script -->
+<div th:replace="/fragments/script.html::fragment-script"></div>
+</body>
+<script>
+    function createPost(courseId) {
+        const form = document.createElement("form");
+        form.setAttribute("method", "get");
+        form.setAttribute("action", "/courses/" + courseId + "/free-board/save");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</html>

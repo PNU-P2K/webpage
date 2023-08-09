@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 header -->
+<div th:replace="/fragments/header.html::fragment-header"></div>
+<style>
+    .container {
+        max-width: 700px;
+    }
+    .table th {
+        width: 33.3%;
+    }
+    .table td {
+        height: 50px;
+    }
+</style>
+<body>
+<div class="d-flex" id="wrapper">
+    <!-- 공통 sidebar-->
+    <div th:replace="/fragments/course/innerInstructor.html::fragment-sidebar(${courseDTO.id})"></div>
+
+    <div id="page-content-wrapper">
+        <!-- 공통 navigation-->
+        <div th:replace="/fragments/nav.html::fragment-nav"></div>
+
+        <!-- Page content-->
+        <div class="container-fluid">
+            <div class="py-5 text-center">
+                <h1 class="col mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
+                <h2 class="mt-4">수강생 관리</h2>
+            </div>
+            <div class="row container mx-auto">
+                <div class="accordion" id="accordionExample">
+                    <div th:each="studentDTO, iterStat : ${studentDTOs.getStudents()}">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" th:data-bs-target="'#collapse' + ${iterStat.index}"
+                                        aria-expanded="false" th:text="${studentDTO.name}">수강생 이름</button>
+                            </h2>
+                            <div th:id="'collapse' + ${iterStat.index}" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 공통 script -->
+<div th:replace="/fragments/script.html::fragment-script"></div>
+</body>
+
+</html>

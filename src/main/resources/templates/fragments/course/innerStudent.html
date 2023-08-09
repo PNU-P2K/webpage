@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+  <!-- Sidebar-->
+  <div th:fragment="fragment-sidebar(courseId)" class="border-end bg-white" id="sidebar-wrapper">
+    <div class="sidebar-heading border-bottom bg-light">P2K</div>
+    <div class="list-group list-group-flush">
+      <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/courses/__${courseId}__/notice-board}">공지사항</a>
+      <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/courses/__${courseId}__/question-board}">질문 게시판</a>
+      <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/courses/__${courseId}__/free-board}">자유 게시판</a>
+      <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/courses/__${courseId}__/my-vm}">나의 가상 환경</a>
+      <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/courses/__${courseId}__/instructor-vm}">교육자의 가상 환경 보기</a>
+      <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/courses/__${courseId}__/cancel}">강좌 취소하기</a>
+    </div>
+  </div>
+
+</html>

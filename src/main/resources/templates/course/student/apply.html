@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 header -->
+<div th:replace="/fragments/header.html::fragment-header"></div>
+<style>
+    .container {
+        max-width: 700px;
+    }
+    .table th {
+        width: 25%;
+    }
+    .table td {
+        height: 50px;
+    }
+    .btn-custom {
+        max-width: 100px;
+    }
+</style>
+<body>
+<div class="d-flex" id="wrapper">
+    <!-- 공통 sidebar-->
+    <div th:replace="/fragments/course/student.html::fragment-sidebar"></div>
+
+    <div id="page-content-wrapper">
+        <!-- 공통 navigation-->
+        <div th:replace="/fragments/nav.html::fragment-nav"></div>
+
+        <!-- Page content-->
+        <div class="container-fluid">
+            <div class="py-5 text-center">
+                <h1 class="mt-4">강좌 신청하기</h1>
+            </div>
+            <div class="row container mx-auto">
+                <div class="col">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">NO.</th>
+                            <th scope="col">강좌 이름</th>
+                            <th scope="col">강좌 설명</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="courseDTO, iterStat : ${courseDTOs.getCourses()}">
+                            <td th:text="${iterStat.index + 1}" class="align-middle">#</td>
+                            <td class="align-middle" th:text="${courseDTO.name}">강좌 이름</td>
+                            <td class="align-middle" th:text="${courseDTO.description}">강좌 설명</td>
+                            <td class="align-middle">
+                                <a href="#" th:href="'javascript:apply('+${courseDTO.id}+')'"
+                                   class="btn btn-outline-primary btn-custom btn-sm">신청</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 공통 script -->
+<div th:replace="/fragments/script.html::fragment-script"></div>
+</body>
+<script>
+    function apply(id) {
+        const form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/courses/apply/" + id);
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</html>
