@@ -11,6 +11,7 @@ public class UserRequest {
         private String email;
         private String name;
         private String password;
+        private String password1;
         private Role role = Role.ROLE_STUDENT;
     }
 

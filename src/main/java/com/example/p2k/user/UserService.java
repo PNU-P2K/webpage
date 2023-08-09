@@ -15,4 +15,14 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public Boolean findByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(null);
+
+        if (user==null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }

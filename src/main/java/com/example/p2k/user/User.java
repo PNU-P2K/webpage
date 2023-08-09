@@ -3,7 +3,6 @@ package com.example.p2k.user;
 import jakarta.persistence.*;
 import lombok.*;
 
-//@Getter
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -14,7 +13,7 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 30, nullable = false, unique = true)
     private String email; // 중복 체크 필요
 
     @Column(length = 20, nullable = false)

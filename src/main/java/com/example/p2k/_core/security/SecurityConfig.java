@@ -21,6 +21,8 @@ public class SecurityConfig {
                         authorize -> authorize
                                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**"),
                                                 new AntPathRequestMatcher("/css/**"),
+                                                new AntPathRequestMatcher("/js/**"),
+                                                new AntPathRequestMatcher("/user/check/**"),
                                                 new AntPathRequestMatcher("/assets/**"),
                                                 new AntPathRequestMatcher("/user/join/**")).permitAll()
                                 .anyRequest().authenticated()
