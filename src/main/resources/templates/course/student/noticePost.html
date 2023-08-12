@@ -48,6 +48,13 @@
                         <p th:text="${postDTO.content}">공지사항 글 내용</p>
                     </div>
                 </div>
+                <div class="row mt-4 justify-content-center">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-outline-primary"
+                                th:onclick="|location.href='@{/courses/{courseId}/notice-board(courseId=${courseDTO.id})}'|"
+                                type="button">목록</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
