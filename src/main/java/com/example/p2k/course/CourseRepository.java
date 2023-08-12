@@ -1,6 +1,5 @@
 package com.example.p2k.course;
 
-import com.example.p2k.course.courseuser.CourseUser;
 import com.example.p2k.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

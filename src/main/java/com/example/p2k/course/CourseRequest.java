@@ -1,7 +1,6 @@
 package com.example.p2k.course;
 
-import com.example.p2k.course.post.Category;
-import com.example.p2k.user.User;
+import com.example.p2k.post.Category;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;

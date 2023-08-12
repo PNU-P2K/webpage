@@ -1,7 +1,6 @@
-package com.example.p2k.course.post;
+package com.example.p2k.post;
 
 import com.example.p2k.course.Course;
-import com.example.p2k.course.courseuser.CourseUser;
 import com.example.p2k.user.BaseTimeEntity;
 import com.example.p2k.user.User;
 import jakarta.persistence.*;

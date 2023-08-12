@@ -1,4 +1,4 @@
-package com.example.p2k.course.post;
+package com.example.p2k.post;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

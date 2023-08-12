@@ -1,4 +1,4 @@
-package com.example.p2k.course.courseuser;
+package com.example.p2k.courseuser;
 
 import com.example.p2k.course.Course;
 import com.example.p2k.user.BaseTimeEntity;
