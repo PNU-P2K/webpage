@@ -1,6 +1,9 @@
 package com.example.p2k.post;
 
 import com.example.p2k._core.security.CustomUserDetails;
+import com.example.p2k.reply.ReplyRequest;
+import com.example.p2k.reply.ReplyResponse;
+import com.example.p2k.reply.ReplyService;
 import com.example.p2k.course.CourseRequest;
 import com.example.p2k.course.CourseResponse;
 import com.example.p2k.course.CourseService;
@@ -17,8 +20,9 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class PostController {
 
-    private CourseService courseService;
-    private PostService postService;
+    private final CourseService courseService;
+    private final PostService postService;
+    private final ReplyService replyService;
 
     //공지사항 게시판 페이지
     @GetMapping("/notice-board")
@@ -74,8 +78,11 @@ public class PostController {
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         CourseResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
+        ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId);
+
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
+        model.addAttribute("repliesDTO", repliesDTO);
 
         User user = userDetails.getUser();
         if(postDTO.getUserId().equals(user.getId())){
@@ -136,8 +143,11 @@ public class PostController {
                                    @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         CourseResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
+        ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId);
+
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
+        model.addAttribute("repliesDTO", repliesDTO);
 
         User user = userDetails.getUser();
         if(postDTO.getUserId().equals(user.getId())){
@@ -213,8 +223,11 @@ public class PostController {
                                @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         CourseResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
+        ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId);
+
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
+        model.addAttribute("repliesDTO", repliesDTO);
 
         User user = userDetails.getUser();
         if(postDTO.getUserId().equals(user.getId())){

@@ -43,11 +43,12 @@
                         <p class="m-0" th:text="|작성일: ${postDTO.createdDate}|">공지사항 글 작성일</p>
                     </div>
                 </div>
-                <div class="row lighter-gray-bg  p-3">
+                <div class="row lighter-gray-bg p-3">
                     <div class="col-md-12">
                         <p th:text="${postDTO.content}">공지사항 글 내용</p>
                     </div>
                 </div>
+                <div th:insert="/fragments/course/reply.html::fragment-reply(${repliesDTO.getReplies()}, ${postDTO.id})"></div>
                 <div class="row mt-4 justify-content-center">
                     <div class="col-md-12 text-center">
                         <button class="btn btn-outline-primary"
