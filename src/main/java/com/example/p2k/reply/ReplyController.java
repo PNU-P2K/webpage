@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -17,37 +16,18 @@ public class ReplyController {
 
     private final ReplyService replyService;
 
-    //댓글 목록 조회
-    @GetMapping
-    public String findByPostId(@PathVariable Long postId, Model model){
-        ReplyResponse.FindRepliesDTO commentsDTO = replyService.findByPostId(postId);
-        log.info("댓글 목록 조회");
-        model.addAttribute("commentsDTO", commentsDTO);
-        log.info("댓글 목록 조회 완료");
-        return "redirect:/courses";
-    }
-
     //댓글 저장
     @PostMapping
     public String save(@ModelAttribute ReplyRequest.SaveDTO requestDTO, @PathVariable Long postId,
                        @AuthenticationPrincipal CustomUserDetails userDetails, HttpServletRequest request){
-        log.info("댓글 저장");
         replyService.save(requestDTO, userDetails.getUser(), postId);
-        log.info("댓글 저장 완료");
         return "redirect:" + request.getHeader("Referer");
     }
 
-    //댓글 수정
-    @PatchMapping("/{commentId}")
-    public String update(@ModelAttribute ReplyRequest.UpdateDTO requestDTO, @PathVariable Long commentId){
-        replyService.update(requestDTO, commentId);
-        return "redirect:/courses";
-    }
-
     //댓글 삭제
-    @DeleteMapping("/{commentId}")
-    public String delete(@PathVariable Long commentId){
-        replyService.delete(commentId);
-        return "redirect:/courses";
+    @GetMapping("/{replyId}/delete")
+    public String delete(@PathVariable Long replyId, HttpServletRequest request){
+        replyService.delete(replyId);
+        return "redirect:" + request.getHeader("Referer");
     }
 }

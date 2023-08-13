@@ -80,11 +80,13 @@ public class PostController {
         CourseResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
         ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId);
 
+        User user = userDetails.getUser();
+
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
         model.addAttribute("repliesDTO", repliesDTO);
+        model.addAttribute("userId", user.getId());
 
-        User user = userDetails.getUser();
         if(postDTO.getUserId().equals(user.getId())){
             return "course/instructor/noticePost";
         }else{
@@ -145,11 +147,13 @@ public class PostController {
         CourseResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
         ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId);
 
+        User user = userDetails.getUser();
+
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
         model.addAttribute("repliesDTO", repliesDTO);
+        model.addAttribute("userId", user.getId());
 
-        User user = userDetails.getUser();
         if(postDTO.getUserId().equals(user.getId())){
             return "course/instructor/questionPost";
 
@@ -225,11 +229,13 @@ public class PostController {
         CourseResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
         ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId);
 
+        User user = userDetails.getUser();
+
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
         model.addAttribute("repliesDTO", repliesDTO);
+        model.addAttribute("userId", user.getId());
 
-        User user = userDetails.getUser();
         if(postDTO.getUserId().equals(user.getId())){
             return "course/instructor/freePost";
         }else{

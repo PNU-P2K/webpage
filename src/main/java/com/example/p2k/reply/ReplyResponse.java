@@ -23,12 +23,14 @@ public class ReplyResponse {
             private final String content;
             private final LocalDateTime createdDate;
             private final String userName;
+            private final Long userId;
 
             public ReplyDTO(Reply reply) {
                 this.id = reply.getId();
                 this.content = reply.getContent();
                 this.createdDate = reply.getCreatedDate();
                 this.userName = reply.getUser().getName();
+                this.userId = reply.getUser().getId();
             }
         }
     }
