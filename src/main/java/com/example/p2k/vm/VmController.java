@@ -25,17 +25,7 @@ public class VmController {
         model.addAttribute("vm", vmList);
         return "index";
     }
-
-    @GetMapping("/{id}")
-    public String findById(@PathVariable Long id) {
-        return "vm";
-    }
-
-    @GetMapping("/create")
-    public String create() {
-        return "create";
-    }
-
+    
     @GetMapping("/load")
     public String load() {
         return "load";

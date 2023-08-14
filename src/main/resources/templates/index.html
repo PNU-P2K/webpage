@@ -16,6 +16,7 @@
         <!-- Page content-->
         <div class="container-fluid">
             <h1 class="mt-4"><a th:text="${user.name}"></a>님의 가상환경 목록</h1>
+
             </br>
             <div class="container">
                 <div class="row">
@@ -26,9 +27,11 @@
 <!--                                <h6 class="card-subtitle mb-2 text-muted">가상환경 설명.. </h6>-->
                                 <h4 class="card-title text-center" th:text="${v.vmname}"></h4>
 <!--                                <p class="card-subtitle text-light"><span th:text="${v.cousrdid}"></span> </p>-->
+                                <input hidden id="vmId" type="text" th:value="${v.id}"/>
+                                <input hidden id="vmPort" type="text" th:value="${v.port}"/>
                                 <p class="card-text text-center"> 공개범위 : <span th:text="${v.scope}"/> </p>
                                 <p class="card-text text-center"> 제어권한 : <span th:text="${v.control}"/> </p>
-                                <div class="text-center"><button class="btn btn-primary" onclick="alert('접속하시겠습니까?')">접속하기</button></div>
+                                <div class="text-center"><button class="btn btn-primary" th:onclick="|javascript:alert('${v.port}')|">접속하기</button></div>
                             </div>
                         </div>
                         <br/>
@@ -42,14 +45,19 @@
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
 <script>
-    function alert(msg) {
+    function alert(port) {
+
         Swal.fire({
-            title : msg,
+            title : "접속하시겠습니까?",
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: '접속',
             cancelButtonText: '취소'
+        }).then((result) => {
+            if(result.isConfirmed) {
+                location.href = "http://192.168.200.105:"+port;
+            }
         })
     }
 </script>
