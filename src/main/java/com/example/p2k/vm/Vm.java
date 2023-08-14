@@ -26,6 +26,8 @@ public class Vm extends BaseTimeEntity {
 
     private int cousrdid;
 
+    private int port;
+
     @Column(nullable = false)
     private Boolean scope;
     @Column(nullable = false)
@@ -35,9 +37,10 @@ public class Vm extends BaseTimeEntity {
     private String vmkey;
 
     @Builder
-    public Vm(User user, int cousrdid, Boolean scope, Boolean control, String vmkey) {
+    public Vm(User user, int cousrdid, int port, Boolean scope, Boolean control, String vmkey) {
         this.user = user;
         this.cousrdid = cousrdid;
+        this.port = port;
         this.scope = scope;
         this.control = control;
         this.vmkey = vmkey;
