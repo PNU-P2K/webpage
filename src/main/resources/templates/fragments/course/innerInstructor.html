@@ -3,7 +3,7 @@
 
   <!-- Sidebar-->
   <div th:fragment="fragment-sidebar(courseId)" class="border-end bg-white" id="sidebar-wrapper">
-    <div class="sidebar-heading border-bottom bg-light">P2K</div>
+    <div class="sidebar-heading border-bottom bg-light " th:onclick="|location.href='/vm'|">P2K</div>
     <div class="list-group list-group-flush">
       <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/courses/__${courseId}__/notice-board}">공지사항</a>
       <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/courses/__${courseId}__/question-board}">질문 게시판</a>
