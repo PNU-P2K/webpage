@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="fragment-reply(replies, postId, userId)">
+    <!-- 댓글 작성 -->
+    <form th:action="@{|/posts/${postId}/replies|}" method="post" class="my-3">
+        <div class="card">
+            <div class="card-body">
+                <textarea name="content" id="content" rows="1" class="form-control"></textarea>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-outline-primary" type="submit">등록</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- 댓글 목록 -->
+    <div class="card my-3" th:each="reply : ${replies}">
+        <!-- 다른 사용자의 댓글 -->
+        <div class="card-body" th:if="${userId ne reply.userId}">
+            <div class="card-text">
+                <p th:text="${reply.userName}">댓글 작성자</p>
+                <p th:text="${reply.content}">댓글 내용</p>
+                <p th:text="${reply.createdDate}">댓글 작성일</p>
+            </div>
+        </div>
+        <!-- 나의 댓글 -->
+        <div class="card-body" th:if="${userId eq reply.userId}">
+            <div class="card-text">
+                <p th:text="${reply.userName}">댓글 작성자</p>
+                <p th:text="${reply.content}">댓글 내용</p>
+                <p th:text="${reply.createdDate}">댓글 작성일</p>
+            </div>
+            <button class="btn btn-outline-danger btn-sm"
+                    th:onclick="|location.href='@{/posts/{postId}/replies/{replyId}/delete(postId=${postDTO.id}, replyId=${reply.id})}'|"
+                    type="button">삭제</button>
+        </div>
+    </div>
+</div>
+</html>

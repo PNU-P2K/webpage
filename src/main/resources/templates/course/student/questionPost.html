@@ -48,6 +48,14 @@
                         <p th:text="${postDTO.content}">질문 글 내용</p>
                     </div>
                 </div>
+                <div th:insert="/fragments/course/reply.html::fragment-reply(${repliesDTO.getReplies()}, ${postDTO.id}, ${userId})"></div>
+                <div class="row mt-4 justify-content-center">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-outline-primary"
+                                th:onclick="|location.href='@{/courses/{courseId}/question-board(courseId=${courseDTO.id})}'|"
+                                type="button">목록</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
