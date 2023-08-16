@@ -49,6 +49,14 @@ public class CourseController {
         return "redirect:/courses";
     }
 
+    //강좌 검색
+    @PostMapping("/apply/search")
+    public String search(@RequestParam String keyword, Model model){
+        CourseResponse.FindCoursesDTO courseDTOs = courseService.findBySearch(keyword);
+        model.addAttribute("courseDTOs", courseDTOs);
+        return "course/student/apply";
+    }
+
     //나의 가상 환경 조회
     @GetMapping("/{courseId}/my-vm")
     public String findMyVm(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){

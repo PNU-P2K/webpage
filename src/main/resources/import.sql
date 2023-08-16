@@ -3,5 +3,13 @@ insert into user_tb(email, name, password, role) values('soso@naver.com', '박�
 insert into user_tb(email, name, password, role) values('gihae@naver.com', '김기해', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_STUDENT');
 insert into user_tb(email, name, password, role) values('gihae2@naver.com', '김기해2', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_INSTRUCTOR');
 
-insert into course_tb(name, description) values('자료구조', '2-2');
+insert into course_tb(name, description) values('자료구조 059', '2-2');
+insert into course_tb(name, description) values('자료구조 060', '2-2');
+insert into course_tb(name, description) values('C언어', '1-2');
+insert into course_tb(name, description) values('C++', '2-1');
+insert into course_tb(name, description) values('파이썬', '1-1');
+insert into course_tb(name, description) values('자바', '2-2');
+insert into course_tb(name, description) values('알고리즘', '3-1');
+insert into course_tb(name, description) values('DB', '3-2');
+insert into course_tb(name, description) values('사물인터넷', '4-2');
 insert into course_user_tb(user_id, course_id) values(3, 1);

@@ -46,7 +46,7 @@ public class Post extends BaseTimeEntity {
     private List<Reply> replies;
 
     @Builder
-    public Post(Long id, String title, String author, String content, Boolean open, Category category, Course course, User user) {
+    public Post(Long id, String title, String author, String content, Boolean open, Category category, Course course, User user, List<Reply> replies) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -55,5 +55,6 @@ public class Post extends BaseTimeEntity {
         this.category = category;
         this.course = course;
         this.user = user;
+        this.replies = replies;
     }
 }

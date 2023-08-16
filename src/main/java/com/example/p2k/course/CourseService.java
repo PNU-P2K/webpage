@@ -51,6 +51,14 @@ public class CourseService {
         }
     }
 
+    //강좌 검색
+    public CourseResponse.FindCoursesDTO findBySearch(String keyword){
+        log.info("강좌 검색");
+        List<Course> courses = courseRepository.findByNameContaining(keyword);
+        log.info("강좌 검색 완료=" + courses.size());
+        return new CourseResponse.FindCoursesDTO(courses);
+    }
+
     //나의 가상 환경 조회
     public List<CourseResponse.FindMyVmDTO> findMyVm(Long id){
         return new ArrayList<>();
