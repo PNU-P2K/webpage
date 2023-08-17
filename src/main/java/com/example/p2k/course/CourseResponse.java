@@ -1,6 +1,6 @@
 package com.example.p2k.course;
 
-import com.example.p2k.course.post.Post;
+import com.example.p2k.post.Post;
 import com.example.p2k.user.User;
 import lombok.Getter;
 

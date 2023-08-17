@@ -1,10 +1,8 @@
 package com.example.p2k.course;
 
-import com.example.p2k.course.courseuser.CourseUser;
-import com.example.p2k.course.courseuser.CourseUserRepository;
-import com.example.p2k.course.post.Category;
-import com.example.p2k.course.post.Post;
-import com.example.p2k.course.post.PostRepository;
+import com.example.p2k.courseuser.CourseUser;
+import com.example.p2k.courseuser.CourseUserRepository;
+import com.example.p2k.post.PostRepository;
 import com.example.p2k.user.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,11 +38,25 @@ public class CourseService {
     //강좌 신청
     @Transactional
     public void apply(Long id, User user){
+
+        Optional<CourseUser> findCourseUser = courseUserRepository.findByUserIdAndCourseId(user.getId(), id);
+        if(findCourseUser.isPresent()){
+            //이미 신청한 강좌인지 체크
+        }
+
         Optional<Course> course = courseRepository.findById(id);
         if(course.isPresent()){
             CourseUser courseUser = CourseUser.builder().course(course.get()).user(user).build();
             courseUserRepository.save(courseUser);
         }
+    }
+
+    //강좌 검색
+    public CourseResponse.FindCoursesDTO findBySearch(String keyword){
+        log.info("강좌 검색");
+        List<Course> courses = courseRepository.findByNameContaining(keyword);
+        log.info("강좌 검색 완료=" + courses.size());
+        return new CourseResponse.FindCoursesDTO(courses);
     }
 
     //나의 가상 환경 조회
@@ -91,53 +103,5 @@ public class CourseService {
     public CourseResponse.FindById findById(Long id){
         Course course = courseRepository.findById(id).get();
         return new CourseResponse.FindById(course);
-    }
-
-    //강좌 카테고리 별 게시글 찾기
-    public CourseResponse.FindPostsDTO findPostsByCategory(Long id, Category category){
-        List<Post> posts = postRepository.findPostByCategory(id, category);
-        return new CourseResponse.FindPostsDTO(posts);
-    }
-
-    //게시글 아이디로 게시글 찾기
-    public CourseResponse.FindPostByIdDTO findPostById(Long postId){
-        Post post = postRepository.findById(postId).get();
-        log.info("post=" + post.getUser().getName());
-        return new CourseResponse.FindPostByIdDTO(post);
-    }
-
-    //게시글 작성하기
-    @Transactional
-    public void savePost(CourseRequest.PostDTO postDTO, User user, Long courseId){
-        Course course = courseRepository.findById(courseId).get();
-
-        Post post = Post.builder()
-                .title(postDTO.getTitle())
-                .author(user.getName())
-                .content(postDTO.getContent())
-                .category(postDTO.getCategory())
-                .course(course)
-                .user(user)
-                .build();
-
-        postRepository.save(post);
-    }
-
-    //게시글 수정하기
-    @Transactional
-    public void updatePost(CourseRequest.PostDTO postDTO, Long postId, User user){
-        Post post = postRepository.findById(postId).get();
-        if(post.getUser().getId().equals(user.getId())){
-            postRepository.update(postDTO.getTitle(), postDTO.getContent(), postId);
-        }
-    }
-
-    //게시글 삭제하기
-    @Transactional
-    public void deletePost(Long postId, User user){
-        Post post = postRepository.findById(postId).get();
-        if(post.getUser().getId().equals(user.getId())){
-            postRepository.deleteById(postId);
-        }
     }
 }

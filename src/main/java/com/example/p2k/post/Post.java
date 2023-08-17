@@ -1,7 +1,7 @@
-package com.example.p2k.course.post;
+package com.example.p2k.post;
 
+import com.example.p2k.reply.Reply;
 import com.example.p2k.course.Course;
-import com.example.p2k.course.courseuser.CourseUser;
 import com.example.p2k.user.BaseTimeEntity;
 import com.example.p2k.user.User;
 import jakarta.persistence.*;
@@ -9,6 +9,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -40,8 +42,11 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+    private List<Reply> replies;
+
     @Builder
-    public Post(Long id, String title, String author, String content, Boolean open, Category category, Course course, User user) {
+    public Post(Long id, String title, String author, String content, Boolean open, Category category, Course course, User user, List<Reply> replies) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -50,5 +55,6 @@ public class Post extends BaseTimeEntity {
         this.category = category;
         this.course = course;
         this.user = user;
+        this.replies = replies;
     }
 }

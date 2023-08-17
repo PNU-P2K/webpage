@@ -32,6 +32,16 @@
                     <h1 class="mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
                     <h2 class="mt-4">공지사항</h2>
                 </div>
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-outline-danger float-end m-1"
+                                th:onclick="|location.href='@{/courses/{courseId}/notice-board/{postId}/delete(courseId=${courseDTO.id}, postId=${postDTO.id})}'|"
+                                type="button">삭제</button>
+                        <button class="btn btn-outline-primary float-end m-1"
+                                th:onclick="|location.href='@{/courses/{courseId}/notice-board/{postId}/update(courseId=${courseDTO.id}, postId=${postDTO.id})}'|"
+                                type="button">수정</button>
+                    </div>
+                </div>
                 <div class="row light-gray-bg p-3 d-flex align-items-center">
                     <div class="col-md-6">
                         <p class="m-0" th:text="|제목: ${postDTO.title}|">공지사항 글 제목</p>
@@ -48,14 +58,12 @@
                         <p th:text="${postDTO.content}">공지사항 글 내용</p>
                     </div>
                 </div>
+                <div th:insert="/fragments/course/reply.html::fragment-reply(${repliesDTO.getReplies()}, ${postDTO.id}, ${userId})"></div>
                 <div class="row mt-4 justify-content-center">
                     <div class="col-md-12 text-center">
                         <button class="btn btn-outline-primary"
-                                th:onclick="|location.href='@{/courses/{courseId}/notice-board/{postId}/update(courseId=${courseDTO.id}, postId=${postDTO.id})}'|"
-                                type="button">수정</button>
-                        <button class="btn btn-outline-danger"
-                                th:onclick="|location.href='@{/courses/{courseId}/notice-board/{postId}/delete(courseId=${courseDTO.id}, postId=${postDTO.id})}'|"
-                                type="button">삭제</button>
+                                th:onclick="|location.href='@{/courses/{courseId}/notice-board(courseId=${courseDTO.id})}'|"
+                                type="button">목록</button>
                     </div>
                 </div>
             </div>

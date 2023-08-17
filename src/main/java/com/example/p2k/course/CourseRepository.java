@@ -1,6 +1,5 @@
 package com.example.p2k.course;
 
-import com.example.p2k.course.courseuser.CourseUser;
 import com.example.p2k.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +14,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     @Query("select cu.user from CourseUser cu where cu.course.id = :courseId")
     List<User> findAllUserByCourseId(@Param("courseId") Long courseId);
+
+    @Query("select c from Course c where c.name like %:keyword%")
+    List<Course> findByNameContaining(@Param("keyword") String keyword);
 }
