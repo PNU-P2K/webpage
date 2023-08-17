@@ -7,18 +7,6 @@
 // Scripts
 //
 
-
-// $('#email_check').on(function () {
-//     var email = $('#email').val();
-//     alert("check");
-//
-//     $.ajax({
-//         type : "post",
-//         url : "/user/check",
-//         data : email
-//     })
-// });
-
 function email_chk() {
 
     var email = $('#email').val();
@@ -49,3 +37,19 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     }
 });
+
+$('#dropdownBtn').on('show.bs.dropdown', function () {
+    //클릭하는 순간 하위 버튼들이 보여질 때
+})
+
+$('#dropdownBtn').on('shown.bs.dropdown', function () {
+    //하위 버튼들이 다 보여지고 난 뒤
+})
+
+$('#dropdownBtn').on('hide.bs.dropdown', function () {
+    //하위 버튼이 닫혔을 때
+})
+
+$('#dropdownBtn').on('hidden.bs.dropdown', function () {
+    //하위 버튼이 닫힌 후
+})
