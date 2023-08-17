@@ -21,4 +21,21 @@ public class VmService {
 
         return vmList;
     }
+
+    @Transactional
+    public void save(Vm vm) {
+        vmRepository.save(vm);
+    }
+
+    @Transactional
+    public Vm findById(Long id) {
+        Vm vm = vmRepository.findById(id).orElse(null);
+
+        return vm;
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        vmRepository.deleteById(id);
+    }
 }

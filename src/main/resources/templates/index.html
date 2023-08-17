@@ -22,11 +22,22 @@
                 <div class="row">
                     <div class="col-3" th:each="v : ${vm}">
                         <div class="card">
-<!--                            <h5 class="card-header text-dark" th:text="${v.vmname}"></h5>-->
                             <div class="card-body">
-<!--                                <h6 class="card-subtitle mb-2 text-muted">가상환경 설명.. </h6>-->
+                                <div class="dropdown">
+<!--                                    <a class="btn btn-sm dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
+                                        <img class="m-1 rounded float-end" src="/assets/drop-down.png" alt="" width="15" height="15" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<!--                                    </a>-->
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">강좌 연결하기</a></li>
+                                        <li><a class="dropdown-item" href="/vm/load">가상환경 내보내기</a></li>
+                                        <li>
+                                            <form class="form-inline my-2 my-lg-0" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">
+                                                <button class="dropdown-item" type="submit">가상환경 삭제하기</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <h4 class="card-title text-center" th:text="${v.vmname}"></h4>
-<!--                                <p class="card-subtitle text-light"><span th:text="${v.cousrdid}"></span> </p>-->
                                 <input hidden id="vmId" type="text" th:value="${v.id}"/>
                                 <input hidden id="vmPort" type="text" th:value="${v.port}"/>
                                 <p class="card-text text-center"> 공개범위 : <span th:text="${v.scope}"/> </p>
@@ -56,7 +67,7 @@
             cancelButtonText: '취소'
         }).then((result) => {
             if(result.isConfirmed) {
-                location.href = "http://192.168.200.105:"+port;
+                location.href = "http://172.22.112.1:"+port;
             }
         })
     }

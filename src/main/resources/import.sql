@@ -6,11 +6,8 @@ insert into user_tb(email, name, password, role) values('gihae2@naver.com', '김
 insert into course_tb(name, description) values('자료구조', '2-2');
 insert into course_user_tb(user_id, course_id) values(3, 1);
 
-insert into vm_tb(user_id, vmname, cousrdid, port, scope, control, vmkey) values(1, '알고리즘', 1, 6080, 1, 1, '11');
-insert into vm_tb(user_id, vmname, cousrdid, port, scope, control, vmkey) values(1, '자료구조', 2, 6081, 0, 1, '12');
-insert into vm_tb(user_id, vmname, cousrdid, port, scope, control, vmkey) values(1, '프원실', 2, 6082, 0, 1, '13');
-insert into vm_tb(user_id, vmname, cousrdid, port, scope, control, vmkey) values(1, 'C++', 2, 6083, 0, 1, '14');
-insert into vm_tb(user_id, vmname, cousrdid, port, scope, control, vmkey) values(1, '프랑스어', 2, 6084, 0, 1, '15');
+insert into vm_tb(user_id, vmname, cousrdid, port, scope, control, vmkey) values(1, '알고리즘', 1, 6080, 1, 1, '21');
+
 insert into vm_tb(user_id, vmname, cousrdid, port, scope, control, vmkey) values(2, '알고리즘', 1, 6085, 1, 1, '21');
 insert into vm_tb(user_id, vmname, cousrdid, port, scope, control, vmkey) values(2, '자료구조', 2, 6086, 0, 1, '22');
 insert into vm_tb(user_id, vmname, cousrdid, port, scope, control, vmkey) values(3, '알고리즘', 1, 6087, 1, 1, '31');
