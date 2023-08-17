@@ -7,67 +7,19 @@
 // Scripts
 //
 
-function subminJoin() {
-    alert("회원가입");
-    let data = {
-        id: $("#id").val(),
-        password: $("#password").val(),
-        username: $("#name").val(),
-        email: $("#email").val(),
-        role: $("#role").val()
-    }
+function email_chk() {
+
+    var email = $('#email').val();
+    alert("check");
+    console.log("check_log"+email);
 
     $.ajax({
-        // 회원가입 수행 요청
-        type: "POST",
-        url: "/join",
-        data: JSON.stringify(data), // http body 데이터
-        contentType: "application/json; charset=utf-8", // body 데이터가 어떤 타입인지 (MIME)
-        dataType: "json" // 요청을 서버로 해서 응답이 왔을 때 기본적으로 모든 것이 String(문자열), 만약 생긴게 json이라면 javascript 오브젝트로 변경
-    }).done(function (resp) {
-        alert("회원가입이 완료되었습니다.");
-        location.href = "/login";
-    }).fail(function (error) {
-        alert("회원가입이 실패하였습니다.");
-        alert(JSON.stringify(error));
-    });
+        type : "post",
+        url : "/user/check",
+        data : {"email" : email},
+        dataType : "JSON"
+    })
 }
-
-let index = {
-    init: function () {
-        $("#join-btn").on("submit", ()=>{ // function(){} 대신 ()=>{} 를 쓴 이유 : this를 바인딩하기 위해서
-            this.save();
-        });
-    },
-
-    save: function () {
-        alert("회원가입");
-        let data = {
-            id: $("#id").val(),
-            password: $("#password").val(),
-            username: $("#name").val(),
-            email: $("#email").val(),
-            role: $("#role").val()
-        }
-
-        $.ajax({
-            // 회원가입 수행 요청
-            type: "POST",
-            url: "/join",
-            data: JSON.stringify(data), // http body 데이터
-            contentType: "application/json; charset=utf-8", // body 데이터가 어떤 타입인지 (MIME)
-            dataType: "json" // 요청을 서버로 해서 응답이 왔을 때 기본적으로 모든 것이 String(문자열), 만약 생긴게 json이라면 javascript 오브젝트로 변경
-        }).done(function (resp) {
-            alert("회원가입이 완료되었습니다.");
-            location.href = "/login";
-        }).fail(function (error) {
-            alert("회원가입이 실패하였습니다.");
-            alert(JSON.stringify(error));
-        });
-    }
-}
-
-index.init();
 
 window.addEventListener('DOMContentLoaded', event => {
 
@@ -85,3 +37,19 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     }
 });
+
+$('#dropdownBtn').on('show.bs.dropdown', function () {
+    //클릭하는 순간 하위 버튼들이 보여질 때
+})
+
+$('#dropdownBtn').on('shown.bs.dropdown', function () {
+    //하위 버튼들이 다 보여지고 난 뒤
+})
+
+$('#dropdownBtn').on('hide.bs.dropdown', function () {
+    //하위 버튼이 닫혔을 때
+})
+
+$('#dropdownBtn').on('hidden.bs.dropdown', function () {
+    //하위 버튼이 닫힌 후
+})
