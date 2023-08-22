@@ -26,10 +26,13 @@ public class CourseUser extends BaseTimeEntity {
     @JoinColumn(name = "course_id")
     private Course course;
 
+    private Boolean accept;
+
     @Builder
-    public CourseUser(Long id, User user, Course course) {
+    public CourseUser(Long id, User user, Course course, Boolean accept) {
         this.id = id;
         this.user = user;
         this.course = course;
+        this.accept = accept;
     }
 }

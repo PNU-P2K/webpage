@@ -16,7 +16,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("select p from Post p where p.course.id = :courseId and p.category = :category")
     List<Post> findPostByCategory(@Param("courseId") Long courseId, @Param("category") Category category);
 
-    @Modifying(clearAutomatically = true)
+    @Modifying
     @Query("update Post p SET p.title = :title, p.content = :content where p.id = :postId")
     void update(@Param("title") String title, @Param("content") String content, @Param("postId") Long postId);
 

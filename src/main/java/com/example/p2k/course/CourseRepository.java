@@ -9,12 +9,6 @@ import java.util.List;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
-    @Query("select cu.course from CourseUser cu where cu.user.id = :userId")
-    List<Course> findByUserId(@Param("userId") Long userId);
-
-    @Query("select cu.user from CourseUser cu where cu.course.id = :courseId")
-    List<User> findAllUserByCourseId(@Param("courseId") Long courseId);
-
     @Query("select c from Course c where c.name like %:keyword%")
     List<Course> findByNameContaining(@Param("keyword") String keyword);
 }

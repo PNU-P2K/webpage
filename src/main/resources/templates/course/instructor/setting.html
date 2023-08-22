@@ -26,6 +26,15 @@
             <div class="row container mx-auto">
                 <h4 class="mt-4">강좌 가입 신청</h4>
                 <hr class="my-4">
+                <div th:each="unacceptedUserDTO : ${unacceptedUserDTOs.getStudents()}">
+                    <div class="border rounded p-4">
+                        <p th:text="${unacceptedUserDTO.name}">강좌 구성원 이름</p>
+                        <button type="button" class="btn btn-outline-primary"
+                                th:onclick="|javascript:accept(${courseDTO.id}, ${unacceptedUserDTO.id})|">수락</button>
+                        <button type="button" class="btn btn-outline-danger"
+                                th:onclick="|javascript:reject(${courseDTO.id}, ${unacceptedUserDTO.id})|">거절</button>
+                    </div>
+                </div>
 
                 <h4 class="mt-4">강좌 구성원</h4>
                 <hr class="my-4">
@@ -37,10 +46,12 @@
 
                 <h4 class="mt-4">강좌 관리</h4>
                 <hr class="my-4">
-                <div class="border rounded p-4">
-                    <p>강좌 삭제하기</p>
-                    <button type="button" class="btn btn-outline-danger"
-                            th:onclick="'javascript:deleteCourse('+${courseDTO.id}+')'">삭제</button>
+                <div>
+                    <div class="border rounded p-4">
+                        <p>강좌 삭제하기</p>
+                        <button type="button" class="btn btn-outline-danger"
+                                th:onclick="|javascript:deleteCourse(${courseDTO.id})|">삭제</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -51,6 +62,20 @@
 <div th:replace="/fragments/script.html::fragment-script"></div>
 </body>
 <script>
+    function accept(courseId, userId){
+        const form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/courses/" + courseId + "/application/" + userId + "/accept");
+        document.body.appendChild(form);
+        form.submit();
+    }
+    function reject(courseId, userId){
+        const form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/courses/" + courseId + "/application/" + userId + "/reject");
+        document.body.appendChild(form);
+        form.submit();
+    }
     function deleteCourse(id) {
         const form = document.createElement("form");
         form.setAttribute("method", "post");
