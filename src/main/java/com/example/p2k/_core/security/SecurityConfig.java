@@ -23,6 +23,7 @@ public class SecurityConfig {
                                                 new AntPathRequestMatcher("/js/**"),
                                                 new AntPathRequestMatcher("/user/check/**"),
                                                 new AntPathRequestMatcher("/assets/**"),
+                                                new AntPathRequestMatcher("/"),
                                                 new AntPathRequestMatcher("/user/join/**")).permitAll()
                                 .anyRequest().authenticated()
                 )
@@ -37,7 +38,7 @@ public class SecurityConfig {
                 .logout(
                         Logout -> Logout
                                 .logoutUrl("/user/logout")
-                                .logoutSuccessUrl("/user/login")
+                                .logoutSuccessUrl("/")
                 );
 
         return httpSecurity.build();
