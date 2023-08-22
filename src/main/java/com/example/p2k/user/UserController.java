@@ -1,12 +1,11 @@
 package com.example.p2k.user;
 
+import com.example.p2k._core.security.CustomUserDetails;
 import com.example.p2k._core.validator.JoinValidator;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -15,31 +14,19 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JoinValidator joinValidator;
 
-    // 사용자 회원가입 페이지 - GET
+    // 사용자 회원가입 페이지 GET
     @GetMapping("/join")
     public String join(Model model) {
         model.addAttribute("user", new UserRequest.joinDTO());
-        return "join";
+        return "user/join";
     }
 
     // 회원가입 페이지의 데이터 POST
     @PostMapping("/join")
     public String join (@ModelAttribute("user") UserRequest.joinDTO requestDTO) {
-        String enPassword = bCryptPasswordEncoder.encode(requestDTO.getPassword1()); // 비밀번호 암호화
-        System.out.println("user : "+requestDTO.getEmail());
-
-        User user = User.builder()
-                .email(requestDTO.getEmail())
-                .name(requestDTO.getName())
-                .password(enPassword)
-                .role(requestDTO.getRole())
-                .build();
-
-        userService.save(user);
-
+        userService.save(requestDTO);
         return "redirect:/user/login";
     }
 
@@ -47,7 +34,36 @@ public class UserController {
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("user", new UserRequest.loginDTO());
-        return "login";
+        return "user/login";
+    }
+
+    //회원 정보 페이지
+    @GetMapping("/info")
+    public String userInfoForm(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        UserResponse.FindByIdDTO user = userService.findById(userDetails.getUser().getId());
+        model.addAttribute("user", user);
+        return "user/user-info";
+    }
+
+    //회원 정보 수정
+    @PostMapping("/info")
+    public String update(@ModelAttribute UserRequest.UpdateDTO requestDTO,
+                         @AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.update(userDetails.getUser().getId(), requestDTO);
+        return "redirect:/user/info";
+    }
+
+    //비밀번호 재설정 페이지
+    @GetMapping("/reset-password")
+    public String resetPasswordForm() {
+        return "user/reset-password";
+    }
+
+    //회원 탈퇴
+    @GetMapping("/delete")
+    public String delete(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.delete(userDetails.getUser().getId());
+        return "redirect:/";
     }
 
     @GetMapping("/logout")

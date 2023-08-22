@@ -19,4 +19,8 @@ public interface CourseUserRepository extends JpaRepository<CourseUser, Long> {
     @Modifying
     @Query("delete from CourseUser cu where cu.course.id = :courseId")
     void deleteByCourseId(@Param("courseId") Long courseId);
+
+    @Modifying
+    @Query("delete from CourseUser cu where cu.user.id = :userId")
+    void deleteByUserId(@Param("userId") Long userId);
 }

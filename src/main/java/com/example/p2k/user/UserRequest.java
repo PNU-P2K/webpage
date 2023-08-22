@@ -5,7 +5,8 @@ import lombok.Setter;
 
 public class UserRequest {
 
-    @Getter @Setter
+    @Getter
+    @Setter
     public static class joinDTO {
 
         private String email;
@@ -15,9 +16,19 @@ public class UserRequest {
         private Role role = Role.ROLE_STUDENT;
     }
 
-    @Getter @Setter
+    @Getter
+    @Setter
     public static class loginDTO {
+
         private String email;
         private String password;
+    }
+
+    @Getter
+    @Setter
+    public static class UpdateDTO {
+
+        private String email;
+        private String name;
     }
 }

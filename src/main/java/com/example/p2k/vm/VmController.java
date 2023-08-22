@@ -1,9 +1,10 @@
 package com.example.p2k.vm;
 
 import com.example.p2k._core.security.CustomUserDetails;
+import com.example.p2k.user.UserResponse;
+import com.example.p2k.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,6 +24,7 @@ import java.util.List;
 public class VmController {
 
     private final VmService vmService;
+    private final UserService userService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -32,19 +34,19 @@ public class VmController {
 
     private int portnum=6080;
 
-    @GetMapping("")
+    @GetMapping
     public String main(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        UserResponse.FindByIdDTO user = userService.findById(userDetails.getUser().getId());
         List<Vm> vmList = vmService.findAllByUserId(userDetails.getUser().getId());
-        model.addAttribute("user", userDetails.getUser());
+        model.addAttribute("user", user);
         model.addAttribute("vm", vmList);
-        return "index";
+        return "vm/access";
     }
 
     @GetMapping("/create")
-    public String create(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
-        model.addAttribute("user", userDetails.getUser());
+    public String create(Model model) {
         model.addAttribute("vm", new VmRequest.createDTO());
-        return "create";
+        return "vm/create";
     }
 
     @PostMapping("/create")
@@ -116,11 +118,11 @@ public class VmController {
         
         vmService.delete(id);
 
-        return "redirect:/vm";
+        return "redirect:/vm/access";
     }
 
     @GetMapping("/load")
     public String load() {
-        return "load";
+        return "vm/load";
     }
 }
