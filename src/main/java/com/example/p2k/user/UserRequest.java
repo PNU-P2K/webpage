@@ -7,7 +7,7 @@ public class UserRequest {
 
     @Getter
     @Setter
-    public static class joinDTO {
+    public static class JoinDTO {
 
         private String email;
         private String name;
@@ -18,7 +18,7 @@ public class UserRequest {
 
     @Getter
     @Setter
-    public static class loginDTO {
+    public static class LoginDTO {
 
         private String email;
         private String password;
@@ -30,5 +30,14 @@ public class UserRequest {
 
         private String email;
         private String name;
+    }
+
+    @Getter
+    @Setter
+    public static class ResetDTO {
+
+        private String email;
+        private String password;
+        private String passwordConf;
     }
 }

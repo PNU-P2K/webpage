@@ -1,5 +1,6 @@
 package com.example.p2k.user;
 
+import com.example.p2k._core.exception.Exception400;
 import com.example.p2k._core.exception.Exception404;
 import com.example.p2k.courseuser.CourseUserRepository;
 import com.example.p2k.vm.VmRepository;
@@ -19,7 +20,7 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
-    public void save(UserRequest.joinDTO requestDTO) {
+    public void save(UserRequest.JoinDTO requestDTO) {
         String enPassword = bCryptPasswordEncoder.encode(requestDTO.getPassword1()); // 비밀번호 암호화
 
         User user = User.builder()
@@ -52,6 +53,22 @@ public class UserService {
     @Transactional
     public void update(Long id, UserRequest.UpdateDTO requestDTO){
         userRepository.update(id, requestDTO.getEmail(), requestDTO.getName());
+    }
+
+    @Transactional
+    public void resetPassword(UserRequest.ResetDTO requestDTO){
+        String email = requestDTO.getEmail();
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new Exception404("해당 사용자를 찾을 수 없습니다.")
+        );
+
+        String password = requestDTO.getPassword();
+        String passwordConf = requestDTO.getPasswordConf();
+        if(password != passwordConf){
+            throw new Exception400("비밀번호가 일치하지 않습니다.");
+        }
+        String enPassword = bCryptPasswordEncoder.encode(requestDTO.getPassword());
+        userRepository.resetPassword(user.getId(), enPassword);
     }
 
     @Transactional

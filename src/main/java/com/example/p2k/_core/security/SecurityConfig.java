@@ -24,6 +24,7 @@ public class SecurityConfig {
                                                 new AntPathRequestMatcher("/user/check/**"),
                                                 new AntPathRequestMatcher("/assets/**"),
                                                 new AntPathRequestMatcher("/"),
+                                                new AntPathRequestMatcher("/user/reset"),
                                                 new AntPathRequestMatcher("/user/join/**")).permitAll()
                                 .anyRequest().authenticated()
                 )
