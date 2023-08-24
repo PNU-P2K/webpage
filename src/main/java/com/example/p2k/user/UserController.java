@@ -58,18 +58,14 @@ public class UserController {
     //비밀번호 재설정 페이지
     @GetMapping("/reset")
     public String resetPasswordForm(Model model) {
-        log.info("비밀번호 재설정 페이지");
         model.addAttribute("resetDTO", new UserRequest.ResetDTO());
-        log.info("비밀번호 재설정 페이지 확인");
         return "user/reset";
     }
 
     //비밀번호 재설정
     @PostMapping("/reset")
     public String resetPassword(@ModelAttribute UserRequest.ResetDTO requestDTO) {
-        log.info("비밀번호 재설정");
         userService.resetPassword(requestDTO);
-        log.info("비밀번호 재설정 확인");
         return "redirect:/user/login";
     }
 
