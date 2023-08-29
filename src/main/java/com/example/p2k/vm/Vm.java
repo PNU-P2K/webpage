@@ -42,11 +42,11 @@ public class Vm extends BaseTimeEntity {
     private String containerId;
 
     @Builder
-    public Vm(String vmname, User user, String password, int cousrdid, int port, Boolean scope, Boolean control, String vmkey, String containerId) {
+    public Vm(String vmname, User user, String password, int courseId, int port, Boolean scope, Boolean control, String vmkey, String containerId) {
         this.vmname = vmname;
         this.user = user;
         this.password = password;
-        this.cousrdid = cousrdid;
+        this.cousrdid = courseId;
         this.port = port;
         this.scope = scope;
         this.control = control;
