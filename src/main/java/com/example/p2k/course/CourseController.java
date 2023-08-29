@@ -119,9 +119,25 @@ public class CourseController {
     public String setting(@PathVariable Long courseId, Model model){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         CourseResponse.FindStudentsDTO studentDTOs = courseService.findStudents(courseId);
+        CourseResponse.FindUnacceptedUserDTO unacceptedUserDTOs = courseService.findApplications(courseId);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("studentDTOs", studentDTOs);
+        model.addAttribute("unacceptedUserDTOs", unacceptedUserDTOs);
         return "course/instructor/setting";
+    }
+
+    //강좌 신청 수락
+    @PostMapping("/{courseId}/application/{userId}/accept")
+    public String accept(@PathVariable Long courseId, @PathVariable Long userId){
+        courseService.accept(courseId, userId);
+        return "redirect:/courses/{courseId}/setting";
+    }
+
+    //강좌 신청 거절
+    @PostMapping("/{courseId}/application/{userId}/reject")
+    public String reject(@PathVariable Long courseId, @PathVariable Long userId){
+        courseService.reject(courseId, userId);
+        return "redirect:/courses/{courseId}/setting";
     }
 
     //강좌 삭제

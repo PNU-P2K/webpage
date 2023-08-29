@@ -73,6 +73,28 @@ public class CourseResponse {
     }
 
     @Getter
+    public static class FindUnacceptedUserDTO {
+
+        private final List<UnAcceptedUserDTO> students;
+
+        public FindUnacceptedUserDTO(List<User> students) {
+            this.students = students.stream().map(UnAcceptedUserDTO::new).collect(Collectors.toList());
+        }
+
+        @Getter
+        public class UnAcceptedUserDTO{
+
+            private final Long id;
+            private final String name;
+
+            public UnAcceptedUserDTO(User user) {
+                this.id = user.getId();
+                this.name = user.getName();
+            }
+        }
+    }
+
+    @Getter
     public static class FindPostsDTO {
 
         private final List<FindPostsDTO.PostDTO> posts;

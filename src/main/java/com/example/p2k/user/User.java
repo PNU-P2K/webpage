@@ -16,10 +16,10 @@ public class User extends BaseTimeEntity {
     @Column(length = 30, nullable = false, unique = true)
     private String email; // 중복 체크 필요
 
-    @Column(length = 20, nullable = false)
+    //@Column(length = 20, nullable = false) //소셜 로그인은 이름 필요 없음..
     private String name;
 
-    @Column(length = 256, nullable = false)
+    //@Column(length = 256, nullable = false) //소셜 로그인은 패스워드 필요 없음..
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -31,5 +31,10 @@ public class User extends BaseTimeEntity {
         this.name = name;
         this.password = password;
         this.role = role;
+    }
+
+    public User update(String email){
+        this.email = email;
+        return this;
     }
 }

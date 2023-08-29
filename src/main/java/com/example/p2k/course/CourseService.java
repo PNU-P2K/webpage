@@ -1,5 +1,6 @@
 package com.example.p2k.course;
 
+import com.example.p2k._core.exception.Exception404;
 import com.example.p2k.courseuser.CourseUser;
 import com.example.p2k.courseuser.CourseUserRepository;
 import com.example.p2k.post.PostRepository;
@@ -25,7 +26,7 @@ public class CourseService {
 
     //나의 강좌 조회
     public CourseResponse.FindCoursesDTO findCourses(Long userId){
-        List<Course> courses = courseRepository.findByUserId(userId);
+        List<Course> courses = courseUserRepository.findCourseByUserId(userId);
         return new CourseResponse.FindCoursesDTO(courses);
     }
 
@@ -38,15 +39,18 @@ public class CourseService {
     //강좌 신청
     @Transactional
     public void apply(Long id, User user){
-
-        Optional<CourseUser> findCourseUser = courseUserRepository.findByUserIdAndCourseId(user.getId(), id);
+        Optional<CourseUser> findCourseUser = courseUserRepository.findByCourseIdAndUserId(user.getId(), id);
         if(findCourseUser.isPresent()){
             //이미 신청한 강좌인지 체크
         }
 
         Optional<Course> course = courseRepository.findById(id);
         if(course.isPresent()){
-            CourseUser courseUser = CourseUser.builder().course(course.get()).user(user).build();
+            CourseUser courseUser = CourseUser.builder()
+                    .course(course.get())
+                    .user(user)
+                    .accept(false)
+                    .build();
             courseUserRepository.save(courseUser);
         }
     }
@@ -72,7 +76,7 @@ public class CourseService {
     //강좌 취소
     @Transactional
     public void cancel(Long id, User user){
-        courseUserRepository.deleteByUserIdAndCourseId(user.getId(), id);
+        courseUserRepository.deleteByCourseIdAndUserId(user.getId(), id);
     }
 
     //강좌 생성
@@ -81,14 +85,32 @@ public class CourseService {
         Course course = Course.builder().name(requestDTO.getName()).description(requestDTO.getDescription()).build();
         courseRepository.save(course);
 
-        CourseUser courseUser = CourseUser.builder().course(course).user(user).build();
+        CourseUser courseUser = CourseUser.builder().course(course).user(user).accept(true).build();
         courseUserRepository.save(courseUser);
     }
 
     //수강생 관리
     public CourseResponse.FindStudentsDTO findStudents(Long id){
-        List<User> students = courseRepository.findAllUserByCourseId(id);
+        List<User> students = courseUserRepository.findAcceptedUserByCourseId(id);
         return new CourseResponse.FindStudentsDTO(students);
+    }
+
+    //강좌 신청 대기 수강생 목록
+    public CourseResponse.FindUnacceptedUserDTO findApplications(Long id){
+        List<User> users = courseUserRepository.findUnacceptedUserByCourseId(id);
+        return new CourseResponse.FindUnacceptedUserDTO(users);
+    }
+
+    //강좌 신청 수락
+    @Transactional
+    public void accept(Long courseId, Long userId){
+        courseUserRepository.updateAccept(courseId, userId);
+    }
+
+    //강좌 신청 거절
+    @Transactional
+    public void reject(Long courseId, Long userId){
+        courseUserRepository.deleteByCourseIdAndUserId(courseId, userId);
     }
 
     //강좌 삭제
@@ -101,7 +123,9 @@ public class CourseService {
 
     //강좌 아이디로 강좌 찾기
     public CourseResponse.FindById findById(Long id){
-        Course course = courseRepository.findById(id).get();
+        Course course = courseRepository.findById(id).orElseThrow(
+                () -> new Exception404("해당 강좌를 찾을 수 없습니다.")
+        );
         return new CourseResponse.FindById(course);
     }
 }
