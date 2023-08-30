@@ -34,9 +34,11 @@
                         <p class="card-text text-center"><span th:if="!${v.scope}">비공개</span></p>
                         <p class="card-text text-center"><span th:if="${v.control}">누구나 제어 가능</span></p>
                         <p class="card-text text-center"><span th:if="!${v.control}">보기만 가능</span></p>
+                        <p class="card-text text-center">상태 : 실행 중</p>
                         <div class="btn-wrap">
 <!--                            <a href="#" class="btn-buy">접속하기</a>-->
                             <button class="btn btn-primary" th:onclick="|javascript:alert('${v.port}')|">접속하기</button>
+                            <button class="btn btn-primary" th:onclick="|javascript:alert2('${v.port}')|">종료하기</button>
                         </div>
                     </div>
                 </div>
@@ -65,7 +67,26 @@
             cancelButtonText: '취소'
         }).then((result) => {
             if(result.isConfirmed) {
-                location.href = "http://www.webdesktop.p2kcloud.com:"+port;
+
+                // location.href = "http://localhost:"+port; // 기존 창에서 이동
+                window.open("http://localhost:"+port, '_blank') // 새 창에서 켜짐
+            }
+        })
+    }
+
+    function alert2(port) {
+
+        Swal.fire({
+            title : "가상환경을 종료하겠습니까?",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '종료',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if(result.isConfirmed) {
+
+                // location.href = "http://localhost:"+port; // 기존 창에서 이동
             }
         })
     }

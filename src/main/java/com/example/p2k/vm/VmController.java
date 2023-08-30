@@ -70,7 +70,7 @@ public class VmController {
         return "vm/menu";
     }
 
-    /*@PostMapping("/create")
+    @PostMapping("/create")
     public String create(@AuthenticationPrincipal CustomUserDetails userDetails,
                          @ModelAttribute("vm") VmRequest.createDTO requestDTO) throws Exception {
 
@@ -111,57 +111,57 @@ public class VmController {
         vmService.save(vm);
         portnum+=1;
 
-        return "redirect:/vm/create";
-    }*/
-
-    @PostMapping("/create")
-    public String create(@AuthenticationPrincipal CustomUserDetails userDetails,
-                         @ModelAttribute("vm") VmRequest.createDTO requestDTO) throws JSchException {
-
-        String host = "ec2-13-124-77-175.ap-northeast-2.compute.amazonaws.com";
-        String privateKey = "C:\\Users\\kihae\\.ssh\\p2k";
-        String userKey = userDetails.getUser().getId() + "-" + requestDTO.getVmname();
-        log.info("userkey=" + userKey);
-
-        try {
-            // SSH 클라이언트 설정
-            JSch jsch = new JSch();
-            jsch.addIdentity(privateKey);
-
-            // SSH 세션 열기
-            Session session = jsch.getSession("ubuntu", host, 22);
-            session.setConfig("StrictHostKeyChecking", "no");
-            session.connect();
-
-            // 명령 실행을 위한 채널 열기
-            ChannelExec channelExec = (ChannelExec) session.openChannel("exec");
-            String command = "docker tag registry.p2kcloud.com/base/vncdesktop " + userKey;
-
-            // 명령어 실행 및 결과 처리
-            channelExec.setCommand(command);
-            InputStream commandOutput = channelExec.getInputStream();
-            channelExec.connect();
-
-            // 명령어 실행 결과를 읽어옴
-            StringBuilder output = new StringBuilder();
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-
-            while ((bytesRead = commandOutput.read(buffer)) > 0) {
-                output.append(new String(buffer, 0, bytesRead));
-            }
-
-            // 채널 및 세션 닫기
-            channelExec.disconnect();
-            session.disconnect();
-
-            log.info("Output:\n" + output.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         return "redirect:/vm";
     }
+
+//    @PostMapping("/create")
+//    public String create(@AuthenticationPrincipal CustomUserDetails userDetails,
+//                         @ModelAttribute("vm") VmRequest.createDTO requestDTO) throws JSchException {
+//
+//        String host = "ec2-13-124-77-175.ap-northeast-2.compute.amazonaws.com";
+//        String privateKey = "C:\\Users\\kihae\\.ssh\\p2k";
+//        String userKey = userDetails.getUser().getId() + "-" + requestDTO.getVmname();
+//        log.info("userkey=" + userKey);
+//
+//        try {
+//            // SSH 클라이언트 설정
+//            JSch jsch = new JSch();
+//            jsch.addIdentity(privateKey);
+//
+//            // SSH 세션 열기
+//            Session session = jsch.getSession("ubuntu", host, 22);
+//            session.setConfig("StrictHostKeyChecking", "no");
+//            session.connect();
+//
+//            // 명령 실행을 위한 채널 열기
+//            ChannelExec channelExec = (ChannelExec) session.openChannel("exec");
+//            String command = "docker tag registry.p2kcloud.com/base/vncdesktop " + userKey;
+//
+//            // 명령어 실행 및 결과 처리
+//            channelExec.setCommand(command);
+//            InputStream commandOutput = channelExec.getInputStream();
+//            channelExec.connect();
+//
+//            // 명령어 실행 결과를 읽어옴
+//            StringBuilder output = new StringBuilder();
+//            byte[] buffer = new byte[1024];
+//            int bytesRead;
+//
+//            while ((bytesRead = commandOutput.read(buffer)) > 0) {
+//                output.append(new String(buffer, 0, bytesRead));
+//            }
+//
+//            // 채널 및 세션 닫기
+//            channelExec.disconnect();
+//            session.disconnect();
+//
+//            log.info("Output:\n" + output.toString());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return "redirect:/vm";
+//    }
 
     @PostMapping("/delete/{id}")
     public String delete(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long id) throws Exception {
