@@ -26,6 +26,7 @@ public class CourseController {
         User user = userDetails.getUser();
         CourseResponse.FindCoursesDTO courseDTOs = courseService.findCourses(user.getId());
         model.addAttribute("courseDTOs", courseDTOs);
+        model.addAttribute("user", user);
 
         if(user.getRole() == Role.ROLE_STUDENT){
             return "course/student/course";
@@ -36,9 +37,13 @@ public class CourseController {
 
     //강좌 신청 페이지
     @GetMapping("/apply")
-    public String applyForm(Model model){
+    public String applyForm(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindCoursesDTO courseDTOs = courseService.findAll();
+        User user = userDetails.getUser();
+
         model.addAttribute("courseDTOs", courseDTOs);
+        model.addAttribute("user", user);
+
         return "course/student/apply";
     }
 

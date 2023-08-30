@@ -1,6 +1,7 @@
 package com.example.p2k.vm;
 
 import com.example.p2k._core.security.CustomUserDetails;
+import com.example.p2k.user.User;
 import com.example.p2k.user.UserResponse;
 import com.example.p2k.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,6 +62,9 @@ public class VmController {
 
     @GetMapping("/menu")
     public String menu(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
+
         return "vm/menu";
     }
 
