@@ -24,15 +24,21 @@ public class PostController {
     private final PostService postService;
     private final ReplyService replyService;
 
+    //              교육자       학생
+    // 공지사항 :   작성 가능     조회만 가능
+    // 질문게시판 :  작성 가능    작성 가능
+    //
+
     //공지사항 게시판 페이지
     @GetMapping("/notice-board")
     public String getNoticeBoard(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         CourseResponse.FindPostsDTO postDTOs = postService.findPostsByCategory(courseId, Category.NOTICE);
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTOs", postDTOs);
 
-        User user = userDetails.getUser();
         if(user.getRole() == Role.ROLE_STUDENT){
             return "course/student/noticeBoard";
         }else{
@@ -45,10 +51,11 @@ public class PostController {
     public String getQuestionBoard(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         CourseResponse.FindPostsDTO postDTOs = postService.findPostsByCategory(courseId, Category.QUESTION);
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTOs", postDTOs);
 
-        User user = userDetails.getUser();
         if(user.getRole() == Role.ROLE_STUDENT){
             return "course/student/questionBoard";
         }else{
@@ -61,10 +68,11 @@ public class PostController {
     public String getFreeBoard(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         CourseResponse.FindPostsDTO postDTOs = postService.findPostsByCategory(courseId, Category.FREE);
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTOs", postDTOs);
 
-        User user = userDetails.getUser();
         if(user.getRole() == Role.ROLE_STUDENT){
             return "course/student/freeBoard";
         }else{
@@ -86,6 +94,7 @@ public class PostController {
         model.addAttribute("postDTO", postDTO);
         model.addAttribute("repliesDTO", repliesDTO);
         model.addAttribute("userId", user.getId());
+        model.addAttribute("user", user);
 
         if(postDTO.getUserId().equals(user.getId())){
             return "course/instructor/noticePost";
@@ -100,13 +109,16 @@ public class PostController {
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
         requestDTO.setCategory(Category.NOTICE);
         postService.savePost(requestDTO, userDetails.getUser(), courseId);
+
         return "redirect:/courses/{courseId}/notice-board";
     }
 
     //공지사항 글 작성 폼
     @GetMapping("/notice-board/save")
-    public String getSaveNoticePost(@PathVariable Long courseId, Model model){
+    public String getSaveNoticePost(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", new CourseRequest.PostDTO());
         return "course/instructor/saveNoticePost";
@@ -119,14 +131,18 @@ public class PostController {
                                    @AuthenticationPrincipal CustomUserDetails userDetails){
         requestDTO.setCategory(Category.NOTICE);
         postService.updatePost(requestDTO, postId, userDetails.getUser());
+
         return "redirect:/courses/{courseId}/notice-board/{postId}";
     }
 
     //공지사항 글 수정 폼
     @GetMapping("/notice-board/{postId}/update")
-    public String getUpdateNoticePost(@PathVariable Long courseId, @PathVariable Long postId, Model model){
+    public String getUpdateNoticePost(@PathVariable Long courseId, @PathVariable Long postId, Model model,
+                                      @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         CourseResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
         return "course/instructor/updateNoticePost";
@@ -134,7 +150,10 @@ public class PostController {
 
     //공지사항 글 삭제
     @GetMapping("/notice-board/{postId}/delete")
-    public String deleteNoticePost(@PathVariable Long postId, @AuthenticationPrincipal CustomUserDetails userDetails){
+    public String deleteNoticePost(@PathVariable Long postId, Model model,
+                                   @AuthenticationPrincipal CustomUserDetails userDetails){
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         postService.deletePost(postId, userDetails.getUser());
         return "redirect:/courses/{courseId}/notice-board";
     }
@@ -146,13 +165,13 @@ public class PostController {
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         CourseResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
         ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId);
-
         User user = userDetails.getUser();
 
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
         model.addAttribute("repliesDTO", repliesDTO);
         model.addAttribute("userId", user.getId());
+        model.addAttribute("user", user);
 
         if(postDTO.getUserId().equals(user.getId())){
             return "course/instructor/questionPost";
@@ -176,10 +195,11 @@ public class PostController {
     public String getSaveQuestionPost(@PathVariable Long courseId, Model model,
                                       @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", new CourseRequest.PostDTO());
 
-        User user = userDetails.getUser();
         if(user.getRole() == Role.ROLE_STUDENT){
             return "course/student/saveQuestionPost";
         }else{
@@ -203,10 +223,11 @@ public class PostController {
                                         @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         CourseResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
 
-        User user = userDetails.getUser();
         if(user.getRole() == Role.ROLE_STUDENT){
             return "course/student/updateQuestionPost";
         }else{
@@ -235,6 +256,7 @@ public class PostController {
         model.addAttribute("postDTO", postDTO);
         model.addAttribute("repliesDTO", repliesDTO);
         model.addAttribute("userId", user.getId());
+        model.addAttribute("user", user);
 
         if(postDTO.getUserId().equals(user.getId())){
             return "course/instructor/freePost";
@@ -257,10 +279,11 @@ public class PostController {
     public String getSaveFreePost(@PathVariable Long courseId, Model model,
                                   @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", new CourseRequest.PostDTO());
 
-        User user = userDetails.getUser();
         if(user.getRole() == Role.ROLE_STUDENT){
             return "course/student/saveFreePost";
         }else{
@@ -284,10 +307,11 @@ public class PostController {
                                     @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         CourseResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
 
-        User user = userDetails.getUser();
         if(user.getRole() == Role.ROLE_STUDENT){
             return "course/student/updateFreePost";
         }else{
