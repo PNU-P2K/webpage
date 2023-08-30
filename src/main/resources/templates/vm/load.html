@@ -3,7 +3,14 @@
 
 <!-- 공통 header -->
 <div th:replace="/fragments/header.html::fragment-header"></div>
-
+<style>
+    .container {
+        max-width: 600px;
+    }
+    .btn-custom {
+        max-width: 100px;
+    }
+</style>
 <body>
 
 <!-- 공통 navigation-->
@@ -22,15 +29,35 @@
         <div class="row icon-boxes d-flex justify-content-center">
             <div class="col-md-7 aos-init aos-animate mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="200">
                 <div class="icon-box">
-                    <form th:action="@{/vm/create}" th:object="${vm}" method="post" style="text-align: center;" class="m-auto center-block">
-
-
+                    <form th:action="@{/vm/load}" th:object="${loadDTO}" method="post" style="text-align: center;" class="m-auto center-block">
+                        <div class="row mb-3">
+                            <label for="name" class="col-sm-2 col-form-label">이름</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="name" th:field="*{name}" class="form-control">
+                            </div>
+                            <label for="key" class="col-sm-2 col-form-label">key</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="key" th:field="*{key}" class="form-control">
+                            </div>
+                            <label for="password" class="col-sm-2 col-form-label">비밀번호</label>
+                            <div class="col-sm-10">
+                                <input type="password" id="password" th:field="*{password}" class="form-control">
+                            </div>
+                            <label for="password" class="col-sm-2 col-form-label">공개 범위</label>
+                            <div class="col-sm-10">
+                                <label>전체공개 <input type="radio" name="scope" th:field="*{scope}" th:value="false"></label>
+                                <label>비공개 <input type="radio" name="scope" checked th:field="*{scope}" th:value="true"></label>
+                            </div>
+                            <label for="password" class="col-sm-2 col-form-label">접속자 권한 범위</label>
+                            <div class="col-sm-10">
+                                <label>제어 가능 <input type="radio" name="control" th:field="*{control}" th:value="false"></label>
+                                <label>보기만 가능 <input type="radio" name="control" checked th:field="*{control}" th:value="true"></label>
+                            </div>
+                        </div>
                         <button class="mt-5 btn btn-lg btn-primary" type="submit" id="create-btn">로드하기</button>
                     </form>
                 </div>
             </div>
-
-
         </div>
     </div>
 </section><!-- End Hero -->
@@ -41,23 +68,6 @@
 
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
-<script>
-    function alert(port) {
-
-        Swal.fire({
-            title : "접속하시겠습니까?",
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: '접속',
-            cancelButtonText: '취소'
-        }).then((result) => {
-            if(result.isConfirmed) {
-                location.href = "http://www.webdesktop.p2kcloud.com:"+port;
-            }
-        })
-    }
-</script>
 </body>
 
 </html>

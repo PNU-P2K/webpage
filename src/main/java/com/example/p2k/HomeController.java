@@ -5,6 +5,7 @@ import com.example.p2k.user.UserResponse;
 import com.example.p2k.user.UserService;
 import com.example.p2k.vm.Vm;
 import com.example.p2k.vm.VmRequest;
+import com.example.p2k.vm.VmResponse;
 import com.example.p2k.vm.VmService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,7 +30,7 @@ public class HomeController {
     @GetMapping("/home")
     public String home(@AuthenticationPrincipal CustomUserDetails userDetails, Model model){
         UserResponse.FindByIdDTO user = userService.findById(userDetails.getUser().getId());
-        List<Vm> vmList = vmService.findAllByUserId(userDetails.getUser().getId());
+        VmResponse.FindAllDTO vmList = vmService.findAllByUserId(userDetails.getUser().getId());
         model.addAttribute("user", user);
         model.addAttribute("vm", vmList);
 
