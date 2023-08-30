@@ -5,16 +5,7 @@ import com.example.p2k.user.User;
 import com.example.p2k.user.UserResponse;
 import com.example.p2k.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -22,13 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.List;
-
-@Slf4j
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/vm")
@@ -38,41 +22,76 @@ public class VmController {
     private final UserService userService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
     private final RestTemplate restTemplate;
-
     private final ObjectMapper ob = new ObjectMapper();
 
-    private int portnum=6080;
-
     @GetMapping
-    public String access(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+    public String vm(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         UserResponse.FindByIdDTO user = userService.findById(userDetails.getUser().getId());
-        List<Vm> vmList = vmService.findAllByUserId(userDetails.getUser().getId());
+        VmResponse.FindAllDTO vmList = vmService.findAllByUserId(userDetails.getUser().getId());
         model.addAttribute("user", user);
         model.addAttribute("vm", vmList);
         return "vm/vm";
     }
 
     @GetMapping("/create")
+<<<<<<< HEAD
     public String create(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         User user = userDetails.getUser();
         model.addAttribute("user", user);
         model.addAttribute("vm", new VmRequest.createDTO());
+=======
+    public String createForm(Model model) {
+        model.addAttribute("vm", new VmRequest.CreateDTO());
+>>>>>>> 1190ea0b606287b8758e83836f8693a455aa0cb8
         return "vm/create";
-    }
-
-    @GetMapping("/menu")
-    public String menu(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
-        User user = userDetails.getUser();
-        model.addAttribute("user", user);
-
-        return "vm/menu";
     }
 
     @PostMapping("/create")
     public String create(@AuthenticationPrincipal CustomUserDetails userDetails,
-                         @ModelAttribute("vm") VmRequest.createDTO requestDTO) throws Exception {
+                         @ModelAttribute("vm") VmRequest.CreateDTO requestDTO){
+        vmService.create(userDetails.getUser(), requestDTO);
+        return "redirect:/vm";
+    }
+
+<<<<<<< HEAD
+    @PostMapping("/create")
+=======
+    @PostMapping("/{id}/access")
+    public String access(@PathVariable Long id){
+        vmService.access(id);
+        return "redirect:/vm";
+    }
+
+    @PostMapping("/{id}/save")
+    public String commit(@PathVariable Long id){
+        vmService.commit(id);
+        return "redirect:/vm";
+    }
+
+    @GetMapping("/load")
+    public String loadForm(Model model) {
+        model.addAttribute("loadDTO", new VmRequest.LoadDTO());
+        return "vm/load";
+    }
+
+    @PostMapping("/load")
+    public String load(@ModelAttribute VmRequest.LoadDTO requestDTO,
+                       @AuthenticationPrincipal CustomUserDetails userDetails){
+        vmService.load(requestDTO, userDetails.getUser());
+        return "redirect:/vm";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable Long id) {
+        vmService.delete(id);
+        return "redirect:/vm";
+    }
+
+        /*@PostMapping("/create")
+>>>>>>> 1190ea0b606287b8758e83836f8693a455aa0cb8
+    public String create(@AuthenticationPrincipal CustomUserDetails userDetails,
+                         @ModelAttribute("vm") VmRequest.CreateDTO requestDTO) throws Exception {
 
         String baseUrl = "http://localhost:5000/create";
 
@@ -96,7 +115,7 @@ public class VmController {
         String responseBody = ob.writeValueAsString(response.getBody());
         VmResponse.deleteDTOfl res = ob.readValue(responseBody, VmResponse.deleteDTOfl.class);
         System.out.println("res.getContainerId() = " + res.getContainerId());
-        
+
         Vm vm = Vm.builder()
                 .vmname(requestDTO.getVmname())
                 .password(requestDTO.getPassword())
@@ -111,6 +130,7 @@ public class VmController {
         vmService.save(vm);
         portnum+=1;
 
+<<<<<<< HEAD
         return "redirect:/vm";
     }
 
@@ -164,6 +184,12 @@ public class VmController {
 //    }
 
     @PostMapping("/delete/{id}")
+=======
+        return "redirect:/vm/create";
+    }*/
+
+    /*    @PostMapping("/delete/{id}")
+>>>>>>> 1190ea0b606287b8758e83836f8693a455aa0cb8
     public String delete(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long id) throws Exception {
 
         String baseUrl = "http://localhost:5000/delete";
@@ -172,7 +198,7 @@ public class VmController {
 
         VmRequest.deleteDTOsb requestDTOsb = new VmRequest.deleteDTOsb();
         requestDTOsb.setPort(vm.getPort());
-        requestDTOsb.setContainerId(vm.getContainerId());
+        requestDTOsb.setContainerId(vm.getContainerKey());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -185,14 +211,9 @@ public class VmController {
         System.out.println("entity.getBody() = " + entity.getBody());
 
         restTemplate.postForEntity(baseUrl, entity, VmResponse.deleteDTOfl.class);
-        
+
         vmService.delete(id);
 
         return "redirect:/vm/access";
-    }
-
-    @GetMapping("/load")
-    public String load() {
-        return "vm/load";
-    }
+    }*/
 }

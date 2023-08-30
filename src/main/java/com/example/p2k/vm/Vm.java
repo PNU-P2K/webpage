@@ -36,13 +36,13 @@ public class Vm extends BaseTimeEntity {
     @Column(nullable = false)
     private Boolean control;
 
-    @Column(nullable = false)
-    private String vmkey;
+    private String vmKey;
 
-    private String containerId;
+    @Column(nullable = false)
+    private String containerKey;
 
     @Builder
-    public Vm(String vmname, User user, String password, int courseId, int port, Boolean scope, Boolean control, String vmkey, String containerId) {
+    public Vm(String vmname, User user, String password, int courseId, int port, Boolean scope, Boolean control, String vmKey, String containerKey) {
         this.vmname = vmname;
         this.user = user;
         this.password = password;
@@ -50,7 +50,7 @@ public class Vm extends BaseTimeEntity {
         this.port = port;
         this.scope = scope;
         this.control = control;
-        this.vmkey = vmkey;
-        this.containerId = containerId;
+        this.vmKey = vmKey;
+        this.containerKey = containerKey;
     }
 }
