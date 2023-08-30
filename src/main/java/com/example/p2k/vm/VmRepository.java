@@ -7,12 +7,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface VmRepository extends JpaRepository<Vm, Long> {
 
     @Query("select v from Vm v where v.user.id= :id")
     List<Vm> findAllByUserId(@Param("id") Long id);
+
+    Optional<Vm> findByVmKey(@Param("vmKey") String vmKey);
 
     @Modifying
     @Query("delete from Vm v where v.user.id = :userId")
