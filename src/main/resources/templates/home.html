@@ -39,9 +39,9 @@
         </br>
 
         <div class="row">
-          <div class="col-lg-3 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="v : ${vm}">
+          <div class="col-lg-3 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="v : ${vm.getVms()}">
             <div class="box">
-              <h3 th:text="${v.vmname}"></h3>
+              <h3 th:text="${v.name}"></h3>
               <input hidden id="vmId" type="text" th:value="${v.id}"/>
               <input hidden id="vmPort" type="text" th:value="${v.port}"/>
               <p class="card-text text-center"><span th:if="${v.scope}">전체공개</span></p>
