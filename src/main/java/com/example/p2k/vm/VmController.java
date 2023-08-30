@@ -1,6 +1,7 @@
 package com.example.p2k.vm;
 
 import com.example.p2k._core.security.CustomUserDetails;
+import com.example.p2k.user.User;
 import com.example.p2k.user.UserResponse;
 import com.example.p2k.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,13 +51,21 @@ public class VmController {
         List<Vm> vmList = vmService.findAllByUserId(userDetails.getUser().getId());
         model.addAttribute("user", user);
         model.addAttribute("vm", vmList);
-        return "vm/access";
+        return "vm/vm";
     }
 
     @GetMapping("/create")
-    public String create(Model model) {
+    public String create(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         model.addAttribute("vm", new VmRequest.createDTO());
         return "vm/create";
+    }
+
+    @GetMapping("/menu")
+    public String menu(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
+
+        return "vm/menu";
     }
 
     /*@PostMapping("/create")

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 header -->
+<div th:replace="/fragments/header.html::fragment-header"></div>
+
+<body>
+
+<!-- 공통 navigation-->
+<div th:replace="/fragments/nav.html::fragment-nav"></div>
+
+</br>
+</br>
+
+<main id="main">
+
+<!--  <section id="hero" class="d-flex align-items-center">-->
+  <section id="services" class="services section-bg">
+    <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="section-title">
+        <h2>가상환경 생성 및 로드하기</h2>
+      </div>
+      </br>
+
+      <div class="row icon-boxes d-flex justify-content-center">
+        <div class="col-md-6 col-lg-3 aos-init aos-animate mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="200">
+          <div class="icon-box">
+            <div class="icon"><i class="ri-stack-line"></i></div>
+            <h4 class="title"><a href="/vm/create">가상환경</br>생성하기</a></h4>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3 aos-init aos-animate mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="300">
+          <div class="icon-box">
+            <div class="icon"><i class="ri-palette-line"></i></div>
+            <h4 class="title"><a href="/vm/load">가상환경</br>로드하기</a></h4>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </section><!-- End Hero -->
+
+</main><!-- End #main -->
+
+<!-- 공통 footer -->
+<div th:replace="/fragments/footer.html::fragment-footer"></div>
+
+<!-- 공통 script -->
+<div th:replace="/fragments/script.html::fragment-script"></div>
+<script>
+  function alert(port) {
+
+    Swal.fire({
+      title : "접속하시겠습니까?",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '접속',
+      cancelButtonText: '취소'
+    }).then((result) => {
+      if(result.isConfirmed) {
+        location.href = "http://www.webdesktop.p2kcloud.com:"+port;
+      }
+    })
+  }
+</script>
+</body>
+
+</html>

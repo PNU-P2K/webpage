@@ -10868,3 +10868,11 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
   font-size: 1rem !important;
   font-family: var(--bs-font-monospace) !important;
 }
+
+.bg-main1{
+  background-color: #e7effc !important
+}
+
+.bg-main2{
+  background-color: #e7f1ff!important
+}
