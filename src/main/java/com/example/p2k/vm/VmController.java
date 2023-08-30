@@ -56,6 +56,8 @@ public class VmController {
 
     @GetMapping("/create")
     public String create(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         model.addAttribute("vm", new VmRequest.createDTO());
         return "vm/create";
     }
