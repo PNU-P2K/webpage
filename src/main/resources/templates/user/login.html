@@ -12,6 +12,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet" />
 
     <style>
         .bd-placeholder-img {
@@ -29,8 +30,9 @@
         }
 
         .bg-login {
-            background: #cfe2ff;
             border-radius: 20px;
+            padding-left: 50px !important;
+            padding-right: 50px !important;
         }
     </style>
 
@@ -40,9 +42,11 @@
 
 <body class="text-center bg-body">
 
-<main class="form-signin bg-login">
+<main class="bg-login form-signin bg-main1">
+    <div class="container mb-2" data-aos="fade-up">
+
     <form th:action="@{/user/login}" th:object="${user}" method="POST">
-        <img class="mb-4" src="/assets/p2k_logo.png" alt="" width="150" height="105">
+        <img class="mb-4" src="/assets/p2k_logo.png" href="/" alt="" width="150" height="105">
         <h2 class="h3 mb-3 fw-normal">Login</h2>
 
         <div class="form-floating">
@@ -60,7 +64,6 @@
 <!--            </label>-->
 <!--        </div>-->
         <button class="w-100 mb-2 btn btn-lg btn-primary" type="submit">로그인</button>
-<!--        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>-->
     </form>
     <div>
         <a th:href="@{/user/reset}">비밀번호 재설정</a>
@@ -71,11 +74,11 @@
     간편 로그인
     <br>
     <div>
-        <a href="/oauth2/authorization/naver" role="button"><img class="m-3" src="/assets/naver.png" alt="" width="50" height="50"></a>
-        <a href="/oauth2/authorization/kakao" role="button"><img class="m-3" src="/assets/kakao.png" alt="" width="50" height="50"></a>
-        <a href="/oauth2/authorization/google" role="button"><img class="m-3" src="/assets/google.png" alt="" width="50" height="50"></a>
+        <a href="/oauth2/authorization/naver" role="button"><img class="m-1" src="/assets/naver.png" alt="" width="50" height="50"></a>
+        <a href="/oauth2/authorization/kakao" role="button"><img class="m-1" src="/assets/kakao.png" alt="" width="50" height="50"></a>
+        <a href="/oauth2/authorization/google" role="button"><img class="m-1" src="/assets/google.png" alt="" width="50" height="50"></a>
     </div>
-
+    </div>
 </main>
 
 </body>

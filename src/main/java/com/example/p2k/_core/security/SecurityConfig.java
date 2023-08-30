@@ -13,7 +13,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @RequiredArgsConstructor
 @Configuration // spring security filter(SecurityConfig)가 스프링 필터체인에 등록된다.
 @EnableMethodSecurity
-public class SecurityConfig {
+public class    SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
 

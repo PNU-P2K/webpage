@@ -5,24 +5,71 @@
 <div th:replace="/fragments/header.html::fragment-header"></div>
 
 <body>
-<div class="d-flex" id="wrapper">
-  <!-- 공통 sidebar-->
-  <div th:replace="/fragments/sidebar.html::fragment-sidebar"></div>
 
-  <div id="page-content-wrapper">
     <!-- 공통 navigation-->
     <div th:replace="/fragments/nav.html::fragment-nav"></div>
 
     <!-- Page content-->
-    <div class="container-fluid">
-      <h1 class="mt-4"><a th:text="${user.name}"></a>님의 가상환경 접속</h1>
+<main id="main">
 
-    </div>
-  </div>
-</div>
+    <!-- ======= Pricing Section ======= -->
+    <section id="pricing" class="pricing">
+        <div class="container" data-aos="fade-up">
+            </br>
+            </br>
+
+            <div class="section-title">
+                <h2><a th:text="${user.name}"></a>님의 가상환경 목록</h2>
+            </div>
+
+            </br>
+
+            <div class="row">
+                <div class="col-lg-3 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="v : ${vm}">
+                    <div class="box">
+                        <h3 th:text="${v.vmname}"></h3>
+                        <input hidden id="vmId" type="text" th:value="${v.id}"/>
+                        <input hidden id="vmPort" type="text" th:value="${v.port}"/>
+                        <p class="card-text text-center"><span th:if="${v.scope}">전체공개</span></p>
+                        <p class="card-text text-center"><span th:if="!${v.scope}">비공개</span></p>
+                        <p class="card-text text-center"><span th:if="${v.control}">누구나 제어 가능</span></p>
+                        <p class="card-text text-center"><span th:if="!${v.control}">보기만 가능</span></p>
+                        <div class="btn-wrap">
+<!--                            <a href="#" class="btn-buy">접속하기</a>-->
+                            <button class="btn btn-primary" th:onclick="|javascript:alert('${v.port}')|">접속하기</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section><!-- End Pricing Section -->
+
+
+</main><!-- End #main -->
+<!-- 공통 footer -->
+<div th:replace="/fragments/footer.html::fragment-footer"></div>
 
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
+<script>
+    function alert(port) {
+
+        Swal.fire({
+            title : "접속하시겠습니까?",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '접속',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if(result.isConfirmed) {
+                location.href = "http://www.webdesktop.p2kcloud.com:"+port;
+            }
+        })
+    }
+</script>
 </body>
 
 </html>

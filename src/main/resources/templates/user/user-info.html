@@ -3,20 +3,26 @@
 
 <!-- 공통 header -->
 <div th:replace="/fragments/header.html::fragment-header"></div>
+
 <style>
-    .container {
+    .container-info {
         max-width: 700px;
     }
 </style>
+
 <body>
+
+<!-- 공통 navigation-->
+<div th:replace="/fragments/nav.html::fragment-nav"></div>
+</br>
+</br>
+
 <div class="d-flex" id="wrapper">
     <div id="page-content-wrapper">
-        <!-- 공통 navigation-->
-        <div th:replace="/fragments/nav.html::fragment-nav"></div>
 
         <!-- Page content-->
         <div class="container-fluid">
-            <div class="container mx-auto">
+            <div class="container-info mx-auto">
                 <div class="py-5">
                     <h2 class="mt-4">회원 정보 수정</h2>
                     <hr class="my-4">

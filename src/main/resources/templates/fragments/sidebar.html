@@ -3,7 +3,8 @@
 
   <!-- Sidebar-->
   <div th:fragment="fragment-sidebar" class="border-end bg-white" id="sidebar-wrapper">
-    <div class="sidebar-heading border-bottom bg-light" th:onclick="|location.href='/home'|">P2K</div>
+<!--    <div class="sidebar-heading border-bottom bg-light" th:onclick="|location.href='/home'|">P2K</div>-->
+    <a href="/home" role="button"><img class="m-1 ms-3" src="/assets/p2k_logo2.png" alt="" width="90" height="60"></a>
     <div class="list-group list-group-flush">
       <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/vm">나의 가상환경 목록</a>
       <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/vm/create">가상환경 생성하기</a>
