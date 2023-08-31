@@ -76,7 +76,7 @@ public class CourseService {
     //강좌 취소
     @Transactional
     public void cancel(Long id, User user){
-        courseUserRepository.deleteByCourseIdAndUserId(user.getId(), id);
+        courseUserRepository.deleteByCourseIdAndUserId(id, user.getId());
     }
 
     //강좌 생성
