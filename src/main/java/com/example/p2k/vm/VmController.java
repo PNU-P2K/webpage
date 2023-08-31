@@ -59,10 +59,16 @@ public class VmController {
         return "redirect:/vm";
     }
 
+    @PostMapping("/save/{id}")
+    public String save(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
+        vmService.save(userDetails.getUser(), id);
+        return "redirect:/vm";
+    }
+
     // 가상환경 삭제하기
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
-        vmService.delete(id);
+        vmService.delete(userDetails.getUser(), id);
         return "redirect:/vm";
     }
 

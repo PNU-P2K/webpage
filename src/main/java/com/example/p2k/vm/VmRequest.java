@@ -34,10 +34,21 @@ public class VmRequest {
     }
 
     @Getter @Setter
+    public static class saveDTOsb {
+        private Long id;
+        private int port;
+        private String pwd;
+        private String containerId;
+        private String imageId;
+    }
+
+    @Getter @Setter
     public static class deleteDTOsb {
 
+        private Long id;
         private int port;
         private String containerId;
+        private String imageId;
     }
 
     @Getter

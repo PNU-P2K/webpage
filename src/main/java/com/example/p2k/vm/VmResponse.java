@@ -11,6 +11,7 @@ public class VmResponse {
     public static class createDTOfl {
         private int port;
         private String containerId;
+        private String imageId;
     }
 
     @Getter
@@ -25,6 +26,12 @@ public class VmResponse {
 
         private int port;
         private String containerId;
+    }
+
+    @Getter
+    public static class saveDTOfl {
+        private String containerId;
+        private String imageId;
     }
 
     @Getter
