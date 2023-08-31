@@ -22,6 +22,18 @@ public class VmRequest {
     }
 
     @Getter @Setter
+    public static class startDTOsb {
+        private int port;
+        private String containerId;
+    }
+
+    @Getter @Setter
+    public static class stopDTOsb {
+        private int port;
+        private String containerId;
+    }
+
+    @Getter @Setter
     public static class deleteDTOsb {
 
         private int port;

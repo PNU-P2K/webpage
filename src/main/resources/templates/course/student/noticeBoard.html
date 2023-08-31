@@ -4,7 +4,7 @@
 <!-- 공통 header -->
 <div th:replace="/fragments/header.html::fragment-header"></div>
 <style>
-    .container {
+    .container2 {
         max-width: 700px;
     }
     .table th {
@@ -15,13 +15,17 @@
     }
 </style>
 <body>
+
+<!-- 공통 navigation-->
+<div th:replace="/fragments/nav.html::fragment-nav"></div>
+</br>
+</br>
+
 <div class="d-flex" id="wrapper">
     <!-- 공통 sidebar-->
     <div th:replace="/fragments/course/innerStudent.html::fragment-sidebar(${courseDTO.id})"></div>
 
     <div id="page-content-wrapper">
-        <!-- 공통 navigation-->
-        <div th:replace="/fragments/nav.html::fragment-nav"></div>
 
         <!-- Page content-->
         <div class="container-fluid">
@@ -29,7 +33,7 @@
                 <h1 class="col mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
                 <h2 class="mt-4">공지사항</h2>
             </div>
-            <div class="row container mx-auto">
+            <div class="row container2 mx-auto">
                 <div class="col">
                     <table class="table">
                         <thead>

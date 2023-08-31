@@ -4,11 +4,17 @@
 <!-- 공통 header -->
 <div th:replace="/fragments/header.html::fragment-header"></div>
 <style>
-    .container {
+    .container2 {
         max-width: 700px;
     }
 </style>
 <body>
+
+<!-- 공통 navigation-->
+<div th:replace="/fragments/nav.html::fragment-nav"></div>
+</br>
+</br>
+
 <div class="d-flex" id="wrapper">
     <!-- 공통 sidebar-->
     <div th:replace="/fragments/course/innerInstructor.html::fragment-sidebar(${courseDTO.id})"></div>
@@ -23,7 +29,7 @@
                 <h1 class="mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
                 <h2 class="mt-4">공지사항 글 수정하기</h2>
             </div>
-            <div class="container mx-auto">
+            <div class="container2 mx-auto">
                 <form action="noticePost.html" th:action th:object="${postDTO}" method="post" class="g-3 needs-validation" novalidate>
                     <div class="row mb-3">
                         <label for="title"  class="col-sm-2 col-form-label">제목</label>

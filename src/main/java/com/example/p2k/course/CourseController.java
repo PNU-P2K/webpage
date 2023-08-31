@@ -67,10 +67,11 @@ public class CourseController {
     public String findMyVm(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
         List<CourseResponse.FindMyVmDTO> myVms = courseService.findMyVm(courseId);
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         model.addAttribute("myVms", myVms);
         model.addAttribute("courseDTO", courseDTO);
 
-        User user = userDetails.getUser();
         if(user.getRole() == Role.ROLE_STUDENT){
             return "course/student/myVm";
         }else{
@@ -80,9 +81,11 @@ public class CourseController {
 
     //교육자의 가상 환경 조회
     @GetMapping("/{courseId}/instructor-vm")
-    public String findInstructorVm(@PathVariable Long courseId, Model model){
+    public String findInstructorVm(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
         List<CourseResponse.FindInstructorVmDTO> instructorVms = courseService.findInstructorVm(courseId);
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         model.addAttribute("instructorVms", instructorVms);
         model.addAttribute("courseDTO", courseDTO);
         return "course/student/instructorVm";
@@ -90,7 +93,9 @@ public class CourseController {
 
     //강좌 취소
     @GetMapping("/{courseId}/cancel")
-    public String cancel(@PathVariable Long courseId, @AuthenticationPrincipal CustomUserDetails userDetails){
+    public String cancel(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         courseService.cancel(courseId, userDetails.getUser());
         return "redirect:/courses";
     }
@@ -104,16 +109,20 @@ public class CourseController {
 
     //강좌 생성 폼
     @GetMapping("/create")
-    public String createForm(Model model){
+    public String createForm(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+        User user = userDetails.getUser();
         model.addAttribute("saveDTO", new CourseRequest.SaveDTO());
+        model.addAttribute("user", user);
         return "course/instructor/create";
     }
 
     //수강생 관리 페이지
     @GetMapping("/{courseId}/students")
-    public String findStudents(@PathVariable Long courseId, Model model){
+    public String findStudents(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindStudentsDTO studentDTOs = courseService.findStudents(courseId);
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         model.addAttribute("studentDTOs", studentDTOs);
         model.addAttribute("courseDTO", courseDTO);
         return "course/instructor/students";
@@ -121,10 +130,12 @@ public class CourseController {
 
     //설정 및 관리 페이지
     @GetMapping("/{courseId}/setting")
-    public String setting(@PathVariable Long courseId, Model model){
+    public String setting(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         CourseResponse.FindStudentsDTO studentDTOs = courseService.findStudents(courseId);
         CourseResponse.FindUnacceptedUserDTO unacceptedUserDTOs = courseService.findApplications(courseId);
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("studentDTOs", studentDTOs);
         model.addAttribute("unacceptedUserDTOs", unacceptedUserDTOs);
