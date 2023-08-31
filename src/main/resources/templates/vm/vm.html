@@ -49,6 +49,9 @@
                                 <form class="form-inline my-2 my-lg-0" th:action="@{/vm/start/{id}(id=${v.id})}" method="post">
                                     <button class="btn btn-primary" type="submit">실행</button>
                                 </form>
+                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/save/{id}(id=${v.id})}" method="post">
+                                    <button class="btn btn-primary" type="submit">저장</button>
+                                </form>
                                 <form class="form-inline my-2 my-lg-0" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">
                                     <button class="btn btn-primary" type="submit">삭제</button>
                                 </form>
@@ -85,7 +88,7 @@
         }).then((result) => {
             if(result.isConfirmed) {
                 //location.href = "http://localhost:"+port; // 기존 창에서 이동
-                window.open("http://localhost:"+port, "_blank") // 새 창에서 켜짐
+                window.open("http://3.34.181.183:"+port, "_blank") // 새 창에서 켜짐
             }
         })
     }
