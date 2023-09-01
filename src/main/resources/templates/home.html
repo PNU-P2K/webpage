@@ -16,6 +16,12 @@
         <div class="col-xl-7 col-lg-9 text-center">
           <h1>P2K web page</h1>
           <h2><a th:text="${user.name}"></a>님 환영합니다.</h2>
+          <br>
+          <p>우리의 서비스는 <b style="color:#124265;">클라우드 기반 원격 데스크탑 서비스</b>를 제공합니다. <br>
+              언제 어디서든지 웹 페이지 접속을 통해 자신만의 가상환경에 접속할 수 있습니다. <br>
+              또한 교육자의 가상환경을 그대로 로드하여 자신만의 가상환경을 생성할 수 있습니다. <br>
+              아래 버튼으로 바로 가상환경을 생성해 보세요.
+          </p>
         </div>
       </div>
       <div class="text-center">
@@ -39,6 +45,7 @@
 
         <div class="row">
           <div class="col-lg-3 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="v : ${vm.getVms()}">
+
             <div class="box">
               <h3 th:text="${v.name}"></h3>
               <input hidden id="vmId" type="text" th:value="${v.id}"/>
@@ -47,12 +54,32 @@
               <p class="card-text text-center"><span th:if="!${v.scope}">비공개</span></p>
               <p class="card-text text-center"><span th:if="${v.control}">누구나 제어 가능</span></p>
               <p class="card-text text-center"><span th:if="!${v.control}">보기만 가능</span></p>
+              <p class="card-text text-center" th:if="${v.state == 'running'}">상태 : 실행 중</p>
+              <p class="card-text text-center" th:if="${v.state == 'stop'}">상태 : 중지</p>
               <div class="btn-wrap">
-                <button class="btn btn-primary" th:onclick="|javascript:alert('${v.port}')|">접속하기</button>
+
+                            <span th:if="${v.state == 'running'}">
+                                <button class="btn btn-primary" th:onclick="|javascript:alert('${v.port}')|">접속</button>
+                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/stop/{id}(id=${v.id})}" method="post">
+                                    <button class="btn btn-primary" type="submit">중지</button>
+                                </form>
+                            </span>
+                <span th:if="${v.state == 'stop'}">
+                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/start/{id}(id=${v.id})}" method="post">
+                                    <button class="btn btn-primary" type="submit">실행</button>
+                                </form>
+                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/save/{id}(id=${v.id})}" method="post">
+                                    <button class="btn btn-primary" type="submit">저장</button>
+                                </form>
+                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">
+                                    <button class="btn btn-primary" type="submit">삭제</button>
+                                </form>
+                            </span>
               </div>
             </div>
           </div>
         </div>
+
         </div>
     </section><!-- End Pricing Section -->
 
