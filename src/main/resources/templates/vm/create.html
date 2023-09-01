@@ -24,7 +24,7 @@
         </div>
 
         <div class="row icon-boxes d-flex justify-content-center">
-            <div class="col-md-7 aos-init aos-animate mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="200">
+            <div class="col-md-6 aos-init aos-animate mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="200">
                 <div class="icon-box">
                     <form th:action="@{/vm/create}" th:object="${vm}" method="post" style="text-align: center;" class="m-auto center-block" id="create">
 
@@ -43,18 +43,22 @@
                         </div>
 
                         <div class="m-4 row justify-content-center">
-                            <label class="col-sm-4 col-form-label" style="font-weight: bolder;">공개 범위</label>
+                            <label class="col-sm-4 col-form-label" style="font-weight: bolder;">공개 범위
+                                <img src="/assets/question-mark.png" style="width: 20px; height: 20px;" title="공개 범위는 다른 사용자들에게 가상환경을 공개하는 범위를 말합니다. 전체공개 시 모든 사용자가 접속을 할 수 있고, 비공개 시 생성자만 접속 가능합니다.">
+                            </label>
                             <div class="col-sm-5">
-                                <label>전체공개 <input type="radio" name="scope" th:field="*{scope}" th:value="false"></label>&nbsp;
-                                <label>비공개 <input type="radio" name="scope" checked th:field="*{scope}" th:value="true"></label>
+                                전체공개 <input type="radio" class="radio-scope" name="scope" th:field="*{scope}" th:value="true">
+                                비공개 <input type="radio" class="radio-scope" name="scope" checked th:field="*{scope}" th:value="false">
                             </div>
                         </div>
 
                         <div class="m-4 row justify-content-center">
-                            <label class="col-sm-4 col-form-label" style="font-weight: bolder;">접속자 권한 범위</label>
+                            <label class="col-sm-4 col-form-label" style="font-weight: bolder;">접속자 권한 범위
+                                <img src="/assets/question-mark.png" style="width: 20px; height: 20px;" title="접속자 권한 범위는 전체 공개로 설정했을 시에 접속자의 제어 여부를 나타냅니다. 제어 가능은 접속자도 가상환경을 제어할 수 있고, 보기만 가능은 접속자는 가상환경을 제어하지 못하고 관전만 가능합니다.">
+                            </label>
                             <div class="col-sm-5">
-                                <label>제어 가능 <input type="radio" name="control" th:field="*{control}" th:value="false"></label>&nbsp;
-                                <label>보기만 가능 <input type="radio" name="control" checked th:field="*{control}" th:value="true"></label>&nbsp;
+                                <label>제어 가능 <input type="radio" class="radio-control" name="control" th:field="*{control}" th:value="false"></label>&nbsp;
+                                <label>보기만 가능 <input type="radio" class="radio-control" name="control" checked th:field="*{control}" th:value="true"></label>&nbsp;
                             </div>
                         </div>
 
@@ -112,31 +116,43 @@
 
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
-<script>
-    $(window).load(function() {
-        // 로딩되기 시작할때
-        $('.loading').css("display", "none");
+<script th:inline="javascript">
+
+    // $(window).load(function() {
+    //     // 로딩되기 시작할때
+    //     $('.loading').css("display", "none");
+    // });
+
+    // $(document).ready(function() {
+    //     $('.loading').css("display", "none");
+    //     $('#create').submit(function(){
+    //         $('#loading').css("display", "");
+    //         return true;
+    //     });
+    // });
+
+    // $(function() {
+    //     // 로딩될때
+    // });
+
+    $('.radio-scope').click(function() {
+        var val = $('.radio-scope:checked').val(); // 체크된 Radio 버튼의 값을 가져옵니다.
+
+        if ( val == 'false' ) {
+            $('.radio-control').attr('disabled', true);
+        } else {
+            $('.radio-control').attr('disabled', false);
+        }
     });
 
-    $(document).ready(function() {
-        $('.loading').css("display", "none");
-        $('#create').submit(function(){
-            $('#loading').css("display", "");
-            return true;
-        });
-    });
-
-    $(function() {
-        // 로딩될때
-    });
     function alert(port) {
 
         Swal.fire({
-            title : "접속하시겠습니까?",
+            title : "생성하시겠습니까?",
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: '접속',
+            confirmButtonText: '생성',
             cancelButtonText: '취소'
         }).then((result) => {
             if(result.isConfirmed) {

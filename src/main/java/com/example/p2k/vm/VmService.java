@@ -81,6 +81,11 @@ public class VmService {
         System.out.println("res = " + res.getContainerId());
         System.out.println("res.getImageId() = " + res.getImageId());
 
+        // 임시로 제어권은 true로 설정
+        if (requestDTO.getControl()==null) {
+            requestDTO.setControl(true);
+        }
+
         // flask에서 받은 응답으로 가상환경 생성하고 저장
         Vm vm = Vm.builder()
                 .vmname(requestDTO.getVmname())

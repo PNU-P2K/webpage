@@ -39,9 +39,9 @@
                         <div class="btn-wrap">
 
                             <div class="row d-flex justify-content-center" th:if="${v.state == 'running'}">
-                                <form class="form-inline m-0 p-0 col-4">
+                                <div class="form-inline m-0 p-0 col-4">
                                     <button class="btn-main btn" th:onclick="|javascript:alert('${v.port}')|">접속</button>
-                                </form>
+                                </div>
                                 <form class="form-inline m-0 p-0 col-4" th:action="@{/vm/stop/{id}(id=${v.id})}" method="post">
                                     <button class="btn-main btn" type="submit">중지</button>
                                 </form>
