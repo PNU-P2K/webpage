@@ -19,10 +19,14 @@
             <h2>가상환경 생성하기</h2>
         </div>
 
+        <div id="loading" class="loading" style="display: none;">
+            <img src="/assets/p2k_logo_b.png" alt="loading">
+        </div>
+
         <div class="row icon-boxes d-flex justify-content-center">
             <div class="col-md-7 aos-init aos-animate mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="200">
                 <div class="icon-box">
-                    <form th:action="@{/vm/create}" th:object="${vm}" method="post" style="text-align: center;" class="m-auto center-block">
+                    <form th:action="@{/vm/create}" th:object="${vm}" method="post" style="text-align: center;" class="m-auto center-block" id="create">
 
                         <div class="mb-4 row justify-content-center">
                             <label for="name" class="col-sm-4 col-form-label" style="font-weight: bolder;">이름</label>
@@ -109,6 +113,22 @@
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
 <script>
+    $(window).load(function() {
+        // 로딩되기 시작할때
+        $('.loading').css("display", "none");
+    });
+
+    $(document).ready(function() {
+        $('.loading').css("display", "none");
+        $('#create').submit(function(){
+            $('#loading').css("display", "");
+            return true;
+        });
+    });
+
+    $(function() {
+        // 로딩될때
+    });
     function alert(port) {
 
         Swal.fire({
