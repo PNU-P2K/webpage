@@ -25,25 +25,47 @@
             </br>
 
             <div class="row">
-                <div class="col-lg-3 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="vm : ${vm.getVms()}">
+                <div class="col-lg-3 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="v : ${vm.getVms()}">
+
                     <div class="box">
-                        <h3 th:text="${vm.name}"></h3>
-                        <input hidden id="vmId" type="text" th:value="${vm.id}"/>
-                        <input hidden id="vmPort" type="text" th:value="${vm.port}"/>
-                        <p class="card-text text-center"><span th:if="${vm.scope}">전체공개</span></p>
-                        <p class="card-text text-center"><span th:if="!${vm.scope}">비공개</span></p>
-                        <p class="card-text text-center"><span th:if="${vm.control}">누구나 제어 가능</span></p>
-                        <p class="card-text text-center"><span th:if="!${vm.control}">보기만 가능</span></p>
+                        <h3 th:text="${v.name}"></h3>
+                        <input hidden id="vmId" type="text" th:value="${v.id}"/>
+                        <input hidden id="vmPort" type="text" th:value="${v.port}"/>
+                        <p class="card-text text-center"><span th:if="${v.scope}">전체공개</span></p>
+                        <p class="card-text text-center"><span th:if="!${v.scope}">비공개</span></p>
+                        <p class="card-text text-center"><span th:if="${v.control}">누구나 제어 가능</span></p>
+                        <p class="card-text text-center"><span th:if="!${v.control}">보기만 가능</span></p>
+                        <p class="card-text text-center" th:if="${v.state == 'running'}">상태 : 실행 중</p>
+                        <p class="card-text text-center" th:if="${v.state == 'stop'}">상태 : 중지</p>
                         <div class="btn-wrap">
-<!--                            <a href="#" class="btn-buy">접속하기</a>-->
-                            <button class="btn btn-primary" th:onclick="|javascript:alert(${vm.id}, ${vm.port})|">접속</button>
-                            <button class="btn btn-danger" th:onclick="|javascript:save(${vm.id})|">접속 종료</button>
-                        </div>
+
+                            <span th:if="${v.state == 'running'}">
+                                <button class="btn btn-primary" th:onclick="|javascript:alert('${v.port}')|">접속</button>
+                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/stop/{id}(id=${v.id})}" method="post">
+                                    <button class="btn btn-primary" type="submit">중지</button>
+                                </form>
+                            </span>
+                            <span th:if="${v.state == 'stop'}">
+                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/start/{id}(id=${v.id})}" method="post">
+                                    <button class="btn btn-primary" type="submit">실행</button>
+                                </form>
+                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/save/{id}(id=${v.id})}" method="post">
+                                    <button class="btn btn-primary" type="submit">저장</button>
+                                </form>
+                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">
+                                    <button class="btn btn-primary" type="submit">삭제</button>
+                                </form>
+                            </span>
+
+<!--                        <button class="btn btn-primary" th:onclick="|javascript:alert2('${v.port}')|">종료</button>-->
+<!--                        <button class="btn btn-primary" th:onclick="|javascript:alert(${vm.id}, ${vm.port})|">접속</button>-->
+<!--                        <button class="btn btn-danger" th:onclick="|javascript:save(${vm.id})|">접속 종료</button>-->
                     </div>
                 </div>
 
             </div>
 
+        </div>
         </div>
     </section><!-- End Pricing Section -->
 
@@ -55,17 +77,35 @@
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
 <script>
-    function alert(id, port) {
+    function alert(port) {
         Swal.fire({
             title : "접속하시겠습니까?",
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: '#2a64a1',
+            cancelButtonColor: '#fa5f5f',
             confirmButtonText: '접속',
             cancelButtonText: '취소'
         }).then((result) => {
             if(result.isConfirmed) {
-                access(id, port)
+                //location.href = "http://localhost:"+port; // 기존 창에서 이동
+                window.open("http://3.34.181.183:"+port, "_blank") // 새 창에서 켜짐
+            }
+        })
+    }
+
+    function alert2(port) {
+
+        Swal.fire({
+            title : "가상환경을 종료하겠습니까?",
+            showCancelButton: true,
+            confirmButtonColor: '#2a64a1',
+            cancelButtonColor: '#fa5f5f',
+            confirmButtonText: '종료',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if(result.isConfirmed) {
+                // location.href = "http://localhost:"+port; // 기존 창에서 이동
+                //access(id, port)
             }
         })
     }

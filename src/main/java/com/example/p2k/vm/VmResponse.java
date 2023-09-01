@@ -11,6 +11,27 @@ public class VmResponse {
     public static class createDTOfl {
         private int port;
         private String containerId;
+        private String imageId;
+    }
+
+    @Getter
+    public static class startDTOfl {
+
+        private int port;
+        private String containerId;
+    }
+
+    @Getter
+    public static class stopDTOfl {
+
+        private int port;
+        private String containerId;
+    }
+
+    @Getter
+    public static class saveDTOfl {
+        private String containerId;
+        private String imageId;
     }
 
     @Getter
@@ -34,6 +55,7 @@ public class VmResponse {
             private final Long id;
             private final String name;
             private final int port;
+            private final String state;
             private final Boolean scope;
             private final Boolean control;
             private final String key;
@@ -42,6 +64,7 @@ public class VmResponse {
                 this.id = vm.getId();
                 this.name = vm.getVmname();
                 this.port = vm.getPort();
+                this.state = vm.getState();
                 this.scope = vm.getScope();
                 this.control = vm.getControl();
                 this.key = vm.getVmKey();

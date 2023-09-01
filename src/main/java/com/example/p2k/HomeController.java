@@ -1,6 +1,10 @@
 package com.example.p2k;
 
 import com.example.p2k._core.security.CustomUserDetails;
+import com.example.p2k.course.Course;
+import com.example.p2k.course.CourseResponse;
+import com.example.p2k.course.CourseService;
+import com.example.p2k.courseuser.CourseUserRepository;
 import com.example.p2k.user.UserResponse;
 import com.example.p2k.user.UserService;
 import com.example.p2k.vm.Vm;
@@ -21,6 +25,7 @@ public class HomeController {
 
     private final VmService vmService;
     private final UserService userService;
+    private final CourseService courseService;
 
     @GetMapping
     public String index(){
@@ -30,9 +35,12 @@ public class HomeController {
     @GetMapping("/home")
     public String home(@AuthenticationPrincipal CustomUserDetails userDetails, Model model){
         UserResponse.FindByIdDTO user = userService.findById(userDetails.getUser().getId());
-        VmResponse.FindAllDTO vmList = vmService.findAllByUserId(userDetails.getUser().getId());
+        VmResponse.FindAllDTO vms = vmService.findAllByUserId(userDetails.getUser().getId());
+        CourseResponse.FindCoursesDTO courses = courseService.findCourses(userDetails.getUser().getId());
+
         model.addAttribute("user", user);
-        model.addAttribute("vm", vmList);
+        model.addAttribute("vm", vms);
+        model.addAttribute("courses", courses);
 
         return "home";
     }
