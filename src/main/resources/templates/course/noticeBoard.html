@@ -24,7 +24,7 @@
 
 <div class="d-flex" id="wrapper">
     <!-- 공통 sidebar-->
-    <div th:replace="/fragments/course/innerStudent.html::fragment-sidebar(${courseDTO.id})"></div>
+    <div th:replace="/course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
 
     <div id="page-content-wrapper">
 
@@ -36,6 +36,9 @@
             </div>
             <div class="row container2 mx-auto">
                 <div class="col">
+                    <button th:if="${user.role.name() == 'ROLE_INSTRUCTOR'}"
+                            type="button" class="btn btn-outline-primary float-end"
+                            th:onclick="'javascript:createPost('+${courseDTO.id}+')'">글쓰기</button>
                     <table class="table">
                         <thead>
                         <tr>
@@ -61,4 +64,13 @@
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
 </body>
+<script>
+    function createPost(courseId) {
+        const form = document.createElement("form");
+        form.setAttribute("method", "get");
+        form.setAttribute("action", "/courses/" + courseId + "/notice-board/save");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
 </html>

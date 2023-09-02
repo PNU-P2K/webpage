@@ -25,7 +25,7 @@
 
 <div class="d-flex" id="wrapper">
     <!-- 공통 sidebar-->
-    <div th:replace="/fragments/course/innerStudent.html::fragment-sidebar(${courseDTO.id})"></div>
+    <div th:replace="/course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
 
     <div id="page-content-wrapper">
 
@@ -34,33 +34,44 @@
             <div class="container2 mx-auto">
                 <div class="py-5 text-center">
                     <h1 class="mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
-                    <h2 class="mt-4">자유 게시판</h2>
+                    <h2 class="mt-4">공지사항</h2>
+                </div>
+                <div th:if="${postDTO.userId == user.id}" class="row">
+                    <div class="col">
+                        <button class="btn btn-outline-danger float-end m-1"
+                                th:onclick="|location.href='@{/courses/{courseId}/notice-board/{postId}/delete(courseId=${courseDTO.id}, postId=${postDTO.id})}'|"
+                                type="button">삭제</button>
+                        <button class="btn btn-outline-primary float-end m-1"
+                                th:onclick="|location.href='@{/courses/{courseId}/notice-board/{postId}/update(courseId=${courseDTO.id}, postId=${postDTO.id})}'|"
+                                type="button">수정</button>
+                    </div>
                 </div>
                 <div class="row light-gray-bg p-3 d-flex align-items-center">
                     <div class="col-md-6">
-                        <p class="m-0" th:text="|제목: ${postDTO.title}|">자유 글 제목</p>
+                        <p class="m-0" th:text="|제목: ${postDTO.title}|">공지사항 글 제목</p>
                     </div>
                     <div class="col-md-3">
-                        <p class="m-0" th:text="|작성자: ${postDTO.author}|">자유 글 작성자</p>
+                        <p class="m-0" th:text="|작성자: ${postDTO.author}|">공지사항 글 작성자</p>
                     </div>
                     <div class="col-md-3">
-                        <p class="m-0" th:text="|작성일: ${postDTO.createdDate}|">자유 글 작성일</p>
+                        <p class="m-0" th:text="|작성일: ${postDTO.createdDate}|">공지사항 글 작성일</p>
                     </div>
                 </div>
                 <div class="row lighter-gray-bg  p-3">
                     <div class="col-md-12">
-                        <p th:text="${postDTO.content}">자유 글 내용</p>
+                        <p th:text="${postDTO.content}">공지사항 글 내용</p>
                     </div>
                 </div>
-                <div th:insert="/fragments/course/reply.html::fragment-reply(${repliesDTO.getReplies()}, ${postDTO.id}, ${userId})"></div>
+                <div th:insert="/course/reply.html::fragment-reply(${repliesDTO.getReplies()}, ${postDTO.id}, ${user.id})"></div>
                 <div class="row mt-4 justify-content-center">
                     <div class="col-md-12 text-center">
                         <button class="btn btn-outline-primary"
-                                th:onclick="|location.href='@{/courses/{courseId}/free-board(courseId=${courseDTO.id})}'|"
+                                th:onclick="|location.href='@{/courses/{courseId}/notice-board(courseId=${courseDTO.id})}'|"
                                 type="button">목록</button>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

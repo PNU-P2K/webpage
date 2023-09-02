@@ -1,5 +1,6 @@
 package com.example.p2k.vm;
 
+import com.example.p2k.course.Course;
 import com.example.p2k.user.BaseTimeEntity;
 import com.example.p2k.user.User;
 import jakarta.persistence.*;
@@ -26,7 +27,9 @@ public class Vm extends BaseTimeEntity {
 
     private String password;
 
-    private int cousrdid;
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 
     private int port;
 
@@ -47,11 +50,11 @@ public class Vm extends BaseTimeEntity {
     private String containerKey;
 
     @Builder
-    public Vm(String vmname, User user, String password, int courseId, int port, String containerId, String imageId, String state, Boolean scope, Boolean control, String vmKey, String containerKey) {
+    public Vm(String vmname, User user, String password, Course course, int port, String containerId, String imageId, String state, Boolean scope, Boolean control, String vmKey, String containerKey) {
         this.vmname = vmname;
         this.user = user;
         this.password = password;
-        this.cousrdid = courseId;
+        this.course = course;
         this.port = port;
         this.containerId = containerId;
         this.imageId = imageId;

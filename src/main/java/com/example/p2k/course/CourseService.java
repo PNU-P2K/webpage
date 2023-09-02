@@ -5,6 +5,9 @@ import com.example.p2k.courseuser.CourseUser;
 import com.example.p2k.courseuser.CourseUserRepository;
 import com.example.p2k.post.PostRepository;
 import com.example.p2k.user.User;
+import com.example.p2k.vm.Vm;
+import com.example.p2k.vm.VmRepository;
+import com.example.p2k.vm.VmResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final CourseUserRepository courseUserRepository;
     private final PostRepository postRepository;
+    private final VmRepository vmRepository;
 
     //나의 강좌 조회
     public CourseResponse.FindCoursesDTO findCourses(Long userId){
@@ -57,19 +61,20 @@ public class CourseService {
 
     //강좌 검색
     public CourseResponse.FindCoursesDTO findBySearch(String keyword){
-
         List<Course> courses = courseRepository.findByNameContaining(keyword);
         return new CourseResponse.FindCoursesDTO(courses);
     }
 
     //나의 가상 환경 조회
-    public List<CourseResponse.FindMyVmDTO> findMyVm(Long id){
-        return new ArrayList<>();
+    public VmResponse.FindAllDTO findMyVm(User user, Long id){
+        List<Vm> vms = vmRepository.findUserIdAndCourseId(user.getId(), id);
+        return new VmResponse.FindAllDTO(vms);
     }
 
     //관리자의 가상 환경 조회
-    public List<CourseResponse.FindInstructorVmDTO> findInstructorVm(Long id){
-        return new ArrayList<>();
+    public VmResponse.FindAllDTO findInstructorVm(Long id){
+        List<Vm> vms = vmRepository.findAllByUserId(id);
+        return new VmResponse.FindAllDTO(vms);
     }
 
     //강좌 취소
