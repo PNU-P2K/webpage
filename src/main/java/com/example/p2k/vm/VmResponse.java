@@ -8,40 +8,6 @@ import java.util.stream.Collectors;
 public class VmResponse {
 
     @Getter
-    public static class createDTOfl {
-        private int port;
-        private String containerId;
-        private String imageId;
-    }
-
-    @Getter
-    public static class startDTOfl {
-
-        private int port;
-        private String containerId;
-    }
-
-    @Getter
-    public static class stopDTOfl {
-
-        private int port;
-        private String containerId;
-    }
-
-    @Getter
-    public static class saveDTOfl {
-        private String containerId;
-        private String imageId;
-    }
-
-    @Getter
-    public static class deleteDTOfl {
-
-        private int port;
-        private String containerId;
-    }
-
-    @Getter
     public static class FindAllDTO {
         private final List<VmDTO> vms;
 

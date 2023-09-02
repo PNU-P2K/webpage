@@ -45,6 +45,22 @@ public class VmController {
         return "redirect:/vm";
     }
 
+    // 가상환경 로드 페이지
+    @GetMapping("/load")
+    public String load(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        model.addAttribute("user", userDetails.getUser());
+        model.addAttribute("loadDTO", new VmRequest.LoadDTO());
+        return "/vm/load";
+    }
+
+    // 가상환경 로드하기
+    @PostMapping("/load")
+    public String load(@AuthenticationPrincipal CustomUserDetails userDetails, @ModelAttribute("loadDTO") VmRequest.LoadDTO requestDTO) throws Exception {
+        System.out.println("requestDTO = " + requestDTO);
+        vmService.load(userDetails.getUser(), requestDTO);
+        return "redirect:/vm";
+    }
+
     // 가상환경 실행하기
     @PostMapping("/start/{id}")
     public String start(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
@@ -52,13 +68,14 @@ public class VmController {
         return "redirect:/vm";
     }
 
-    // 가상환경 저장 후 종료
+    // 가상환경 중지하기
     @PostMapping("/stop/{id}")
     public String stop(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
         vmService.stop(id);
         return "redirect:/vm";
     }
 
+    // 가상환경 저장하기
     @PostMapping("/save/{id}")
     public String save(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
         vmService.save(userDetails.getUser(), id);
