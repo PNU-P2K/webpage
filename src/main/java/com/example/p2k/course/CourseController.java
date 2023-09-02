@@ -56,9 +56,13 @@ public class CourseController {
 
     //강좌 검색
     @PostMapping("/apply/search")
-    public String search(@RequestParam String keyword, Model model){
+    public String search(@RequestParam String keyword, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindCoursesDTO courseDTOs = courseService.findBySearch(keyword);
+        User user = userDetails.getUser();
+
         model.addAttribute("courseDTOs", courseDTOs);
+        model.addAttribute("user", user);
+
         return "course/student/apply";
     }
 

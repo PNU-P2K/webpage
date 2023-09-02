@@ -9,13 +9,18 @@
     }
 </style>
 <body>
+
+<!-- 공통 navigation-->
+<div th:replace="/fragments/nav.html::fragment-nav(${user})"></div>
+</br>
+</br>
+</br>
+
 <div class="d-flex" id="wrapper">
     <!-- 공통 sidebar-->
     <div th:replace="/fragments/course/innerStudent.html::fragment-sidebar(${courseDTO.id})"></div>
 
     <div id="page-content-wrapper">
-        <!-- 공통 navigation-->
-        <div th:replace="/fragments/nav.html::fragment-nav"></div>
 
         <!-- Page content-->
         <div class="container-fluid">
