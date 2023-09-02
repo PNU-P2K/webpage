@@ -38,7 +38,7 @@ public class Vm extends BaseTimeEntity {
     @Column(nullable = false)
     private Boolean scope;
 
-    @Column(nullable = false)
+    @Column
     private Boolean control;
 
     private String vmKey;
