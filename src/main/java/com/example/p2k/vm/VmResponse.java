@@ -24,6 +24,7 @@ public class VmResponse {
             private final String state;
             private final Boolean scope;
             private final Boolean control;
+            private final String imageId;
             private final String key;
 
             public VmDTO(Vm vm) {
@@ -33,6 +34,7 @@ public class VmResponse {
                 this.state = vm.getState();
                 this.scope = vm.getScope();
                 this.control = vm.getControl();
+                this.imageId = vm.getImageId();
                 this.key = vm.getVmKey();
             }
         }

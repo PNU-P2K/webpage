@@ -97,7 +97,6 @@ public class VmService {
                 .containerId(res.getContainerId())
                 .imageId(res.getImageId())
                 .state("stop")
-                .vmKey(key)
                 .build();
 
         vmRepository.save(vm);

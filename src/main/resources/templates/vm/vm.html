@@ -30,6 +30,7 @@
                         <h3 th:text="${v.name}"></h3>
                         <input hidden id="vmId" type="text" th:value="${v.id}"/>
                         <input hidden id="vmPort" type="text" th:value="${v.port}"/>
+                        <input hidden id="vmImageId" type="text" th:value="${v.imageId}"/>
                         <p class="card-text text-center"><span th:if="${v.scope}">전체공개</span></p>
                         <p class="card-text text-center"><span th:if="!${v.scope}">비공개</span></p>
                         <p class="card-text text-center"><span th:if="${v.control}">누구나 제어 가능</span></p>
@@ -48,16 +49,24 @@
                             </div>
 
                             <div class="row d-flex justify-content-center" th:if="${v.state == 'stop'}">
+                                <div class="row d-flex justify-content-center" >
                                 <form class="form-inline m-1 p-0 col-3" th:action="@{/vm/start/{id}(id=${v.id})}" method="post">
                                     <button class="btn-main btn" type="submit">실행</button>
                                 </form>
                                 <form class="form-inline m-1 p-0 col-3" th:action="@{/vm/save/{id}(id=${v.id})}" method="post">
                                     <button class="btn-main btn" type="submit">저장</button>
                                 </form>
+                                </div>
+                                <div class="row d-flex justify-content-center">
                                 <form class="form-inline m-1 p-0 col-3" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">
                                     <button class="btn-main btn" type="submit">삭제</button>
                                 </form>
+                                <div class="form-inline m-1 p-0 col-6">
+                                    <button class="btn-main btn" th:onclick="exportImage([[${v.imageId}]])">내보내기</button>
+                                </div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -72,12 +81,13 @@
 
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
-<script>
+<script th:inline="javascript">
+
     function alert(port) {
         Swal.fire({
             title : "접속하시겠습니까?",
             showCancelButton: true,
-            confirmButtonColor: '#2a64a1',
+            confirmButtonColor: '#2487ce',
             cancelButtonColor: '#fa5f5f',
             confirmButtonText: '접속',
             cancelButtonText: '취소'
@@ -89,33 +99,14 @@
         })
     }
 
-    // function access(id, port) {
-    //     const form = document.createElement("form");
-    //     form.setAttribute("method", "post");
-    //     form.setAttribute("action", "/vm/" + id + "/access");
-    //     document.body.appendChild(form);
-    //     form.submit();
-    //
-    //     const newWindow = window.open("", "_blank");
-    //     newWindow.location.href = "http://13.125.207.170:" + port;
-    // }
-    // function save(id) {
-    //     const form = document.createElement("form");
-    //     form.setAttribute("method", "post");
-    //     form.setAttribute("action", "/vm/" + id + "/save");
-    //     document.body.appendChild(form);
-    //     form.submit();
-    // }
-    // function exportKey(key) {
-    //     Swal.fire({
-    //         title : "가상 환경을 내보냈습니다. key: " + key,
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: '접속',
-    //         cancelButtonText: '취소'
-    //     })
-    // }
+    function exportImage(imageId) {
+        Swal.fire({
+            title: '아래의 키를 복사해서 사용하세요',
+            text: imageId,
+            confirmButtonColor: '#2487ce',
+            confirmButtonText: '확인'
+        });
+    }
 </script>
 </body>
 
