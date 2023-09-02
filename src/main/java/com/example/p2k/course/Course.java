@@ -1,6 +1,7 @@
 package com.example.p2k.course;
 
 import com.example.p2k.user.BaseTimeEntity;
+import com.example.p2k.user.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,10 +23,15 @@ public class Course extends BaseTimeEntity {
     @Column(length = 256, nullable = false)
     private String description;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User instructor;
+
     @Builder
-    public Course(Long id, String name, String description) {
+    public Course(Long id, String name, String description, User instructor) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.instructor = instructor;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.p2k.course;
 
+import com.example.p2k._core.exception.Exception400;
 import com.example.p2k._core.exception.Exception404;
 import com.example.p2k.courseuser.CourseUser;
 import com.example.p2k.courseuser.CourseUserRepository;
@@ -71,9 +72,16 @@ public class CourseService {
         return new VmResponse.FindAllDTO(vms);
     }
 
-    //관리자의 가상 환경 조회
+    //교육자의 가상 환경 조회
     public VmResponse.FindAllDTO findInstructorVm(Long id){
-        List<Vm> vms = vmRepository.findAllByUserId(id);
+        Course course = courseRepository.findById(id).orElseThrow(
+                () -> new Exception404("해당 강좌를 찾을 수 없습니다.")
+        );
+
+        if(course.getInstructor() == null){
+            throw new Exception400("해당 강좌의 교육자가 존재하지 않습니다.");
+        }
+        List<Vm> vms = vmRepository.findUserIdAndCourseIdOpen(course.getInstructor().getId(), id);
         return new VmResponse.FindAllDTO(vms);
     }
 

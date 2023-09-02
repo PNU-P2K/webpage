@@ -20,17 +20,45 @@
     <div th:replace="/course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
 
     <div id="page-content-wrapper">
-
         <!-- Page content-->
         <div class="container-fluid">
             <div class="py-5 text-center">
                 <h1 class="col mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
                 <h2 class="mt-4">나의 가상 환경</h2>
             </div>
-            <div class="row container2 mx-auto">
-                <div th:each="vm : ${myVms}">
-                    <p th:text="${vm}">강좌</p>
-                    <button>접속</button>
+            <div class="row">
+                <div class="col-lg-3 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="vm : ${myVms.getVms()}">
+                    <div class="box">
+                        <h3 th:text="${vm.name}"></h3>
+                        <input hidden id="vmId" type="text" th:value="${vm.id}"/>
+                        <input hidden id="vmPort" type="text" th:value="${vm.port}"/>
+                        <p class="card-text text-center"><span th:if="${vm.scope}">전체공개</span></p>
+                        <p class="card-text text-center"><span th:if="!${vm.scope}">비공개</span></p>
+                        <p class="card-text text-center"><span th:if="${vm.control}">누구나 제어 가능</span></p>
+                        <p class="card-text text-center"><span th:if="!${vm.control}">보기만 가능</span></p>
+                        <p class="card-text text-center" th:if="${vm.state == 'running'}">상태 : 실행 중</p>
+                        <p class="card-text text-center" th:if="${vm.state == 'stop'}">상태 : 중지</p>
+                        <div class="btn-wrap">
+
+                            <span th:if="${vm.state == 'running'}">
+                                <button class="btn btn-primary" th:onclick="|javascript:alert('${v.port}')|">접속</button>
+                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/stop/{id}(id=${vm.id})}" method="post">
+                                    <button class="btn btn-primary" type="submit">중지</button>
+                                </form>
+                            </span>
+                            <span th:if="${vm.state == 'stop'}">
+                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/start/{id}(id=${vm.id})}" method="post">
+                                    <button class="btn btn-primary" type="submit">실행</button>
+                                </form>
+                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/save/{id}(id=${vm.id})}" method="post">
+                                    <button class="btn btn-primary" type="submit">저장</button>
+                                </form>
+                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/delete/{id}(id=${vm.id})}" method="post">
+                                    <button class="btn btn-primary" type="submit">삭제</button>
+                                </form>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -40,5 +68,37 @@
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
 </body>
+<script>
+    function alert(port) {
+        Swal.fire({
+            title : "접속하시겠습니까?",
+            showCancelButton: true,
+            confirmButtonColor: '#2a64a1',
+            cancelButtonColor: '#fa5f5f',
+            confirmButtonText: '접속',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if(result.isConfirmed) {
+                window.open("http://3.34.181.183:"+port, "_blank") // 새 창에서 켜짐
+            }
+        })
+    }
+    function access(id, port) {
+        const form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/vm/" + id + "/access");
+        document.body.appendChild(form);
+        form.submit();
 
+        const newWindow = window.open("", "_blank");
+        newWindow.location.href = "http://3.34.181.183:" + port;
+    }
+    function save(id) {
+        const form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/vm/" + id + "/save");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
 </html>

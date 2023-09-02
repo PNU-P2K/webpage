@@ -8,15 +8,15 @@ insert into vm_tb(user_id, vmname, course_id, port, scope, control, state) value
 insert into vm_tb(user_id, vmname, course_id, port, scope, control, state) values(3, '알고리즘', 1, 6087, 1, 1, 'stop');
 insert into vm_tb(user_id, vmname, course_id, port, scope, control, state) values(3, '자료구조', 1, 6088, 0, 1, 'stop');
 
-insert into course_tb(name, description) values('자료구조 059', '2-2');
-insert into course_tb(name, description) values('자료구조 060', '2-2');
-insert into course_tb(name, description) values('C언어', '1-2');
-insert into course_tb(name, description) values('C++', '2-1');
-insert into course_tb(name, description) values('파이썬', '1-1');
-insert into course_tb(name, description) values('자바', '2-2');
-insert into course_tb(name, description) values('알고리즘', '3-1');
-insert into course_tb(name, description) values('DB', '3-2');
-insert into course_tb(name, description) values('사물인터넷', '4-2');
+insert into course_tb(name, description, user_id) values('자료구조 059', '2-2', 4);
+insert into course_tb(name, description, user_id) values('자료구조 060', '2-2', 4);
+insert into course_tb(name, description, user_id) values('C언어', '1-2', 4);
+insert into course_tb(name, description, user_id) values('C++', '2-1', 4);
+insert into course_tb(name, description, user_id) values('파이썬', '1-1', 4);
+insert into course_tb(name, description, user_id) values('자바', '2-2', 4);
+insert into course_tb(name, description, user_id) values('알고리즘', '3-1', 4);
+insert into course_tb(name, description, user_id) values('DB', '3-2', 4);
+insert into course_tb(name, description, user_id) values('사물인터넷', '4-2', 4);
 
 insert into course_user_tb(user_id, course_id, accept) values(1, 1, true);
 insert into course_user_tb(user_id, course_id, accept) values(2, 1, true);
