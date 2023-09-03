@@ -20,7 +20,7 @@
         <div class="card-body" th:if="${userId ne reply.userId}">
             <div class="card-text" style="display: flex; flex-direction: column;">
                 <span>
-                    <p th:text="${reply.userName}" style="display: inline; margin-right: 10px;">댓글 작성자</p>
+                    <p th:text="${reply.author}" style="display: inline; margin-right: 10px;">댓글 작성자</p>
                     <p th:text="${reply.createdDate}" style="display: inline;">댓글 작성일</p>
                 </span>
                 <p th:text="${reply.content}">댓글 내용</p>
@@ -34,7 +34,7 @@
         <div class="card-body" th:if="${userId eq reply.userId}">
             <div class="card-text" style="display: flex; flex-direction: column;">
                 <span>
-                    <p th:text="${reply.userName}" style="display: inline; margin-right: 10px;">댓글 작성자</p>
+                    <p th:text="${reply.author}" style="display: inline; margin-right: 10px;">댓글 작성자</p>
                     <p th:text="${reply.createdDate}" style="display: inline;">댓글 작성일</p>
                 </span>
                 <p th:text="${reply.content}">댓글 내용</p>

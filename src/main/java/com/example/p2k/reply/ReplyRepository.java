@@ -15,9 +15,6 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
     @Query("select max(r.ref) from Reply r where r.post.id = :postId")
     Long findMaxRef(@Param("postId") Long postId);
 
-    @Query("select max(r.step) from Reply r where r.id = :replyId and r.ref = :ref")
-    Long findMaxStep(@Param("replyId") Long replyId, @Param("ref") Long ref);
-
     @Query("select min(r.refOrder) from Reply r where r.ref = :ref and r.step <= :step and r.refOrder > :refOrder")
     Long findRefOrder(@Param("ref") Long ref, @Param("step") Long step, @Param("refOrder") Long refOrder);
 
@@ -35,4 +32,8 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
     @Modifying
     @Query("update Reply r SET r.answerNum = r.answerNum + 1 where r.id = :id")
     void updateAnswerNum(@Param("id") Long id);
+
+    @Modifying
+    @Query("update Reply r SET r.content = '삭제된 댓글입니다.', r.author = '비밀^8^' where r.id = :id")
+    void updateDeletedReply(@Param("id") Long id);
 }

@@ -35,9 +35,16 @@ public class ReplyService {
         );
 
         Long maxRef = replyRepository.findMaxRef(postId);
+        if(maxRef == null){
+            maxRef = 0L;
+        }else{
+            maxRef += 1L;
+        }
+
         Reply reply = Reply.builder()
                 .content(requestDTO.getContent())
-                .ref(maxRef + 1L)
+                .author(user.getName())
+                .ref(maxRef)
                 .refOrder(0L)
                 .step(0L)
                 .parentNum(0L)
@@ -62,6 +69,7 @@ public class ReplyService {
         Long refOrder = getRefOrder(parentReply);
         Reply reply = Reply.builder()
                 .content(requestDTO.getContent())
+                .author(user.getName())
                 .ref(parentReply.getRef())
                 .refOrder(refOrder)
                 .step(parentReply.getStep() + 1L)
@@ -90,15 +98,9 @@ public class ReplyService {
         }
     }
 
-    //댓글 수정
-    @Transactional
-    public void update(ReplyRequest.UpdateDTO requestDTO, Long commentId){
-        replyRepository.update(requestDTO.getContent(), commentId);
-    }
-
     //댓글 삭제
     @Transactional
-    public void delete(Long commentId){
-        replyRepository.deleteById(commentId);
+    public void delete(Long replyId){
+        replyRepository.updateDeletedReply(replyId);
     }
 }

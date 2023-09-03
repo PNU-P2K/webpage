@@ -21,6 +21,9 @@ public class Reply extends BaseTimeEntity {
     @Column(length = 256, nullable = false)
     private String content;
 
+    @Column(length = 256, nullable = false)
+    private String author;
+
     private Long ref; //댓글 그룹 번호
     private Long refOrder; //그룹에서 순서
     private Long step; //댓글의 하위 레벨 정도
@@ -36,9 +39,10 @@ public class Reply extends BaseTimeEntity {
     private Post post;
 
     @Builder
-    public Reply(Long id, String content, Long ref, Long refOrder, Long step, Long parentNum, Long answerNum, User user, Post post) {
+    public Reply(Long id, String content, String author, Long ref, Long refOrder, Long step, Long parentNum, Long answerNum, User user, Post post) {
         this.id = id;
         this.content = content;
+        this.author = author;
         this.ref = ref;
         this.refOrder = refOrder;
         this.step = step;
