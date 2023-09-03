@@ -31,13 +31,12 @@ public class VmService {
 
     private final VmRepository vmRepository;
 
-    private final String host = "ec2-13-125-207-170.ap-northeast-2.compute.amazonaws.com";
-    private final String privateKey = "C:\\Users\\kihae\\.ssh\\p2k";
-
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RestTemplate restTemplate;
     private final ObjectMapper ob = new ObjectMapper();
     private int portnum = 6080;
+
+    private final String baseURL = "http://3.34.181.183:5000";
 
     @Transactional
     public VmResponse.FindAllDTO findAllByUserId(Long id) {
@@ -54,7 +53,7 @@ public class VmService {
     public void create(User user, VmRequest.CreateDTO requestDTO) throws Exception {
 
         // 요청을 보낼 flask url
-        String baseUrl = "http://3.34.181.183:5000/create";
+        String url = baseURL+"/create";
 
         // 암호화한 key
         String key = bCryptPasswordEncoder.encode(user.getPassword());
@@ -64,26 +63,85 @@ public class VmService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         // requestDTO body 만들기 - port, pwd
-        VmRequest.createDTOsb requestDTOsb = new VmRequest.createDTOsb();
-        requestDTOsb.setPort(portnum);
-        requestDTOsb.setPassword(requestDTO.getPassword());
+        VmRequestStF.createDTO requestDTOStF = new VmRequestStF.createDTO();
+        requestDTOStF.setId(user.getId());
+        requestDTOStF.setPort(portnum);
+        requestDTOStF.setPassword(requestDTO.getPassword());
 
         // json을 string으로
-        String jsonStr = ob.writeValueAsString(requestDTOsb);
+        String jsonStr = ob.writeValueAsString(requestDTOStF);
 
         // header, body로 requestDTO 만들기
         HttpEntity<String> entity = new HttpEntity<>(jsonStr, headers);
 
         // restTemplate 이용해 요청 보내고 응답 받아옴
-        ResponseEntity<?> response = restTemplate.postForEntity(baseUrl, entity, VmResponse.createDTOfl.class);
+        ResponseEntity<?> response = restTemplate.postForEntity(url, entity, VmResponseFtS.createDTO.class);
         String responseBody = ob.writeValueAsString(response.getBody());
-        VmResponse.createDTOfl res = ob.readValue(responseBody, VmResponse.createDTOfl.class);
+        VmResponseFtS.createDTO res = ob.readValue(responseBody, VmResponseFtS.createDTO.class);
         System.out.println("res = " + res.getContainerId());
         System.out.println("res.getImageId() = " + res.getImageId());
+
+        // 임시로 제어권은 true로 설정
+        if (requestDTO.getControl()==null) {
+            requestDTO.setControl(true);
+        }
 
         // flask에서 받은 응답으로 가상환경 생성하고 저장
         Vm vm = Vm.builder()
                 .vmname(requestDTO.getVmname())
+                .password(requestDTO.getPassword())
+                .scope(requestDTO.getScope().booleanValue())
+                .control(requestDTO.getControl().booleanValue())
+                .user(user)
+                .port(portnum)
+                .containerId(res.getContainerId())
+                .imageId(res.getImageId())
+                .state("stop")
+                .build();
+
+        vmRepository.save(vm);
+        portnum+=1;
+    }
+
+    @Transactional
+    public void load(User user, VmRequest.LoadDTO requestDTO) throws Exception {
+
+        // 요청을 보낼 flask url
+        String url = baseURL+"/load";
+
+        // 암호화한 key
+        String key = bCryptPasswordEncoder.encode(user.getPassword());
+
+        // requestDTO header 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // requestDTO body 만들기 - port, pwd
+        VmRequestStF.loadDTO requestDTOStF = new VmRequestStF.loadDTO();
+        requestDTOStF.setId(user.getId());
+        requestDTOStF.setPort(portnum);
+        requestDTOStF.setPassword(requestDTO.getPassword());
+        requestDTOStF.setKey(requestDTO.getKey()); // 로드할 이미지의 id (지금은 key라고함)
+        String jsonStr = ob.writeValueAsString(requestDTOStF);
+
+        // header, body로 requestDTO 만들기
+        HttpEntity<String> entity = new HttpEntity<>(jsonStr, headers);
+
+        // restTemplate 이용해 요청 보내고 응답 받아옴
+        ResponseEntity<?> response = restTemplate.postForEntity(url, entity, VmResponseFtS.loadDTO.class);
+        String responseBody = ob.writeValueAsString(response.getBody());
+        VmResponseFtS.loadDTO res = ob.readValue(responseBody, VmResponseFtS.loadDTO.class);
+        System.out.println("res = " + res.getContainerId());
+        System.out.println("res.getImageId() = " + res.getImageId());
+
+        // 임시로 제어권은 true로 설정
+        if (requestDTO.getControl()==null) {
+            requestDTO.setControl(true);
+        }
+
+        // flask에서 받은 응답으로 가상환경 생성하고 저장
+        Vm vm = Vm.builder()
+                .vmname(requestDTO.getName())
                 .password(requestDTO.getPassword())
                 .scope(requestDTO.getScope().booleanValue())
                 .control(requestDTO.getControl().booleanValue())
@@ -97,13 +155,14 @@ public class VmService {
 
         vmRepository.save(vm);
         portnum+=1;
+
     }
 
     @Transactional
     public void start(Long id) throws Exception {
 
         // 요청을 보낼 flask url
-        String baseUrl = "http://3.34.181.183:5000/start";
+        String url = baseURL+"/start";
 
         // 시작할 가상환경 찾기
         Vm vm = vmRepository.findById(id).orElse(null);
@@ -113,16 +172,16 @@ public class VmService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         // requestDTO body 만들기 - port, 컨테이너id
-        VmRequest.startDTOsb requestDTOsb = new VmRequest.startDTOsb();
-        requestDTOsb.setPort(vm.getPort());
-        requestDTOsb.setContainerId(vm.getContainerId());
-        String jsonStr = ob.writeValueAsString(requestDTOsb);
+        VmRequestStF.startDTO requestDTOStF = new VmRequestStF.startDTO();
+        requestDTOStF.setPort(vm.getPort());
+        requestDTOStF.setContainerId(vm.getContainerId());
+        String jsonStr = ob.writeValueAsString(requestDTOStF);
 
         // header, body로 requestDTO 만들기
         HttpEntity<String> entity = new HttpEntity<>(jsonStr ,headers);
 
         // flask로 요청보냄
-        restTemplate.postForEntity(baseUrl, entity, VmResponse.startDTOfl.class);
+        restTemplate.postForEntity(url, entity, VmResponseFtS.startDTO.class);
 
         vm.updateState("running");
     }
@@ -131,7 +190,7 @@ public class VmService {
     public void stop(Long id) throws Exception {
 
         // 요청을 보낼 flask url
-        String baseUrl = "http://3.34.181.183:5000/stop";
+        String url = baseURL+"/stop";
 
         // 중지할 가상환경 찾기
         Vm vm = vmRepository.findById(id).orElse(null);
@@ -141,16 +200,16 @@ public class VmService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         // requestDTO body 만들기 - port, 컨테이너id
-        VmRequest.stopDTOsb requestDTOsb = new VmRequest.stopDTOsb();
-        requestDTOsb.setPort(vm.getPort());
-        requestDTOsb.setContainerId(vm.getContainerId());
-        String jsonStr = ob.writeValueAsString(requestDTOsb);
+        VmRequestStF.stopDTO requestDTOStF = new VmRequestStF.stopDTO();
+        requestDTOStF.setPort(vm.getPort());
+        requestDTOStF.setContainerId(vm.getContainerId());
+        String jsonStr = ob.writeValueAsString(requestDTOStF);
 
         // header, body로 requestDTO 만들기
         HttpEntity<String> entity = new HttpEntity<>(jsonStr ,headers);
 
         // flask로 요청보냄
-        restTemplate.postForEntity(baseUrl, entity, VmResponse.stopDTOfl.class);
+        restTemplate.postForEntity(url, entity, VmResponseFtS.stopDTO.class);
 
         vm.updateState("stop");
     }
@@ -159,7 +218,7 @@ public class VmService {
     public void save(User user, Long id) throws Exception {
 
         // 요청을 보낼 flask url
-        String baseUrl = "http://3.34.181.183:5000/save";
+        String url = baseURL+"/save";
 
         // 저장할 가상환경 찾기
         Vm vm = vmRepository.findById(id).orElse(null);
@@ -169,21 +228,21 @@ public class VmService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         // requestDTO body 만들기 - port, 컨테이너id
-        VmRequest.saveDTOsb requestDTOsb = new VmRequest.saveDTOsb();
-        requestDTOsb.setId(user.getId());
-        requestDTOsb.setPort(vm.getPort());
-        requestDTOsb.setPwd(vm.getPassword());
-        requestDTOsb.setImageId(vm.getImageId());
-        requestDTOsb.setContainerId(vm.getContainerId());
-        String jsonStr = ob.writeValueAsString(requestDTOsb);
+        VmRequestStF.saveDTO requestDTOStF = new VmRequestStF.saveDTO();
+        requestDTOStF.setId(user.getId());
+        requestDTOStF.setPort(vm.getPort());
+        requestDTOStF.setPwd(vm.getPassword());
+        requestDTOStF.setImageId(vm.getImageId());
+        requestDTOStF.setContainerId(vm.getContainerId());
+        String jsonStr = ob.writeValueAsString(requestDTOStF);
 
         // header, body로 requestDTO 만들기
         HttpEntity<String> entity = new HttpEntity<>(jsonStr ,headers);
 
         // flask로 요청보냄
-        ResponseEntity<?> response = restTemplate.postForEntity(baseUrl, entity, VmResponse.saveDTOfl.class);
+        ResponseEntity<?> response = restTemplate.postForEntity(url, entity, VmResponseFtS.saveDTO.class);
         String responseBody = ob.writeValueAsString(response.getBody());
-        VmResponse.saveDTOfl res = ob.readValue(responseBody, VmResponse.saveDTOfl.class);
+        VmResponseFtS.saveDTO res = ob.readValue(responseBody, VmResponseFtS.saveDTO.class);
         System.out.println("res = " + res);
         System.out.println("res.getContainerId() = " + res.getContainerId());
         System.out.println("res.getImageId() = " + res.getImageId());
@@ -196,22 +255,23 @@ public class VmService {
     @Transactional
     public void delete(User user, Long id) throws Exception {
 
-        String baseUrl = "http://3.34.181.183:5000/delete";
+        String url = baseURL+"/delete";
 
         Vm vm = vmRepository.findById(id).orElse(null);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        VmRequest.deleteDTOsb requestDTOsb = new VmRequest.deleteDTOsb();
-        requestDTOsb.setId(user.getId());
-        requestDTOsb.setPort(vm.getPort());
-        requestDTOsb.setContainerId(vm.getContainerId());
-        String jsonStr = ob.writeValueAsString(requestDTOsb);
+        VmRequestStF.deleteDTO requestDTOStF = new VmRequestStF.deleteDTO();
+        requestDTOStF.setId(user.getId());
+        requestDTOStF.setPort(vm.getPort());
+        requestDTOStF.setContainerId(vm.getContainerId());
+        requestDTOStF.setImageId(vm.getImageId());
+        String jsonStr = ob.writeValueAsString(requestDTOStF);
 
         HttpEntity<String> entity = new HttpEntity<String>(jsonStr ,headers);
 
-        restTemplate.postForEntity(baseUrl, entity, VmResponse.deleteDTOfl.class);
+        restTemplate.postForEntity(url, entity, VmResponseFtS.deleteDTO.class);
 
         vmRepository.deleteById(id);
     }
@@ -518,4 +578,5 @@ public class VmService {
 //    String testCmd(){
 //        return "echo \"test!\"";
 //    }
+
 }

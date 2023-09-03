@@ -14,43 +14,6 @@ public class VmRequest {
         private Boolean control;
     }
 
-    @Getter @Setter
-    public static class createDTOsb {
-
-        private int port;
-        private String password;
-    }
-
-    @Getter @Setter
-    public static class startDTOsb {
-        private int port;
-        private String containerId;
-    }
-
-    @Getter @Setter
-    public static class stopDTOsb {
-        private int port;
-        private String containerId;
-    }
-
-    @Getter @Setter
-    public static class saveDTOsb {
-        private Long id;
-        private int port;
-        private String pwd;
-        private String containerId;
-        private String imageId;
-    }
-
-    @Getter @Setter
-    public static class deleteDTOsb {
-
-        private Long id;
-        private int port;
-        private String containerId;
-        private String imageId;
-    }
-
     @Getter
     @Setter
     public static class LoadDTO{
@@ -61,5 +24,4 @@ public class VmRequest {
         private Boolean scope;
         private Boolean control;
     }
-
 }
