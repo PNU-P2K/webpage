@@ -79,5 +79,14 @@
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
 </body>
-
+<script>
+    function toggleReplyForm(replyFormId) {
+        var replyForm = document.getElementById(replyFormId);
+        if (replyForm.style.display === "none" || replyForm.style.display === "") {
+            replyForm.style.display = "block";
+        } else {
+            replyForm.style.display = "none";
+        }
+    }
+</script>
 </html>

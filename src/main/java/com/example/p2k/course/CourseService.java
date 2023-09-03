@@ -78,10 +78,10 @@ public class CourseService {
                 () -> new Exception404("해당 강좌를 찾을 수 없습니다.")
         );
 
-        if(course.getInstructor() == null){
+        if(course.getUser() == null){
             throw new Exception400("해당 강좌의 교육자가 존재하지 않습니다.");
         }
-        List<Vm> vms = vmRepository.findUserIdAndCourseIdOpen(course.getInstructor().getId(), id);
+        List<Vm> vms = vmRepository.findUserIdAndCourseIdOpen(course.getUser().getId(), id);
         return new VmResponse.FindAllDTO(vms);
     }
 

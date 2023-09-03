@@ -18,9 +18,17 @@ public class ReplyController {
 
     //댓글 저장
     @PostMapping
-    public String save(@ModelAttribute ReplyRequest.SaveDTO requestDTO, @PathVariable Long postId,
-                       @AuthenticationPrincipal CustomUserDetails userDetails, HttpServletRequest request){
-        replyService.save(requestDTO, userDetails.getUser(), postId);
+    public String saveComment(@ModelAttribute ReplyRequest.SaveCommentDTO requestDTO, @PathVariable Long postId,
+                              @AuthenticationPrincipal CustomUserDetails userDetails, HttpServletRequest request){
+        replyService.saveComment(requestDTO, userDetails.getUser(), postId);
+        return "redirect:" + request.getHeader("Referer");
+    }
+
+    //답글 저장
+    @PostMapping("/{replyId}")
+    public String saveReply(@ModelAttribute ReplyRequest.SaveReplyDTO requestDTO, @PathVariable Long postId,
+                            @AuthenticationPrincipal CustomUserDetails userDetails, HttpServletRequest request){
+        replyService.saveReply(requestDTO, userDetails.getUser(), postId);
         return "redirect:" + request.getHeader("Referer");
     }
 

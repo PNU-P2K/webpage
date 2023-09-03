@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "course_tb")
+@Table(name="course_tb")
 public class Course extends BaseTimeEntity {
 
     @Id
@@ -25,13 +25,13 @@ public class Course extends BaseTimeEntity {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User instructor;
+    private User user;
 
     @Builder
-    public Course(Long id, String name, String description, User instructor) {
+    public Course(Long id, String name, String description, User user) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.instructor = instructor;
+        this.user = user;
     }
 }

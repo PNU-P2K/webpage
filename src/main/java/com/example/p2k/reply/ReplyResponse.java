@@ -22,6 +22,7 @@ public class ReplyResponse {
             private final Long id;
             private final String content;
             private final LocalDateTime createdDate;
+            private final Long step;
             private final String userName;
             private final Long userId;
 
@@ -29,6 +30,7 @@ public class ReplyResponse {
                 this.id = reply.getId();
                 this.content = reply.getContent();
                 this.createdDate = reply.getCreatedDate();
+                this.step = reply.getStep();
                 this.userName = reply.getUser().getName();
                 this.userId = reply.getUser().getId();
             }
