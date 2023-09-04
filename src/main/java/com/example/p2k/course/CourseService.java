@@ -1,10 +1,14 @@
 package com.example.p2k.course;
 
+import com.example.p2k._core.exception.Exception400;
 import com.example.p2k._core.exception.Exception404;
 import com.example.p2k.courseuser.CourseUser;
 import com.example.p2k.courseuser.CourseUserRepository;
 import com.example.p2k.post.PostRepository;
 import com.example.p2k.user.User;
+import com.example.p2k.vm.Vm;
+import com.example.p2k.vm.VmRepository;
+import com.example.p2k.vm.VmResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,7 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final CourseUserRepository courseUserRepository;
     private final PostRepository postRepository;
+    private final VmRepository vmRepository;
 
     //나의 강좌 조회
     public CourseResponse.FindCoursesDTO findCourses(Long userId){
@@ -57,26 +62,33 @@ public class CourseService {
 
     //강좌 검색
     public CourseResponse.FindCoursesDTO findBySearch(String keyword){
-        log.info("강좌 검색");
         List<Course> courses = courseRepository.findByNameContaining(keyword);
-        log.info("강좌 검색 완료=" + courses.size());
         return new CourseResponse.FindCoursesDTO(courses);
     }
 
     //나의 가상 환경 조회
-    public List<CourseResponse.FindMyVmDTO> findMyVm(Long id){
-        return new ArrayList<>();
+    public VmResponse.FindAllDTO findMyVm(User user, Long id){
+        List<Vm> vms = vmRepository.findUserIdAndCourseId(user.getId(), id);
+        return new VmResponse.FindAllDTO(vms);
     }
 
-    //관리자의 가상 환경 조회
-    public List<CourseResponse.FindInstructorVmDTO> findInstructorVm(Long id){
-        return new ArrayList<>();
+    //교육자의 가상 환경 조회
+    public VmResponse.FindAllDTO findInstructorVm(Long id){
+        Course course = courseRepository.findById(id).orElseThrow(
+                () -> new Exception404("해당 강좌를 찾을 수 없습니다.")
+        );
+
+        if(course.getUser() == null){
+            throw new Exception400("해당 강좌의 교육자가 존재하지 않습니다.");
+        }
+        List<Vm> vms = vmRepository.findUserIdAndCourseIdOpen(course.getUser().getId(), id);
+        return new VmResponse.FindAllDTO(vms);
     }
 
     //강좌 취소
     @Transactional
     public void cancel(Long id, User user){
-        courseUserRepository.deleteByCourseIdAndUserId(user.getId(), id);
+        courseUserRepository.deleteByCourseIdAndUserId(id, user.getId());
     }
 
     //강좌 생성

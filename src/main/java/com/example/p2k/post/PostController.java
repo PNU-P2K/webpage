@@ -1,13 +1,11 @@
 package com.example.p2k.post;
 
 import com.example.p2k._core.security.CustomUserDetails;
-import com.example.p2k.reply.ReplyRequest;
 import com.example.p2k.reply.ReplyResponse;
 import com.example.p2k.reply.ReplyService;
 import com.example.p2k.course.CourseRequest;
 import com.example.p2k.course.CourseResponse;
 import com.example.p2k.course.CourseService;
-import com.example.p2k.user.Role;
 import com.example.p2k.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,9 +22,9 @@ public class PostController {
     private final PostService postService;
     private final ReplyService replyService;
 
-    //              교육자       학생
-    // 공지사항 :   작성 가능     조회만 가능
-    // 질문게시판 :  작성 가능    작성 가능
+    //              교육자        학생
+    // 공지사항   :   작성 가능     조회만 가능
+    // 질문, 자유 :   작성 가능     작성 가능
     //
 
     //공지사항 게시판 페이지
@@ -38,12 +36,7 @@ public class PostController {
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTOs", postDTOs);
-
-        if(user.getRole() == Role.ROLE_STUDENT){
-            return "course/student/noticeBoard";
-        }else{
-            return "course/instructor/noticeBoard";
-        }
+        return "course/noticeBoard";
     }
 
     //질문 게시판 페이지
@@ -55,12 +48,7 @@ public class PostController {
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTOs", postDTOs);
-
-        if(user.getRole() == Role.ROLE_STUDENT){
-            return "course/student/questionBoard";
-        }else{
-            return "course/instructor/questionBoard";
-        }
+        return "course/questionBoard";
     }
 
     //자유 게시판 페이지
@@ -72,12 +60,7 @@ public class PostController {
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTOs", postDTOs);
-
-        if(user.getRole() == Role.ROLE_STUDENT){
-            return "course/student/freeBoard";
-        }else{
-            return "course/instructor/freeBoard";
-        }
+        return "course/freeBoard";
     }
 
     //공지사항 글 상세 조회
@@ -93,14 +76,9 @@ public class PostController {
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
         model.addAttribute("repliesDTO", repliesDTO);
-        model.addAttribute("userId", user.getId());
         model.addAttribute("user", user);
 
-        if(postDTO.getUserId().equals(user.getId())){
-            return "course/instructor/noticePost";
-        }else{
-            return "course/student/noticePost";
-        }
+        return "course/noticePost";
     }
 
     //공지사항 글 작성
@@ -121,7 +99,7 @@ public class PostController {
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", new CourseRequest.PostDTO());
-        return "course/instructor/saveNoticePost";
+        return "course/saveNoticePost";
     }
 
     //공지사항 글 수정
@@ -145,7 +123,7 @@ public class PostController {
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
-        return "course/instructor/updateNoticePost";
+        return "course/updateNoticePost";
     }
 
     //공지사항 글 삭제
@@ -170,15 +148,9 @@ public class PostController {
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
         model.addAttribute("repliesDTO", repliesDTO);
-        model.addAttribute("userId", user.getId());
         model.addAttribute("user", user);
 
-        if(postDTO.getUserId().equals(user.getId())){
-            return "course/instructor/questionPost";
-
-        }else{
-            return "course/student/questionPost";
-        }
+        return "course/questionPost";
     }
 
     //질문 글 작성
@@ -199,12 +171,7 @@ public class PostController {
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", new CourseRequest.PostDTO());
-
-        if(user.getRole() == Role.ROLE_STUDENT){
-            return "course/student/saveQuestionPost";
-        }else{
-            return "course/instructor/saveQuestionPost";
-        }
+        return "course/saveQuestionPost";
     }
 
     //질문 글 수정
@@ -227,12 +194,7 @@ public class PostController {
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
-
-        if(user.getRole() == Role.ROLE_STUDENT){
-            return "course/student/updateQuestionPost";
-        }else{
-            return "course/instructor/updateQuestionPost";
-        }
+        return "course/updateQuestionPost";
     }
 
     //질문 글 삭제
@@ -255,14 +217,8 @@ public class PostController {
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
         model.addAttribute("repliesDTO", repliesDTO);
-        model.addAttribute("userId", user.getId());
         model.addAttribute("user", user);
-
-        if(postDTO.getUserId().equals(user.getId())){
-            return "course/instructor/freePost";
-        }else{
-            return "course/student/freePost";
-        }
+        return "course/freePost";
     }
 
     //자유 글 작성
@@ -283,12 +239,7 @@ public class PostController {
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", new CourseRequest.PostDTO());
-
-        if(user.getRole() == Role.ROLE_STUDENT){
-            return "course/student/saveFreePost";
-        }else{
-            return "course/instructor/saveFreePost";
-        }
+        return "course/saveFreePost";
     }
 
     //자유 글 수정
@@ -311,12 +262,7 @@ public class PostController {
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
-
-        if(user.getRole() == Role.ROLE_STUDENT){
-            return "course/student/updateFreePost";
-        }else{
-            return "course/instructor/updateFreePost";
-        }
+        return "course/updateFreePost";
     }
 
     //자유 글 삭제

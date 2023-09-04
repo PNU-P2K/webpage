@@ -36,7 +36,7 @@ public class VmService {
     private final ObjectMapper ob = new ObjectMapper();
     private int portnum = 6080;
 
-    private final String baseURL = "http://3.34.181.183:5000";
+    private final String baseURL = "http://43.201.20.193:5000";
 
     @Transactional
     public VmResponse.FindAllDTO findAllByUserId(Long id) {

@@ -3,14 +3,13 @@ package com.example.p2k.course;
 import com.example.p2k._core.security.CustomUserDetails;
 import com.example.p2k.user.Role;
 import com.example.p2k.user.User;
+import com.example.p2k.vm.VmResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,12 +26,7 @@ public class CourseController {
         CourseResponse.FindCoursesDTO courseDTOs = courseService.findCourses(user.getId());
         model.addAttribute("courseDTOs", courseDTOs);
         model.addAttribute("user", user);
-
-        if(user.getRole() == Role.ROLE_STUDENT){
-            return "course/student/course";
-        }else{
-            return "course/instructor/course";
-        }
+        return "course/course";
     }
 
     //강좌 신청 페이지
@@ -40,11 +34,9 @@ public class CourseController {
     public String applyForm(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindCoursesDTO courseDTOs = courseService.findAll();
         User user = userDetails.getUser();
-
         model.addAttribute("courseDTOs", courseDTOs);
         model.addAttribute("user", user);
-
-        return "course/student/apply";
+        return "course/apply";
     }
 
     //강좌 신청
@@ -56,39 +48,40 @@ public class CourseController {
 
     //강좌 검색
     @PostMapping("/apply/search")
-    public String search(@RequestParam String keyword, Model model){
+    public String search(@RequestParam String keyword, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindCoursesDTO courseDTOs = courseService.findBySearch(keyword);
+        User user = userDetails.getUser();
+
         model.addAttribute("courseDTOs", courseDTOs);
-        return "course/student/apply";
+        model.addAttribute("user", user);
+
+        return "course/apply";
     }
 
     //나의 가상 환경 조회
     @GetMapping("/{courseId}/my-vm")
     public String findMyVm(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        List<CourseResponse.FindMyVmDTO> myVms = courseService.findMyVm(courseId);
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
         User user = userDetails.getUser();
+        VmResponse.FindAllDTO myVms = courseService.findMyVm(user, courseId);
+        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+
         model.addAttribute("user", user);
         model.addAttribute("myVms", myVms);
         model.addAttribute("courseDTO", courseDTO);
 
-        if(user.getRole() == Role.ROLE_STUDENT){
-            return "course/student/myVm";
-        }else{
-            return "course/instructor/myVm";
-        }
+        return "course/myVm";
     }
 
     //교육자의 가상 환경 조회
     @GetMapping("/{courseId}/instructor-vm")
     public String findInstructorVm(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        List<CourseResponse.FindInstructorVmDTO> instructorVms = courseService.findInstructorVm(courseId);
+        VmResponse.FindAllDTO instructorVms = courseService.findInstructorVm(courseId);
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         User user = userDetails.getUser();
         model.addAttribute("user", user);
         model.addAttribute("instructorVms", instructorVms);
         model.addAttribute("courseDTO", courseDTO);
-        return "course/student/instructorVm";
+        return "course/instructorVm";
     }
 
     //강좌 취소
@@ -113,7 +106,7 @@ public class CourseController {
         User user = userDetails.getUser();
         model.addAttribute("saveDTO", new CourseRequest.SaveDTO());
         model.addAttribute("user", user);
-        return "course/instructor/create";
+        return "course/create";
     }
 
     //수강생 관리 페이지
@@ -125,7 +118,7 @@ public class CourseController {
         model.addAttribute("user", user);
         model.addAttribute("studentDTOs", studentDTOs);
         model.addAttribute("courseDTO", courseDTO);
-        return "course/instructor/students";
+        return "course/students";
     }
 
     //설정 및 관리 페이지
@@ -139,7 +132,7 @@ public class CourseController {
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("studentDTOs", studentDTOs);
         model.addAttribute("unacceptedUserDTOs", unacceptedUserDTOs);
-        return "course/instructor/setting";
+        return "course/setting";
     }
 
     //강좌 신청 수락

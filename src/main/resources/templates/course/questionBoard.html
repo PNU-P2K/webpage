@@ -15,19 +15,24 @@
     }
 </style>
 <body>
+
+<!-- 공통 navigation-->
+<div th:replace="/fragments/nav.html::fragment-nav(${user})"></div>
+</br>
+</br>
+</br>
+
 <div class="d-flex" id="wrapper">
     <!-- 공통 sidebar-->
-    <div th:replace="/fragments/course/innerInstructor.html::fragment-sidebar(${courseDTO.id})"></div>
+    <div th:replace="/course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
 
     <div id="page-content-wrapper">
-        <!-- 공통 navigation-->
-        <div th:replace="/fragments/nav.html::fragment-nav"></div>
 
         <!-- Page content-->
         <div class="container-fluid">
             <div class="py-5 text-center">
                 <h1 class="col mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
-                <h2 class="mt-4">공지사항</h2>
+                <h2 class="mt-4">질문 게시판</h2>
             </div>
             <div class="row container2 mx-auto">
                 <div class="col">
@@ -43,7 +48,7 @@
                         </thead>
                         <tbody>
                         <tr th:each="postDTO : ${postDTOs.getPosts()}">
-                            <td class="align-middle"><a th:href="@{/courses/__${courseDTO.id}__/notice-board/__${postDTO.id}__}" th:text="${postDTO.title}">게시물 제목</a></td>
+                            <td class="align-middle"><a th:href="@{/courses/__${courseDTO.id}__/question-board/__${postDTO.id}__}" th:text="${postDTO.title}">게시물 제목</a></td>
                             <td class="align-middle" th:text="${postDTO.author}">게시물 작성자</td>
                             <td class="align-middle" th:text="${postDTO.createdDate}">게시물 날짜</td>
                         </tr>
@@ -62,7 +67,7 @@
     function createPost(courseId) {
         const form = document.createElement("form");
         form.setAttribute("method", "get");
-        form.setAttribute("action", "/courses/" + courseId + "/notice-board/save");
+        form.setAttribute("action", "/courses/" + courseId + "/question-board/save");
         document.body.appendChild(form);
         form.submit();
     }

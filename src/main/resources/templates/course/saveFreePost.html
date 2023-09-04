@@ -11,13 +11,13 @@
 <body>
 
 <!-- 공통 navigation-->
-<div th:replace="/fragments/nav.html::fragment-nav"></div>
+<div th:replace="/fragments/nav.html::fragment-nav(${user})"></div>
 </br>
 </br>
 
 <div class="d-flex" id="wrapper">
     <!-- 공통 sidebar-->
-    <div th:replace="/fragments/course/innerStudent.html::fragment-sidebar(${courseDTO.id})"></div>
+    <div th:replace="/course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
 
     <div id="page-content-wrapper">
 
@@ -25,10 +25,10 @@
         <div class="container-fluid">
             <div class="py-5 text-center">
                 <h1 class="mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
-                <h2 class="mt-4">질문 글 작성하기</h2>
+                <h2 class="mt-4">자유 글 작성하기</h2>
             </div>
             <div class="container2 mx-auto">
-                <form action="questionBoard.html" th:action th:object="${postDTO}" method="post" class="g-3 needs-validation" novalidate>
+                <form action="freeBoard.html" th:action th:object="${postDTO}" method="post" class="g-3 needs-validation" novalidate>
                     <div class="row mb-3">
                         <label for="title"  class="col-sm-2 col-form-label">제목</label>
                         <div class="col-sm-10">
@@ -45,7 +45,7 @@
                         <div class="col-sm-6 text-center">
                             <button class="btn btn-outline-primary" type="submit">저장</button>
                             <button class="btn btn-outline-danger"
-                                    th:onclick="|location.href='@{/courses/{courseId}/question-board(courseId=${courseDTO.id})}'|"
+                                    th:onclick="|location.href='@{/courses/{courseId}/free-board(courseId=${courseDTO.id})}'|"
                                     type="button">취소</button>
                         </div>
                     </div>

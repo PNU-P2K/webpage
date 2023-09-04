@@ -21,15 +21,17 @@ public class ReplyResponse {
         public class ReplyDTO {
             private final Long id;
             private final String content;
+            private final String author;
             private final LocalDateTime createdDate;
-            private final String userName;
+            private final Long step;
             private final Long userId;
 
             public ReplyDTO(Reply reply) {
                 this.id = reply.getId();
                 this.content = reply.getContent();
+                this.author = reply.getAuthor();
                 this.createdDate = reply.getCreatedDate();
-                this.userName = reply.getUser().getName();
+                this.step = reply.getStep();
                 this.userId = reply.getUser().getId();
             }
         }

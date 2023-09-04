@@ -19,13 +19,13 @@
 <body>
 
 <!-- 공통 navigation-->
-<div th:replace="/fragments/nav.html::fragment-nav"></div>
+<div th:replace="/fragments/nav.html::fragment-nav(${user})"></div>
 </br>
 </br>
 
 <div class="d-flex" id="wrapper">
     <!-- 공통 sidebar-->
-    <div th:replace="/fragments/course/innerStudent.html::fragment-sidebar(${courseDTO.id})"></div>
+    <div th:replace="/course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
 
     <div id="page-content-wrapper">
 
@@ -35,6 +35,16 @@
                 <div class="py-5 text-center">
                     <h1 class="mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
                     <h2 class="mt-4">공지사항</h2>
+                </div>
+                <div th:if="${postDTO.userId == user.id}" class="row">
+                    <div class="col">
+                        <button class="btn btn-outline-danger float-end m-1"
+                                th:onclick="|location.href='@{/courses/{courseId}/notice-board/{postId}/delete(courseId=${courseDTO.id}, postId=${postDTO.id})}'|"
+                                type="button">삭제</button>
+                        <button class="btn btn-outline-primary float-end m-1"
+                                th:onclick="|location.href='@{/courses/{courseId}/notice-board/{postId}/update(courseId=${courseDTO.id}, postId=${postDTO.id})}'|"
+                                type="button">수정</button>
+                    </div>
                 </div>
                 <div class="row light-gray-bg p-3 d-flex align-items-center">
                     <div class="col-md-6">
@@ -47,12 +57,12 @@
                         <p class="m-0" th:text="|작성일: ${postDTO.createdDate}|">공지사항 글 작성일</p>
                     </div>
                 </div>
-                <div class="row lighter-gray-bg p-3">
+                <div class="row lighter-gray-bg  p-3">
                     <div class="col-md-12">
                         <p th:text="${postDTO.content}">공지사항 글 내용</p>
                     </div>
                 </div>
-                <div th:insert="/fragments/course/reply.html::fragment-reply(${repliesDTO.getReplies()}, ${postDTO.id}, ${userId})"></div>
+                <div th:insert="/course/reply.html::fragment-reply(${repliesDTO.getReplies()}, ${postDTO.id}, ${user.id})"></div>
                 <div class="row mt-4 justify-content-center">
                     <div class="col-md-12 text-center">
                         <button class="btn btn-outline-primary"
@@ -61,6 +71,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
@@ -68,5 +79,14 @@
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
 </body>
-
+<script>
+    function toggleReplyForm(replyFormId) {
+        var replyForm = document.getElementById(replyFormId);
+        if (replyForm.style.display === "none" || replyForm.style.display === "") {
+            replyForm.style.display = "block";
+        } else {
+            replyForm.style.display = "none";
+        }
+    }
+</script>
 </html>

@@ -15,7 +15,11 @@ public interface VmRepository extends JpaRepository<Vm, Long> {
     @Query("select v from Vm v where v.user.id= :id")
     List<Vm> findAllByUserId(@Param("id") Long id);
 
-    Optional<Vm> findByVmKey(@Param("vmKey") String vmKey);
+    @Query("select v from Vm v where v.user.id = :userId and v.course.id = :id")
+    List<Vm> findUserIdAndCourseId(@Param("userId") Long userId, @Param("id") Long id);
+
+    @Query("select v from Vm v where v.user.id = :userId and v.course.id = :id and v.scope = true")
+    List<Vm> findUserIdAndCourseIdOpen(@Param("userId") Long userId, @Param("id") Long id);
 
     @Modifying
     @Query("delete from Vm v where v.user.id = :userId")
