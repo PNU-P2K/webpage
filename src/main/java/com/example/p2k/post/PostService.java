@@ -7,10 +7,16 @@ import com.example.p2k.course.CourseResponse;
 import com.example.p2k.user.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -22,16 +28,19 @@ public class PostService {
     private final CourseRepository courseRepository;
 
     //강좌 카테고리 별 게시글 찾기
-    public CourseResponse.FindPostsDTO findPostsByCategory(Long id, Category category){
-        List<Post> posts = postRepository.findPostByCategory(id, category);
-        return new CourseResponse.FindPostsDTO(posts);
+    public PostResponse.FindPostsDTO findPostsByCategory(Long id, int page, Category category){
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createdDate")); //정렬조건
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        Page<Post> posts = postRepository.findPostByCategory(pageable, id, category);
+        return new PostResponse.FindPostsDTO(posts);
     }
 
     //게시글 아이디로 게시글 찾기
-    public CourseResponse.FindPostByIdDTO findPostById(Long postId){
+    public PostResponse.FindPostByIdDTO findPostById(Long postId){
         Post post = postRepository.findById(postId).get();
         log.info("post=" + post.getUser().getName());
-        return new CourseResponse.FindPostByIdDTO(post);
+        return new PostResponse.FindPostByIdDTO(post);
     }
 
     //게시글 작성하기

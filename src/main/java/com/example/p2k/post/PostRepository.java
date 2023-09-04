@@ -1,5 +1,7 @@
 package com.example.p2k.post;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +16,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<Post> findById(@Param("postId") Long postId);
 
     @Query("select p from Post p where p.course.id = :courseId and p.category = :category")
-    List<Post> findPostByCategory(@Param("courseId") Long courseId, @Param("category") Category category);
+    Page<Post> findPostByCategory(Pageable pageable, @Param("courseId") Long courseId, @Param("category") Category category);
 
     @Modifying
     @Query("update Post p SET p.title = :title, p.content = :content where p.id = :postId")

@@ -1,10 +1,8 @@
 package com.example.p2k.course;
 
-import com.example.p2k.post.Post;
 import com.example.p2k.user.User;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -91,53 +89,6 @@ public class CourseResponse {
                 this.id = user.getId();
                 this.name = user.getName();
             }
-        }
-    }
-
-    @Getter
-    public static class FindPostsDTO {
-
-        private final List<FindPostsDTO.PostDTO> posts;
-
-        public FindPostsDTO(List<Post> posts) {
-            this.posts = posts.stream().map(FindPostsDTO.PostDTO::new).collect(Collectors.toList());
-        }
-
-        @Getter
-        public class PostDTO{
-            private final Long id;
-            private final String title;
-            private final String author;
-            private final String content;
-            private final LocalDateTime createdDate;
-
-            public PostDTO(Post post) {
-                this.id = post.getId();
-                this.title = post.getTitle();
-                this.author = post.getAuthor();
-                this.content = post.getContent();
-                this.createdDate = post.getCreatedDate();
-            }
-        }
-    }
-
-    @Getter
-    public static class FindPostByIdDTO{
-
-        private final Long id;
-        private final String title;
-        private final String author;
-        private final String content;
-        private final LocalDateTime createdDate;
-        private final Long userId;
-
-        public FindPostByIdDTO(Post post) {
-            this.id = post.getId();
-            this.title = post.getTitle();
-            this.author = post.getAuthor();
-            this.content = post.getContent();
-            this.createdDate = post.getCreatedDate();
-            this.userId = post.getUser().getId();
         }
     }
 }
