@@ -1,5 +1,6 @@
 package com.example.p2k.reply;
 
+import com.example.p2k._core.exception.Exception400;
 import com.example.p2k._core.exception.Exception404;
 import com.example.p2k.course.Course;
 import com.example.p2k.post.Post;
@@ -71,6 +72,10 @@ public class ReplyService {
         Reply parentReply = replyRepository.findById(requestDTO.getParentId()).orElseThrow(
                 () -> new Exception404("해당 댓글을 찾을 수 없습니다.")
         );
+
+        if(parentReply.getStep() >= 19L){
+            throw new Exception400("더 이상 답글을 생성할 수 없습니다.");
+        }
 
         Long refOrder = getRefOrder(parentReply);
         Reply reply = Reply.builder()
