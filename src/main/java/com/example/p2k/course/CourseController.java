@@ -21,9 +21,10 @@ public class CourseController {
 
     //나의 강좌 조회
     @GetMapping
-    public String findCourses(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+    public String findCourses(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                              @AuthenticationPrincipal CustomUserDetails userDetails){
         User user = userDetails.getUser();
-        CourseResponse.FindCoursesDTO courseDTOs = courseService.findCourses(user.getId());
+        CourseResponse.FindCoursesDTO courseDTOs = courseService.findCourses(user.getId(), page);
         model.addAttribute("courseDTOs", courseDTOs);
         model.addAttribute("user", user);
         return "course/course";
@@ -31,8 +32,9 @@ public class CourseController {
 
     //강좌 신청 페이지
     @GetMapping("/apply")
-    public String applyForm(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        CourseResponse.FindCoursesDTO courseDTOs = courseService.findAll();
+    public String applyForm(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                            @AuthenticationPrincipal CustomUserDetails userDetails){
+        CourseResponse.FindCoursesDTO courseDTOs = courseService.findAll(page);
         User user = userDetails.getUser();
         model.addAttribute("courseDTOs", courseDTOs);
         model.addAttribute("user", user);
@@ -48,8 +50,9 @@ public class CourseController {
 
     //강좌 검색
     @PostMapping("/apply/search")
-    public String search(@RequestParam String keyword, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        CourseResponse.FindCoursesDTO courseDTOs = courseService.findBySearch(keyword);
+    public String search(@RequestParam String keyword, Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                         @AuthenticationPrincipal CustomUserDetails userDetails){
+        CourseResponse.FindCoursesDTO courseDTOs = courseService.findBySearch(keyword, page);
         User user = userDetails.getUser();
 
         model.addAttribute("courseDTOs", courseDTOs);

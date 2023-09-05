@@ -16,6 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -33,10 +34,11 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String home(@AuthenticationPrincipal CustomUserDetails userDetails, Model model){
+    public String home(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                       @AuthenticationPrincipal CustomUserDetails userDetails){
         UserResponse.FindByIdDTO user = userService.findById(userDetails.getUser().getId());
         VmResponse.FindAllDTO vms = vmService.findAllByUserId(userDetails.getUser().getId());
-        CourseResponse.FindCoursesDTO courses = courseService.findCourses(userDetails.getUser().getId());
+        CourseResponse.FindCoursesDTO courses = courseService.findCourses(userDetails.getUser().getId(), page);
 
         model.addAttribute("user", user);
         model.addAttribute("vm", vms);
