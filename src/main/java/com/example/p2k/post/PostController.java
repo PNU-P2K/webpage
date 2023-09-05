@@ -79,10 +79,11 @@ public class PostController {
     //공지사항 글 상세 조회
     @GetMapping("/notice-board/{postId}")
     public String findNoticePost(@PathVariable Long courseId, @PathVariable Long postId, Model model,
+                                 @RequestParam(value = "page", defaultValue = "0") int page,
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         PostResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
-        ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId);
+        ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId, page);
 
         User user = userDetails.getUser();
 
@@ -152,10 +153,11 @@ public class PostController {
     //질문 글 상세 조회
     @GetMapping("/question-board/{postId}")
     public String findQuestionPost(@PathVariable Long courseId, @PathVariable Long postId, Model model,
+                                   @RequestParam(value = "page", defaultValue = "0") int page,
                                    @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         PostResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
-        ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId);
+        ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId, page);
         User user = userDetails.getUser();
 
         model.addAttribute("courseDTO", courseDTO);
@@ -220,10 +222,11 @@ public class PostController {
     //자유 글 상세 조회
     @GetMapping("/free-board/{postId}")
     public String findFreePost(@PathVariable Long courseId, @PathVariable Long postId, Model model,
+                               @RequestParam(value = "page", defaultValue = "0") int page,
                                @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         PostResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
-        ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId);
+        ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId, page);
 
         User user = userDetails.getUser();
 

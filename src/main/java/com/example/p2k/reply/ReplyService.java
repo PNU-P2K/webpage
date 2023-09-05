@@ -1,11 +1,16 @@
 package com.example.p2k.reply;
 
 import com.example.p2k._core.exception.Exception404;
+import com.example.p2k.course.Course;
 import com.example.p2k.post.Post;
 import com.example.p2k.post.PostRepository;
 import com.example.p2k.user.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +27,9 @@ public class ReplyService {
     private final PostRepository postRepository;
 
     //댓글 목록 조회
-    public ReplyResponse.FindRepliesDTO findByPostId(Long postId){
-        List<Reply> replies = replyRepository.findByPostId(postId);
+    public ReplyResponse.FindRepliesDTO findByPostId(Long postId, int page){
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Reply> replies = replyRepository.findByPostId(pageable, postId);
         return new ReplyResponse.FindRepliesDTO(replies);
     }
 
