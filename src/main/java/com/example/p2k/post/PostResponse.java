@@ -3,7 +3,7 @@ package com.example.p2k.post;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,7 +58,7 @@ public class PostResponse {
             private final String title;
             private final String author;
             private final String content;
-            private final LocalDateTime createdDate;
+            private final LocalDate createdDate;
             private final Boolean open;
 
             public PostDTO(Post post) {
@@ -66,7 +66,7 @@ public class PostResponse {
                 this.title = post.getTitle();
                 this.author = post.getAuthor();
                 this.content = post.getContent();
-                this.createdDate = post.getCreatedDate();
+                this.createdDate = post.getCreatedDate() != null ? post.getCreatedDate().toLocalDate() : null;
                 this.open = post.getOpen();
             }
         }
@@ -79,7 +79,7 @@ public class PostResponse {
         private final String title;
         private final String author;
         private final String content;
-        private final LocalDateTime createdDate;
+        private final LocalDate createdDate;
         private final Long userId;
         private final Boolean open;
 
@@ -88,7 +88,7 @@ public class PostResponse {
             this.title = post.getTitle();
             this.author = post.getAuthor();
             this.content = post.getContent();
-            this.createdDate = post.getCreatedDate();
+            this.createdDate = post.getCreatedDate() != null ? post.getCreatedDate().toLocalDate() : null;
             this.userId = post.getUser().getId();
             this.open = post.getOpen();
         }
