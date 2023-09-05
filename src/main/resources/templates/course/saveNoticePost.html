@@ -41,13 +41,6 @@
                             <input type="text" id="content" th:field="*{content}" class="form-control">
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label for="content" class="col-sm-2 col-form-label">공개</label>
-                        <div class="col-sm-10">
-                            커뮤니티 공개 <input type="radio" class="radio-scope" name="scope" th:field="*{open}" th:value="true">
-                            관리자 공개 <input type="radio" class="radio-scope" name="scope" checked th:field="*{open}" th:value="false">
-                        </div>
-                    </div>
                     <div class="row justify-content-center">
                         <div class="col-sm-6 text-center">
                             <button class="btn btn-outline-primary" type="submit">저장</button>

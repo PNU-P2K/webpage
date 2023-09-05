@@ -33,9 +33,9 @@ public class PostController {
     public String getNoticeBoard(@PathVariable Long courseId, Model model,
                                  @RequestParam(value = "page", defaultValue = "0") int page,
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
-        PostResponse.FindPostsDTO postDTOs = postService.findPostsByCategory(courseId, page, Category.NOTICE);
         User user = userDetails.getUser();
+        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        PostResponse.FindPostsDTO postDTOs = postService.findPostsByCategory(courseId, page, Category.NOTICE, user);
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTOs", postDTOs);
@@ -47,9 +47,9 @@ public class PostController {
     public String getQuestionBoard(@PathVariable Long courseId, Model model,
                                    @RequestParam(value = "page", defaultValue = "0") int page,
                                    @AuthenticationPrincipal CustomUserDetails userDetails){
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
-        PostResponse.FindPostsDTO postDTOs = postService.findPostsByCategory(courseId, page, Category.QUESTION);
         User user = userDetails.getUser();
+        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        PostResponse.FindPostsDTO postDTOs = postService.findPostsByCategory(courseId, page, Category.QUESTION, user);
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTOs", postDTOs);
@@ -61,9 +61,9 @@ public class PostController {
     public String getFreeBoard(@PathVariable Long courseId, Model model,
                                @RequestParam(value = "page", defaultValue = "0") int page,
                                @AuthenticationPrincipal CustomUserDetails userDetails){
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
-        PostResponse.FindPostsDTO postDTOs = postService.findPostsByCategory(courseId, page, Category.FREE);
         User user = userDetails.getUser();
+        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        PostResponse.FindPostsDTO postDTOs = postService.findPostsByCategory(courseId, page, Category.FREE, user);
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTOs", postDTOs);
@@ -75,17 +75,14 @@ public class PostController {
     public String findNoticePost(@PathVariable Long courseId, @PathVariable Long postId, Model model,
                                  @RequestParam(value = "page", defaultValue = "0") int page,
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
+        User user = userDetails.getUser();
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         PostResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
         ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId, page);
-
-        User user = userDetails.getUser();
-
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
         model.addAttribute("repliesDTO", repliesDTO);
         model.addAttribute("user", user);
-
         return "course/noticePost";
     }
 
@@ -94,8 +91,8 @@ public class PostController {
     public String saveNoticePost(@PathVariable Long courseId, @ModelAttribute PostRequest.SaveDTO requestDTO,
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
         requestDTO.setCategory(Category.NOTICE);
+        requestDTO.setOpen(true);
         postService.savePost(requestDTO, userDetails.getUser(), courseId);
-
         return "redirect:/courses/{courseId}/notice-board";
     }
 
@@ -116,7 +113,6 @@ public class PostController {
                                    @ModelAttribute PostRequest.UpdateDTO requestDTO,
                                    @AuthenticationPrincipal CustomUserDetails userDetails){
         postService.updatePost(requestDTO, postId, userDetails.getUser());
-
         return "redirect:/courses/{courseId}/notice-board/{postId}";
     }
 
@@ -148,11 +144,10 @@ public class PostController {
     public String findQuestionPost(@PathVariable Long courseId, @PathVariable Long postId, Model model,
                                    @RequestParam(value = "page", defaultValue = "0") int page,
                                    @AuthenticationPrincipal CustomUserDetails userDetails){
+        User user = userDetails.getUser();
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         PostResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
         ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId, page);
-        User user = userDetails.getUser();
-
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
         model.addAttribute("repliesDTO", repliesDTO);
@@ -195,9 +190,9 @@ public class PostController {
     @GetMapping("/question-board/{postId}/update")
     public String getUpdateQuestionPost(@PathVariable Long courseId, @PathVariable Long postId, Model model,
                                         @AuthenticationPrincipal CustomUserDetails userDetails){
+        User user = userDetails.getUser();
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         PostResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
-        User user = userDetails.getUser();
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("updateDTO", postDTO);
@@ -216,12 +211,10 @@ public class PostController {
     public String findFreePost(@PathVariable Long courseId, @PathVariable Long postId, Model model,
                                @RequestParam(value = "page", defaultValue = "0") int page,
                                @AuthenticationPrincipal CustomUserDetails userDetails){
+        User user = userDetails.getUser();
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         PostResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
         ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId, page);
-
-        User user = userDetails.getUser();
-
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("postDTO", postDTO);
         model.addAttribute("repliesDTO", repliesDTO);

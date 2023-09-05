@@ -26,11 +26,11 @@ public class PostService {
     private final CourseRepository courseRepository;
 
     //강좌 카테고리 별 게시글 찾기
-    public PostResponse.FindPostsDTO findPostsByCategory(Long id, int page, Category category){
+    public PostResponse.FindPostsDTO findPostsByCategory(Long id, int page, Category category, User user){
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createdDate")); //정렬조건
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        Page<Post> posts = postRepository.findPostByCategory(pageable, id, category);
+        Page<Post> posts = postRepository.findPostByCategory(pageable, id, category, user.getId());
         return new PostResponse.FindPostsDTO(posts);
     }
 
