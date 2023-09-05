@@ -47,10 +47,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="postDTO : ${postDTOs.getPosts()}">
-                            <td class="align-middle"><a th:href="@{/courses/__${courseDTO.id}__/question-board/__${postDTO.id}__}" th:text="${postDTO.title}">게시물 제목</a></td>
-                            <td class="align-middle" th:text="${postDTO.author}">게시물 작성자</td>
-                            <td class="align-middle" th:text="${postDTO.createdDate}">게시물 날짜</td>
+                        <tr th:each="saveDTO : ${postDTOs.getPosts()}">
+                            <td class="align-middle"><a th:href="@{/courses/__${courseDTO.id}__/question-board/__${saveDTO.id}__}" th:text="${saveDTO.title}">게시물 제목</a></td>
+                            <td class="align-middle" th:text="${saveDTO.author}">게시물 작성자</td>
+                            <td class="align-middle" th:text="${saveDTO.createdDate}">게시물 날짜</td>
                         </tr>
                         </tbody>
                     </table>

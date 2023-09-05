@@ -3,7 +3,6 @@ package com.example.p2k.post;
 import com.example.p2k._core.security.CustomUserDetails;
 import com.example.p2k.reply.ReplyResponse;
 import com.example.p2k.reply.ReplyService;
-import com.example.p2k.course.CourseRequest;
 import com.example.p2k.course.CourseResponse;
 import com.example.p2k.course.CourseService;
 import com.example.p2k.user.User;
@@ -13,8 +12,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -94,7 +91,7 @@ public class PostController {
 
     //공지사항 글 작성
     @PostMapping("/notice-board/save")
-    public String saveNoticePost(@PathVariable Long courseId, @ModelAttribute CourseRequest.PostDTO requestDTO,
+    public String saveNoticePost(@PathVariable Long courseId, @ModelAttribute PostRequest.SaveDTO requestDTO,
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
         requestDTO.setCategory(Category.NOTICE);
         postService.savePost(requestDTO, userDetails.getUser(), courseId);
@@ -109,16 +106,15 @@ public class PostController {
         User user = userDetails.getUser();
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
-        model.addAttribute("postDTO", new CourseRequest.PostDTO());
+        model.addAttribute("saveDTO", new PostRequest.SaveDTO());
         return "course/saveNoticePost";
     }
 
     //공지사항 글 수정
     @PostMapping("/notice-board/{postId}/update")
     public String updateNoticePost(@PathVariable Long postId,
-                                   @ModelAttribute CourseRequest.PostDTO requestDTO,
+                                   @ModelAttribute PostRequest.UpdateDTO requestDTO,
                                    @AuthenticationPrincipal CustomUserDetails userDetails){
-        requestDTO.setCategory(Category.NOTICE);
         postService.updatePost(requestDTO, postId, userDetails.getUser());
 
         return "redirect:/courses/{courseId}/notice-board/{postId}";
@@ -133,7 +129,7 @@ public class PostController {
         User user = userDetails.getUser();
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
-        model.addAttribute("postDTO", postDTO);
+        model.addAttribute("updateDTO", postDTO);
         return "course/updateNoticePost";
     }
 
@@ -167,7 +163,7 @@ public class PostController {
 
     //질문 글 작성
     @PostMapping("/question-board/save")
-    public String saveQuestionPost(@PathVariable Long courseId, @ModelAttribute CourseRequest.PostDTO requestDTO,
+    public String saveQuestionPost(@PathVariable Long courseId, @ModelAttribute PostRequest.SaveDTO requestDTO,
                                    @AuthenticationPrincipal CustomUserDetails userDetails){
         requestDTO.setCategory(Category.QUESTION);
         postService.savePost(requestDTO, userDetails.getUser(), courseId);
@@ -182,16 +178,15 @@ public class PostController {
         User user = userDetails.getUser();
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
-        model.addAttribute("postDTO", new CourseRequest.PostDTO());
+        model.addAttribute("saveDTO", new PostRequest.SaveDTO());
         return "course/saveQuestionPost";
     }
 
     //질문 글 수정
     @PostMapping("/question-board/{postId}/update")
     public String updateQuestionPost(@PathVariable Long postId,
-                                     @ModelAttribute CourseRequest.PostDTO requestDTO,
+                                     @ModelAttribute PostRequest.UpdateDTO requestDTO,
                                      @AuthenticationPrincipal CustomUserDetails userDetails){
-        requestDTO.setCategory(Category.QUESTION);
         postService.updatePost(requestDTO, postId, userDetails.getUser());
         return "redirect:/courses/{courseId}/question-board/{postId}";
     }
@@ -205,7 +200,7 @@ public class PostController {
         User user = userDetails.getUser();
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
-        model.addAttribute("postDTO", postDTO);
+        model.addAttribute("updateDTO", postDTO);
         return "course/updateQuestionPost";
     }
 
@@ -236,7 +231,7 @@ public class PostController {
 
     //자유 글 작성
     @PostMapping("/free-board/save")
-    public String saveFreePost(@PathVariable Long courseId, @ModelAttribute CourseRequest.PostDTO requestDTO,
+    public String saveFreePost(@PathVariable Long courseId, @ModelAttribute PostRequest.SaveDTO requestDTO,
                                @AuthenticationPrincipal CustomUserDetails userDetails){
         requestDTO.setCategory(Category.FREE);
         postService.savePost(requestDTO, userDetails.getUser(), courseId);
@@ -251,16 +246,15 @@ public class PostController {
         User user = userDetails.getUser();
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
-        model.addAttribute("postDTO", new CourseRequest.PostDTO());
+        model.addAttribute("saveDTO", new PostRequest.SaveDTO());
         return "course/saveFreePost";
     }
 
     //자유 글 수정
     @PostMapping("/free-board/{postId}/update")
     public String updateFreePost(@PathVariable Long postId,
-                                 @ModelAttribute CourseRequest.PostDTO requestDTO,
+                                 @ModelAttribute PostRequest.UpdateDTO requestDTO,
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
-        requestDTO.setCategory(Category.FREE);
         postService.updatePost(requestDTO, postId, userDetails.getUser());
         return "redirect:/courses/{courseId}/free-board/{postId}";
     }
@@ -274,7 +268,7 @@ public class PostController {
         User user = userDetails.getUser();
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
-        model.addAttribute("postDTO", postDTO);
+        model.addAttribute("updateDTO", postDTO);
         return "course/updateFreePost";
     }
 

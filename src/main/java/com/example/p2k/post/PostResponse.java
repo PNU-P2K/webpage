@@ -59,6 +59,7 @@ public class PostResponse {
             private final String author;
             private final String content;
             private final LocalDateTime createdDate;
+            private final Boolean open;
 
             public PostDTO(Post post) {
                 this.id = post.getId();
@@ -66,6 +67,7 @@ public class PostResponse {
                 this.author = post.getAuthor();
                 this.content = post.getContent();
                 this.createdDate = post.getCreatedDate();
+                this.open = post.getOpen();
             }
         }
     }
@@ -79,6 +81,7 @@ public class PostResponse {
         private final String content;
         private final LocalDateTime createdDate;
         private final Long userId;
+        private final Boolean open;
 
         public FindPostByIdDTO(Post post) {
             this.id = post.getId();
@@ -87,6 +90,7 @@ public class PostResponse {
             this.content = post.getContent();
             this.createdDate = post.getCreatedDate();
             this.userId = post.getUser().getId();
+            this.open = post.getOpen();
         }
     }
 }
