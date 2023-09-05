@@ -54,9 +54,9 @@ public class CourseService {
     //강좌 신청
     @Transactional
     public void apply(Long id, User user){
-        Optional<CourseUser> findCourseUser = courseUserRepository.findByCourseIdAndUserId(user.getId(), id);
+        Optional<CourseUser> findCourseUser = courseUserRepository.findByCourseIdAndUserId(id, user.getId());
         if(findCourseUser.isPresent()){
-            //이미 신청한 강좌인지 체크
+            throw new Exception400("이미 신청한 강좌입니다.");
         }
 
         Optional<Course> course = courseRepository.findById(id);

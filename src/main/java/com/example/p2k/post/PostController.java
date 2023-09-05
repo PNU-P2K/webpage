@@ -38,9 +38,6 @@ public class PostController {
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
         CourseResponse.FindById courseDTO = courseService.findById(courseId);
         PostResponse.FindPostsDTO postDTOs = postService.findPostsByCategory(courseId, page, Category.NOTICE);
-        log.info("startPage=" + postDTOs.getStartPage());
-        log.info("endPage=" + postDTOs.getEndPage());
-        log.info("hasPrevious=" + postDTOs.getHasPrevious());
         User user = userDetails.getUser();
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
