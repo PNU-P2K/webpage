@@ -1,23 +1,17 @@
 package com.example.p2k.vm;
 
-import com.example.p2k._core.exception.Exception404;
+import com.example.p2k._core.exception.Exception400;
 import com.example.p2k.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.InputStream;
@@ -35,8 +29,9 @@ public class VmService {
     private final RestTemplate restTemplate;
     private final ObjectMapper ob = new ObjectMapper();
     private int portnum = 6080;
+    private final int maxNum = 3;
 
-    private final String baseURL = "http://43.201.20.193:5000";
+    private final String baseURL = "http://localhost:5000";
 
     @Transactional
     public VmResponse.FindAllDTO findAllByUserId(Long id) {
@@ -51,6 +46,11 @@ public class VmService {
 
     @Transactional
     public void create(User user, VmRequest.CreateDTO requestDTO) throws Exception {
+
+        List<Vm> vms = vmRepository.findAllByUserId(user.getId());
+        if (vms.size() > maxNum) {
+            throw new Exception400("가상환경은 최대 3개까지 생성할 수 있습니다.");
+        }
 
         // 요청을 보낼 flask url
         String url = baseURL+"/create";

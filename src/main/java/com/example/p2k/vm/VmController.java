@@ -34,14 +34,21 @@ public class VmController {
         User user = userDetails.getUser();
         model.addAttribute("user", user);
         model.addAttribute("vm", new VmRequest.CreateDTO());
-
+        model.addAttribute("vmError", new VmResponse.CreateDTO("false"));
         return "vm/create";
     }
 
     // 가상환경 생성하기
     @PostMapping("/create")
-    public String create(@AuthenticationPrincipal CustomUserDetails userDetails, @ModelAttribute("vm") VmRequest.CreateDTO requestDTO) throws Exception {
-        vmService.create(userDetails.getUser(), requestDTO);
+    public String create(@AuthenticationPrincipal CustomUserDetails userDetails, @ModelAttribute("vm") VmRequest.CreateDTO requestDTO, Model model) {
+        try {
+            vmService.create(userDetails.getUser(), requestDTO);
+        } catch (Exception e) {
+            User user = userDetails.getUser();
+            model.addAttribute("user", user);
+            model.addAttribute("vmError", new VmResponse.CreateDTO("true"));
+            return "vm/create";
+        }
         return "redirect:/vm";
     }
 

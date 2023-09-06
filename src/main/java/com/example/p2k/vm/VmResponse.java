@@ -1,5 +1,6 @@
 package com.example.p2k.vm;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
@@ -40,15 +41,25 @@ public class VmResponse {
         }
     }
 
+//    @Getter
+//    public static class FindByIdDTO {
+//
+//        private final int port;
+//        private final String key;
+//
+//        public FindByIdDTO(Vm vm) {
+//            this.port = vm.getPort();
+//            this.key = vm.getVmKey();
+//        }
+//    }
+
     @Getter
-    public static class FindByIdDTO {
+    public static class CreateDTO {
 
-        private final int port;
-        private final String key;
+        private final String errorMsg;
 
-        public FindByIdDTO(Vm vm) {
-            this.port = vm.getPort();
-            this.key = vm.getVmKey();
+        public CreateDTO(String errorMsg) {
+            this.errorMsg = errorMsg;
         }
     }
 }
