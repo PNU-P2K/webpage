@@ -2,6 +2,8 @@ package com.example.p2k.courseuser;
 
 import com.example.p2k.course.Course;
 import com.example.p2k.user.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,7 +24,7 @@ public interface CourseUserRepository extends JpaRepository<CourseUser, Long> {
     List<User> findUnacceptedUserByCourseId(@Param("courseId") Long courseId);
 
     @Query("select cu.course from CourseUser cu where cu.user.id = :userId and cu.accept = true")
-    List<Course> findCourseByUserId(@Param("userId") Long userId);
+    Page<Course> findCourseByUserId(Pageable pageable, @Param("userId") Long userId);
 
     @Modifying
     @Query("update CourseUser cu SET cu.accept = true where cu.course.id = :courseId and cu.user.id = :userId")

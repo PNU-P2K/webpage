@@ -1,5 +1,7 @@
 package com.example.p2k.reply;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +12,7 @@ import java.util.List;
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
     @Query("select r from Reply r where r.post.id = :postId order by r.ref, r.refOrder")
-    List<Reply> findByPostId(@Param("postId") Long postId);
+    Page<Reply> findByPostId(Pageable pageable, @Param("postId") Long postId);
 
     @Query("select max(r.ref) from Reply r where r.post.id = :postId")
     Long findMaxRef(@Param("postId") Long postId);

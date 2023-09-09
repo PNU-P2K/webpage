@@ -1,6 +1,5 @@
 package com.example.p2k.course;
 
-import com.example.p2k.post.Category;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,18 +15,7 @@ public class CourseRequest {
 
         @NotBlank(message = "설명은 필수 입력 값입니다.")
         private String description;
-    }
 
-    @Getter
-    @Setter
-    public static class PostDTO{
-
-        @NotBlank(message = "제목은 필수 입력 값입니다.")
-        private String title;
-
-        @NotBlank(message = "내용은 필수 입력 값입니다.")
-        private String content;
-
-        private Category category;
+        private Boolean open;
     }
 }

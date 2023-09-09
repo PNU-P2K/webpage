@@ -48,13 +48,33 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="postDTO : ${postDTOs.getPosts()}">
-                            <td class="align-middle"><a th:href="@{/courses/__${courseDTO.id}__/notice-board/__${postDTO.id}__}" th:text="${postDTO.title}">게시물 제목</a></td>
-                            <td class="align-middle" th:text="${postDTO.author}">게시물 작성자</td>
-                            <td class="align-middle" th:text="${postDTO.createdDate}">게시물 날짜</td>
+                        <tr th:each="saveDTO : ${postDTOs.getPosts()}">
+                            <td class="align-middle"><a th:href="@{/courses/__${courseDTO.id}__/notice-board/__${saveDTO.id}__}" th:text="${saveDTO.title}">게시물 제목</a></td>
+                            <td class="align-middle" th:text="${saveDTO.author}">게시물 작성자</td>
+                            <td class="align-middle" th:text="${saveDTO.createdDate}">게시물 날짜</td>
                         </tr>
                         </tbody>
                     </table>
+                    <br>
+                    <!--페이지 처리-->
+                    <div th:if="${!postDTOs.isEmpty}">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${!postDTOs.hasPrevious} ? 'disabled'">
+                                <a class="page-link" th:href="@{|?page=${postDTOs.number - 1}|}">
+                                    <span>이전</span>
+                                </a>
+                            </li>
+                            <li th:each="page : ${#numbers.sequence(postDTOs.getStartPage(), postDTOs.getEndPage())}"
+                                th:classappend="${page == postDTOs.number} ? 'active'" class="page-item">
+                                <a th:text="${page + 1}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                            </li>
+                            <li class="page-item" th:classappend="${!postDTOs.hasNext} ? 'disabled'">
+                                <a class="page-link" th:href="@{|?page=${postDTOs.number + 1}|}">
+                                    <span>다음</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
