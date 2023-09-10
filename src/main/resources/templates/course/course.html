@@ -21,15 +21,19 @@
 </br>
 </br>
 
+<section id="services" class="services section-bg">
+    <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+
 <div class="d-flex" id="wrapper">
 
     <div id="page-content-wrapper">
 
+        <div class="section-title">
+            <h2>나의 강좌</h2>
+        </div>
+
         <!-- Page content-->
         <div class="container-fluid">
-            <div class="py-5 text-center">
-                <h1 class="mt-4">나의 강좌</h1>
-            </div>
             <div class="row container2 mx-auto">
                 <div class="col">
                     <table class="table">
@@ -73,6 +77,11 @@
         </div>
     </div>
 </div>
+    </div>
+</section>
+
+<!-- 공통 footer -->
+<div th:replace="/fragments/footer.html::fragment-footer"></div>
 
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
