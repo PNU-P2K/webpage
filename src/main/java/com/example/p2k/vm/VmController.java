@@ -1,5 +1,6 @@
 package com.example.p2k.vm;
 
+import com.example.p2k._core.exception.Exception400;
 import com.example.p2k._core.security.CustomUserDetails;
 import com.example.p2k.user.User;
 import com.example.p2k.user.UserResponse;
@@ -40,10 +41,11 @@ public class VmController {
 
     // 가상환경 생성하기
     @PostMapping("/create")
-    public String create(@AuthenticationPrincipal CustomUserDetails userDetails, @ModelAttribute("vm") VmRequest.CreateDTO requestDTO, Model model) {
+    public String create(@AuthenticationPrincipal CustomUserDetails userDetails, @ModelAttribute("vm") VmRequest.CreateDTO requestDTO, Model model) throws Exception {
         try {
             vmService.create(userDetails.getUser(), requestDTO);
-        } catch (Exception e) {
+        } catch (Exception400 e) {
+            System.out.println("controller : 에러 발견");
             User user = userDetails.getUser();
             model.addAttribute("user", user);
             model.addAttribute("vmError", new VmResponse.CreateDTO("true"));

@@ -31,7 +31,8 @@ public class VmService {
     private int portnum = 6080;
     private final int maxNum = 3;
 
-    private final String baseURL = "http://localhost:5000";
+    private final String baseURL = "http://43.200.182.194:5000";
+    //private final String baseURL = "http://localhost:5000";
 
     @Transactional
     public VmResponse.FindAllDTO findAllByUserId(Long id) {
@@ -48,7 +49,9 @@ public class VmService {
     public void create(User user, VmRequest.CreateDTO requestDTO) throws Exception {
 
         List<Vm> vms = vmRepository.findAllByUserId(user.getId());
+        System.out.println("vms.size() = " + vms.size());
         if (vms.size() > maxNum) {
+            System.out.println("가상환경 최대 생성함!" );
             throw new Exception400("가상환경은 최대 3개까지 생성할 수 있습니다.");
         }
 
