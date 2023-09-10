@@ -97,7 +97,7 @@
         <div class="row">
           <div class="col-lg-3 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="c : ${courses.getCourses()}">
             <div class="box">
-              <h3><a th:href="@{/courses/__${c.id}__/my-vm}" th:text="${c.name}"></a></h3>
+              <h3><a th:href="@{/courses/__${c.id}__/notice-board}" th:text="${c.name}"></a></h3>
 <!--              <div class="btn-wrap">-->
 <!--                <button class="btn btn-primary" th:onclick="|javascript:alert('${v.port}')|">접속하기</button>-->
 <!--              </div>-->

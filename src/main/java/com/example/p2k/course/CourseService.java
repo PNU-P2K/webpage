@@ -11,6 +11,10 @@ import com.example.p2k.vm.VmRepository;
 import com.example.p2k.vm.VmResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,23 +34,29 @@ public class CourseService {
     private final VmRepository vmRepository;
 
     //나의 강좌 조회
-    public CourseResponse.FindCoursesDTO findCourses(Long userId){
-        List<Course> courses = courseUserRepository.findCourseByUserId(userId);
+    public CourseResponse.FindCoursesDTO findCourses(Long userId, int page){
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("id")); //정렬조건
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        Page<Course> courses = courseUserRepository.findCourseByUserId(pageable, userId);
         return new CourseResponse.FindCoursesDTO(courses);
     }
 
     //강좌 신청 페이지
-    public CourseResponse.FindCoursesDTO findAll(){
-        List<Course> courses = courseRepository.findAll();
+    public CourseResponse.FindCoursesDTO findAll(int page){
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("id")); //정렬조건
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        Page<Course> courses = courseRepository.findAll(pageable);
         return new CourseResponse.FindCoursesDTO(courses);
     }
 
     //강좌 신청
     @Transactional
     public void apply(Long id, User user){
-        Optional<CourseUser> findCourseUser = courseUserRepository.findByCourseIdAndUserId(user.getId(), id);
+        Optional<CourseUser> findCourseUser = courseUserRepository.findByCourseIdAndUserId(id, user.getId());
         if(findCourseUser.isPresent()){
-            //이미 신청한 강좌인지 체크
+            throw new Exception400("이미 신청한 강좌입니다.");
         }
 
         Optional<Course> course = courseRepository.findById(id);
@@ -61,8 +71,11 @@ public class CourseService {
     }
 
     //강좌 검색
-    public CourseResponse.FindCoursesDTO findBySearch(String keyword){
-        List<Course> courses = courseRepository.findByNameContaining(keyword);
+    public CourseResponse.FindCoursesDTO findBySearch(String keyword, int page){
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("id")); //정렬조건
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        Page<Course> courses = courseRepository.findByNameContaining(pageable, keyword);
         return new CourseResponse.FindCoursesDTO(courses);
     }
 
