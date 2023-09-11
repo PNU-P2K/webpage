@@ -5,7 +5,7 @@
 <div th:replace="/fragments/header.html::fragment-header"></div>
 <style>
     .container2 {
-        max-width: 700px;
+        max-width: 900px;
     }
 </style>
 <body>
@@ -16,18 +16,22 @@
 </br>
 </br>
 
+<section id="pricing" class="pricing">
+    <div class="container ms-4" data-aos="fade-up">
+
 <div class="d-flex" id="wrapper">
     <!-- 공통 sidebar-->
     <div th:replace="/course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
 
     <div id="page-content-wrapper">
 
+        <div class="section-title">
+            <h2>교육자의 가상 환경 보기</h2>
+            <h3 th:text="${courseDTO.name}">강좌 이름</h3>
+        </div>
+
         <!-- Page content-->
         <div class="container-fluid">
-            <div class="py-5 text-center">
-                <h1 class="col mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
-                <h2 class="mt-4">교육자의 가상 환경 보기</h2>
-            </div>
             <div class="row">
                 <div class="col-lg-3 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="vm : ${instructorVms.getVms()}">
                     <div class="box">
@@ -67,6 +71,8 @@
     </div>
 </div>
 
+</div>
+</section>
 <!-- 공통 footer -->
 <div th:replace="/fragments/footer.html::fragment-footer"></div>
 

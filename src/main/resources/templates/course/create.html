@@ -5,7 +5,7 @@
 <div th:replace="/fragments/header.html::fragment-header"></div>
 <style>
     .container2 {
-        max-width: 600px;
+        max-width: 900px;
     }
     .btn-custom {
         max-width: 100px;
@@ -18,15 +18,21 @@
 </br>
 </br>
 
+
+<section id="pricing" class="pricing">
+    <div class="container" data-aos="fade-up">
+
+
 <div class="d-flex" id="wrapper">
 
     <div id="page-content-wrapper">
 
+        <div class="section-title">
+            <h2>강좌 생성하기</h2>
+        </div>
+
         <!-- Page content-->
         <div class="container-fluid">
-            <div class="py-5 text-center">
-                <h1 class="mt-4">강좌 생성하기</h1>
-            </div>
             <div class="container2 d-flex justify-content-center  mx-auto">
                 <form action="course.html" th:action th:object="${saveDTO}" method="post" class="row g-3 needs-validation" novalidate>
                     <div class="row mb-3">
@@ -47,6 +53,8 @@
         </div>
     </div>
 </div>
+    </div>
+</section>
 
 <!-- 공통 footer -->
 <div th:replace="/fragments/footer.html::fragment-footer"></div>
