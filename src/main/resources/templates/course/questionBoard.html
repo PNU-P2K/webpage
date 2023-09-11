@@ -9,6 +9,7 @@
     }
     .table th {
         width: 33.3%;
+        background-color: #f8fbfe;
     }
     .table td {
         height: 50px;
@@ -42,7 +43,7 @@
                 <div class="col">
                     <button type="button" class="btn btn-outline-primary float-end"
                             th:onclick="'javascript:createPost('+${courseDTO.id}+')'">글쓰기</button>
-                    <table class="table">
+                    <table class="table table-hover table-responsive section-bg">
                         <thead>
                         <tr>
                             <th>제목</th>

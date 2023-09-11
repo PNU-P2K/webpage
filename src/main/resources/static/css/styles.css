@@ -10926,7 +10926,7 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
 .menu {
   display: block;
   width: 200px;
-  background-color: #D9E6ED;
+  background-color: #f8fbfe;
   color: #16507b;
   border-radius: 20px;
   padding: 10px;
@@ -10949,11 +10949,11 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
 }
 
 .menu a:hover {
-  color: #D9E6ED;
+  color: #f8fbfe;
   color: #2487ce;
 }
 .menu ul li:hover, .menu > label:hover {
-  background-color: #D9E6ED;
+  background-color: #f8fbfe;
   color: #000;
   border-radius: 10px;
 }
