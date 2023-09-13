@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 header -->
+<div th:replace="/fragments/header.html::fragment-header"></div>
+
+<body>
+
+<!-- 공통 navigation-->
+<div th:replace="/fragments/nav.html::fragment-nav(${user})"></div>
+
+</br>
+</br>
+
+<section id="services" class="services section-bg">
+  <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+
+    <div class="section-title">
+      <h2>가상환경 수정하기</h2>
+    </div>
+
+    <div id="loading" class="loading" style="display: none;">
+      <img src="/assets/p2k_logo_b.png" alt="loading">
+    </div>
+
+<!--    <div>-->
+<!--      <input type="hidden" class="error" th:if="${vmError.errorMsg == 'true'}" th:value="true">-->
+<!--      <input type="hidden" class="error" th:unless="${vmError.errorMsg == 'true'}" th:value="false">-->
+<!--    </div>-->
+
+    <div class="row icon-boxes d-flex justify-content-center">
+      <div class="col-md-6 aos-init aos-animate mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="200" >
+        <div class="icon-box">
+
+          <form th:action="@{/vm/update/{id}(id=${vmDTO.id})}" method="post" style="text-align: center;" class="m-auto center-block" id="update">
+<!--            <input type="hidden" th:field="${vm.id}">-->
+            <div class="mb-4 row justify-content-center">
+              <label for="name" class="col-sm-3 col-form-label" style="font-weight: bolder;">이름</label>
+              <div class="col-sm-5">
+                <input type="text" class="form-control" id="name" th:field="${vmDTO.name}" placeholder="이름" required>
+              </div>
+            </div>
+
+            <div class="mb-4 row justify-content-center">
+              <label for="name" class="col-sm-2 col-form-label" style="font-weight: bolder;">설명</label>
+              <div class="col-sm-6" >
+                <textarea type="text" class="form-control" id="description" th:field="${vmDTO.description}" placeholder="설명"></textarea>
+              </div>
+            </div>
+
+            <div class="mb-4 row justify-content-center">
+              <label for="name" class="col-sm-3 col-form-label" style="font-weight: bolder;">강좌 연결하기</label>
+              <select class="form-select w-25" aria-label="나의 강좌" th:field="${vmDTO.courseId}">
+                <option value="" selected>없음</option>
+                <option th:each="courseDTO : ${courseDTOs.getCourses()}" th:value="${courseDTO.id}">[[${courseDTO.name}]]</option>
+              </select>
+            </div>
+
+<!--            th:onclick="|location.href='@{/vm/update/{id}(id=${vm.id})}'|"-->
+            <button class="mt-5 btn btn-lg btn-main btn" type="submit" id="create-btn">수정하기</button>
+          </form>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</section><!-- End Hero -->
+
+<!-- 공통 footer -->
+<div th:replace="/fragments/footer.html::fragment-footer"></div>
+
+<!-- 공통 script -->
+<div th:replace="/fragments/script.html::fragment-script"></div>
+<script th:inline="javascript">
+
+  // $(window).load(function() {
+  //     // 로딩되기 시작할때
+  //     $('.loading').css("display", "none");
+  // });
+
+  $(document).ready(function() {
+    //console.log("error ", $('.error').val());
+    if ($('.error').val() == 'true' ) {
+      Swal.fire({
+        title: '가상환경은 최대 3개 생성할 수 있습니다.',
+        confirmButtonColor: '#2487ce',
+        confirmButtonText: '확인'
+      });
+    }
+  });
+
+  // $(function() {
+  //     // 로딩될때
+  // });
+
+  $('.radio-scope').click(function() {
+    var val = $('.radio-scope:checked').val(); // 체크된 Radio 버튼의 값을 가져옵니다.
+
+    if ( val == 'false' ) {
+      $('.radio-control').attr('disabled', true);
+    } else {
+      $('.radio-control').attr('disabled', false);
+    }
+  });
+
+  function alert(port) {
+
+    Swal.fire({
+      title : "생성하시겠습니까?",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '생성',
+      cancelButtonText: '취소'
+    }).then((result) => {
+      if(result.isConfirmed) {
+        location.href = "http://www.webdesktop.p2kcloud.com:"+port;
+      }
+    })
+  }
+</script>
+</body>
+
+</html>

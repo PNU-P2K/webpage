@@ -19,13 +19,15 @@ public class Vm extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+
     private String vmname;
 
     @ManyToOne
     private User user;
 
     private String password;
+
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "course_id")
@@ -50,10 +52,11 @@ public class Vm extends BaseTimeEntity {
     private String containerKey;
 
     @Builder
-    public Vm(String vmname, User user, String password, Course course, int port, String containerId, String imageId, String state, Boolean scope, Boolean control, String vmKey, String containerKey) {
+    public Vm(String vmname, User user, String password, String description, Course course, int port, String containerId, String imageId, String state, Boolean scope, Boolean control, String vmKey, String containerKey) {
         this.vmname = vmname;
         this.user = user;
         this.password = password;
+        this.description = description;
         this.course = course;
         this.port = port;
         this.containerId = containerId;
@@ -75,5 +78,9 @@ public class Vm extends BaseTimeEntity {
 
     public void updateImageId(String imageId) {
         this.imageId = imageId;
+    }
+
+    public void update(Vm vm) {
+        this.vmname = vm.getVmname();
     }
 }

@@ -13,7 +13,7 @@ insert into course_tb(name, description) values('알고리즘', '3-1');
 insert into course_tb(name, description) values('DB', '3-2');
 insert into course_tb(name, description) values('사물인터넷', '4-2');
 
---insert into vm_tb(user_id, vmname, course_id, port, scope, control, state) values(2, '알고리즘', 1, 6085, 1, 1, 'stop');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(1, '알고리즘', 1, 6085, 1, 1, 'stop', '이 가상환경은 알고리즘 수업을 위한 가상환경이다');
 --insert into vm_tb(user_id, vmname, course_id, port, scope, control, state) values(2, '자료구조', 1, 6086, 0, 1, 'stop');
 --insert into vm_tb(user_id, vmname, course_id, port, scope, control, state) values(3, '알고리즘', 1, 6087, 1, 1, 'stop');
 --insert into vm_tb(user_id, vmname, course_id, port, scope, control, state) values(3, '자료구조', 1, 6088, 0, 1, 'stop');

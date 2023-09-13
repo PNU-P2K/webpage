@@ -1,6 +1,7 @@
 package com.example.p2k.vm;
 
 import com.example.p2k._core.exception.Exception400;
+import com.example.p2k._core.exception.Exception404;
 import com.example.p2k.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +29,20 @@ public class VmService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RestTemplate restTemplate;
     private final ObjectMapper ob = new ObjectMapper();
-    private int portnum = 6080;
+    private int portnum = 6081;
     private final int maxNum = 3;
 
     private final String baseURL = "http://43.200.182.194:5000";
     //private final String baseURL = "http://localhost:5000";
+
+    @Transactional
+    public Vm findById(Long id) {
+        Vm vm = vmRepository.findById(id).orElseThrow(
+                () -> new Exception404("해당 가상환경을 찾을 수 없습니다.")
+        );
+
+        return vm;
+    }
 
     @Transactional
     public VmResponse.FindAllDTO findAllByUserId(Long id) {
@@ -46,12 +56,19 @@ public class VmService {
     }
 
     @Transactional
+    public void update(Long id, VmRequest.UpdateDTO requestDTO) {
+        System.out.println("requestDTO = " + requestDTO.getDescription());
+        System.out.println("requestDTO = " + requestDTO.getCourseId());
+        vmRepository.update(id, requestDTO.getName(), requestDTO.getDescription(), requestDTO.getCourseId());
+    }
+
+    @Transactional
     public void create(User user, VmRequest.CreateDTO requestDTO) throws Exception {
 
         List<Vm> vms = vmRepository.findAllByUserId(user.getId());
         System.out.println("vms.size() = " + vms.size());
         if (vms.size() > maxNum) {
-            System.out.println("가상환경 최대 생성함!" );
+            System.out.println("가상환경은 최대 3개까지 생성할 수 있습니다." );
             throw new Exception400("가상환경은 최대 3개까지 생성할 수 있습니다.");
         }
 

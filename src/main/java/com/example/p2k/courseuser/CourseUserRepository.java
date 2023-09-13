@@ -24,6 +24,9 @@ public interface CourseUserRepository extends JpaRepository<CourseUser, Long> {
     List<User> findUnacceptedUserByCourseId(@Param("courseId") Long courseId);
 
     @Query("select cu.course from CourseUser cu where cu.user.id = :userId and cu.accept = true")
+    List<Course> findCourseByUserId(@Param("userId") Long userId);
+
+    @Query("select cu.course from CourseUser cu where cu.user.id = :userId and cu.accept = true")
     Page<Course> findCourseByUserId(Pageable pageable, @Param("userId") Long userId);
 
     @Modifying

@@ -33,6 +33,11 @@ public class CourseService {
     private final PostRepository postRepository;
     private final VmRepository vmRepository;
 
+    public CourseResponse.CoursesDTO findCourses(Long userId) {
+        List<Course> courses = courseUserRepository.findCourseByUserId(userId);
+        return new CourseResponse.CoursesDTO(courses);
+    }
+
     //나의 강좌 조회
     public CourseResponse.FindCoursesDTO findCourses(Long userId, int page){
         List<Sort.Order> sorts = new ArrayList<>();

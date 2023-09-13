@@ -23,11 +23,6 @@ public class PostController {
     private final PostService postService;
     private final ReplyService replyService;
 
-    //              교육자        학생
-    // 공지사항   :   작성 가능     조회만 가능
-    // 질문, 자유 :   작성 가능     작성 가능
-    //
-
     //공지사항 게시판 페이지
     @GetMapping("/notice-board")
     public String getNoticeBoard(@PathVariable Long courseId, Model model,
