@@ -10914,3 +10914,69 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
   left: 50%;
   z-index: 100;
 }
+
+#expand-menu { /* 체크박스 폼 요소 감춤 */
+  display: none;
+}
+#expand-menu:checked ~ ul { /* 체크박스 체크되었으면 메뉴 목록 표시 - 반응형 표시용 */
+  display: block;
+  height: auto;
+}
+
+.menu {
+  display: block;
+  width: 200px;
+  background-color: #f8fbfe;
+  color: #16507b;
+  border-radius: 20px;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: hidden; /* 반응형 애니메이션용 */
+  transition: all 0.5s ease; /* 반응형 애니메이션 */
+}
+.menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.menu a, .menu > label {
+  display: block;
+  height: 25px;
+  padding: 8px;
+  cursor: pointer;
+  color: #16507b;
+  text-decoration: none;
+}
+
+.menu a:hover {
+  color: #f8fbfe;
+  color: #2487ce;
+}
+.menu ul li:hover, .menu > label:hover {
+  background-color: #f8fbfe;
+  color: #000;
+  border-radius: 10px;
+}
+.menu div {
+  position: absolute; /* 절대 위치로 텍스트 고정 */
+  left: 50px;
+  line-height: 1.5;
+  font-size: 1em;
+  font-family: 'Noto Sans KR';
+  padding: 0 0 0 20px; /* 패딩 20p로 축소 */
+}
+
+/*@media screen and (max-width:1023px) {*/
+/*  .menu { !* 1단계 *!*/
+/*    width: 60px;*/
+/*  }*/
+/*}*/
+/*@media screen and (max-width:560px) {*/
+/*  .menu #expand-menu:not(:checked) ~ ul { !* 2단계 *!*/
+/*    display: none;*/
+/*  }*/
+/*}*/
+
+.menu #expand-menu:not(:checked) ~ ul { /* 데스크탑 화면에서도 메뉴를 접었더 펼칠 수 있음 */
+  display: none;
+}

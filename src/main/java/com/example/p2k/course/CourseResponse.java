@@ -10,6 +10,27 @@ import java.util.stream.Collectors;
 public class CourseResponse {
 
     @Getter
+    public static class CoursesDTO {
+
+        private final List<CoursesDTO.CourseDTO> courses;
+
+        public CoursesDTO(List<Course> courses) {
+            this.courses = courses.stream().map(CoursesDTO.CourseDTO::new).collect(Collectors.toList());
+        }
+
+        @Getter
+        public class CourseDTO {
+            private final Long id;
+            private final String name;
+
+            public CourseDTO(Course course) {
+                this.id = course.getId();
+                this.name = course.getName();
+            }
+        }
+    }
+
+    @Getter
     public static class FindCoursesDTO {
 
         private final Boolean hasPrevious;

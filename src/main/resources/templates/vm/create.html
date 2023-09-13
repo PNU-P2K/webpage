@@ -23,6 +23,11 @@
             <img src="/assets/p2k_logo_b.png" alt="loading">
         </div>
 
+        <div>
+            <input type="hidden" class="error" th:if="${vmError.errorMsg == 'true'}" th:value="true">
+            <input type="hidden" class="error" th:unless="${vmError.errorMsg == 'true'}" th:value="false">
+        </div>
+
         <div class="row icon-boxes d-flex justify-content-center">
             <div class="col-md-6 aos-init aos-animate mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="200">
                 <div class="icon-box">
@@ -32,6 +37,13 @@
                             <label for="name" class="col-sm-4 col-form-label" style="font-weight: bolder;">이름</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" id="name" th:field="*{vmname}" placeholder="이름" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4 row justify-content-center">
+                            <label for="name" class="col-sm-4 col-form-label" style="font-weight: bolder;">설명</label>
+                            <div class="col-sm-4">
+                                <textarea type="text" class="form-control" id="description" th:field="*{description}" placeholder="설명" required></textarea>
                             </div>
                         </div>
 
@@ -62,16 +74,8 @@
                             </div>
                         </div>
 
-<!--                        <div class="m-4"> <span style="font-weight: bolder;">공개 범위 &nbsp; &nbsp;</span>-->
-<!--                            <label>전체공개 <input type="radio" name="scope" th:field="*{scope}" th:value="false"></label>&nbsp;-->
-<!--                            <label>비공개 <input type="radio" name="scope" checked th:field="*{scope}" th:value="true"></label>-->
-<!--                        </div>-->
-<!--                        <div class="m-4"> <span style="font-weight: bolder;">접속자 권한 범위 &nbsp; &nbsp;</span>-->
-<!--                            <label>제어 가능 <input type="radio" name="control" th:field="*{control}" th:value="false"></label>&nbsp;-->
-<!--                            <label>보기만 가능 <input type="radio" name="control" checked th:field="*{control}" th:value="true"></label>-->
-<!--                        </div>-->
 
-                        <button class="mt-5 btn btn-lg btn-primary" type="submit" id="create-btn">생성하기</button>
+                        <button class="mt-5 btn btn-lg btn-main btn" type="submit" id="create-btn">생성하기</button>
                     </form>
                 </div>
             </div>
@@ -123,13 +127,16 @@
     //     $('.loading').css("display", "none");
     // });
 
-    // $(document).ready(function() {
-    //     $('.loading').css("display", "none");
-    //     $('#create').submit(function(){
-    //         $('#loading').css("display", "");
-    //         return true;
-    //     });
-    // });
+    $(document).ready(function() {
+        //console.log("error ", $('.error').val());
+        if ($('.error').val() == 'true' ) {
+            Swal.fire({
+                title: '가상환경은 최대 3개 생성할 수 있습니다.',
+                confirmButtonColor: '#2487ce',
+                confirmButtonText: '확인'
+            });
+        }
+    });
 
     // $(function() {
     //     // 로딩될때

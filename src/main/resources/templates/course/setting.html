@@ -5,7 +5,7 @@
 <div th:replace="/fragments/header.html::fragment-header"></div>
 <style>
     .container2 {
-        max-width: 700px;
+        max-width: 900px;
     }
 </style>
 <body>
@@ -15,18 +15,21 @@
 </br>
 </br>
 
+<section id="pricing" class="pricing">
+    <div class="container ms-4" data-aos="fade-up">
 <div class="d-flex" id="wrapper">
     <!-- 공통 sidebar-->
     <div th:replace="/course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
 
     <div id="page-content-wrapper">
 
+        <div class="section-title">
+            <h2>설정 및 관리</h2>
+            <h3 th:text="${courseDTO.name}">강좌 이름</h3>
+        </div>
+
         <!-- Page content-->
         <div class="container-fluid">
-            <div class="py-5 text-center">
-                <h1 class="col mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
-                <h2 class="mt-4">설정 및 관리</h2>
-            </div>
             <div class="row container2 mx-auto">
                 <h4 class="mt-4">강좌 가입 신청</h4>
                 <hr class="my-4">
@@ -61,6 +64,11 @@
         </div>
     </div>
 </div>
+    </div>
+</section>
+
+<!-- 공통 footer -->
+<div th:replace="/fragments/footer.html::fragment-footer"></div>
 
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>

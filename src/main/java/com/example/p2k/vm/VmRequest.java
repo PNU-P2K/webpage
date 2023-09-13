@@ -1,5 +1,6 @@
 package com.example.p2k.vm;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ public class VmRequest {
 
         private String vmname;
         private String password;
+        private String description;
         private Boolean scope;
         private Boolean control;
     }
@@ -23,5 +25,15 @@ public class VmRequest {
         private String key;
         private Boolean scope;
         private Boolean control;
+    }
+
+    @Getter
+    @Builder
+    public static class UpdateDTO {
+
+        private Long id;
+        private String name;
+        private String description;
+        private Long courseId;
     }
 }

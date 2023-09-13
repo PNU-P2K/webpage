@@ -27,7 +27,24 @@
                 <div class="col-lg-3 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="v : ${vm.getVms()}">
 
                     <div class="box p-3">
-                        <h3 th:text="${v.name}"></h3>
+                        <div class="row">
+                            <div class="dropdown col-2" th:if="${v.state == 'stop'}">
+                                <button class="btn dropdown-toggle z" type="button" data-toggle="dropdown" id="dropdownBtn">
+                                    <!--                                <img src="/assets/drop-down.png" width="10px" height="10px"/>-->
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" th:onclick="exportImage([[${v.imageId}]])">내보내기</a>
+                                    <a class="dropdown-item" type="submit" onclick="document.getElementById('delete').submit();">
+                                        <form class="form-inline m-1 p-0 col-3" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">
+                                            <input type="submit" style="border: 0; outline: 0; background-color: #fff" value='삭제하기'>
+                                        </form>
+                                    </a>
+                                    <div class="dropdown-item" th:onclick="|location.href='@{/vm/update/{id}(id=${v.id})}'|">수정하기</div>
+                                </div>
+                            </div>
+                        <h3 class="col-8" th:text="${v.name}"></h3>
+                        </div>
+
                         <input hidden id="vmId" type="text" th:value="${v.id}"/>
                         <input hidden id="vmPort" type="text" th:value="${v.port}"/>
                         <input hidden id="vmImageId" type="text" th:value="${v.imageId}"/>
@@ -57,14 +74,14 @@
                                     <button class="btn-main btn" type="submit">저장</button>
                                 </form>
                                 </div>
-                                <div class="row d-flex justify-content-center">
-                                <form class="form-inline m-1 p-0 col-3" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">
-                                    <button class="btn-main btn" type="submit">삭제</button>
-                                </form>
-                                <div class="form-inline m-1 p-0 col-6">
-                                    <button class="btn-main btn" th:onclick="exportImage([[${v.imageId}]])">내보내기</button>
-                                </div>
-                                </div>
+<!--                                <div class="row d-flex justify-content-center">-->
+<!--                                <form class="form-inline m-1 p-0 col-3" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">-->
+<!--                                    <button class="btn-main btn" type="submit">삭제</button>-->
+<!--                                </form>-->
+<!--                                <div class="form-inline m-1 p-0 col-6">-->
+<!--                                    <button class="btn-main btn" th:onclick="exportImage([[${v.imageId}]])">내보내기</button>-->
+<!--                                </div>-->
+<!--                                </div>-->
                             </div>
 
                         </div>
@@ -94,8 +111,8 @@
         }).then((result) => {
             if(result.isConfirmed) {
                 //location.href = "http://localhost:"+port; // 기존 창에서 이동
-                window.open("http://43.201.20.193:"+port, "_blank") // 새 창에서 켜짐
-            }
+                window.open("https://43.200.182.194:"+port, "_blank") // 새 창에서 켜짐
+             }
         })
     }
 
@@ -107,6 +124,22 @@
             confirmButtonText: '확인'
         });
     }
+
+    $('#dropdownBtn').on('show.bs.dropdown', function () {
+        //클릭하는 순간 하위 버튼들이 보여질 때
+    })
+
+    $('#dropdownBtn').on('shown.bs.dropdown', function () {
+        //하위 버튼들이 다 보여지고 난 뒤
+    })
+
+    $('#dropdownBtn').on('hide.bs.dropdown', function () {
+        //하위 버튼이 닫혔을 때
+    })
+
+    $('#dropdownBtn').on('hidden.bs.dropdown', function () {
+        //하위 버튼이 닫힌 후
+    })
 </script>
 </body>
 

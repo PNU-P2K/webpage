@@ -5,7 +5,7 @@
 <div th:replace="/fragments/header.html::fragment-header"></div>
 <style>
     .container2 {
-        max-width: 700px;
+        max-width: 900px;
     }
 </style>
 <body>
@@ -15,48 +15,74 @@
 </br>
 </br>
 
+<section id="pricing" class="pricing">
+    <div class="container ms-4" data-aos="fade-up">
+
 <div class="d-flex" id="wrapper">
     <!-- 공통 sidebar-->
     <div th:replace="/course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
 
     <div id="page-content-wrapper">
+
+        <div class="section-title">
+            <h2>나의 가상 환경</h2>
+            <h3 th:text="${courseDTO.name}">강좌 이름</h3>
+        </div>
+
         <!-- Page content-->
         <div class="container-fluid">
-            <div class="py-5 text-center">
-                <h1 class="col mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
-                <h2 class="mt-4">나의 가상 환경</h2>
-            </div>
             <div class="row">
-                <div class="col-lg-3 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="vm : ${myVms.getVms()}">
-                    <div class="box">
-                        <h3 th:text="${vm.name}"></h3>
-                        <input hidden id="vmId" type="text" th:value="${vm.id}"/>
-                        <input hidden id="vmPort" type="text" th:value="${vm.port}"/>
-                        <p class="card-text text-center"><span th:if="${vm.scope}">전체공개</span></p>
-                        <p class="card-text text-center"><span th:if="!${vm.scope}">비공개</span></p>
-                        <p class="card-text text-center"><span th:if="${vm.control}">누구나 제어 가능</span></p>
-                        <p class="card-text text-center"><span th:if="!${vm.control}">보기만 가능</span></p>
-                        <p class="card-text text-center" th:if="${vm.state == 'running'}">상태 : 실행 중</p>
-                        <p class="card-text text-center" th:if="${vm.state == 'stop'}">상태 : 중지</p>
+                <div class="col-lg-3 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="v : ${myVms.getVms()}">
+
+                    <div class="box p-3">
+                        <div class="row">
+                            <div class="dropdown col-2" th:if="${v.state == 'stop'}">
+                                <button class="btn dropdown-toggle z" type="button" data-toggle="dropdown" id="dropdownBtn">
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" th:onclick="exportImage([[${v.imageId}]])">내보내기</a>
+                                    <a class="dropdown-item" type="submit" onclick="document.getElementById('delete').submit();">
+                                        <form th:action="@{/vm/delete/{id}(id=${v.id})}" method="post" id="delete">
+                                            삭제하기
+                                        </form>
+                                    </a>
+                                    <div class="dropdown-item" th:onclick="|location.href='@{/vm/update/{id}(id=${v.id})}'|">수정하기</div>
+                                </div>
+                            </div>
+                            <h3 class="col-8" th:text="${v.name}"></h3>
+                        </div>
+
+                        <input hidden id="vmId" type="text" th:value="${v.id}"/>
+                        <input hidden id="vmPort" type="text" th:value="${v.port}"/>
+                        <input hidden id="vmImageId" type="text" th:value="${v.imageId}"/>
+                        <p class="card-text text-center"><span th:if="${v.scope}">전체공개</span></p>
+                        <p class="card-text text-center"><span th:if="!${v.scope}">비공개</span></p>
+                        <p class="card-text text-center"><span th:if="${v.control}">누구나 제어 가능</span></p>
+                        <p class="card-text text-center"><span th:if="!${v.control}">보기만 가능</span></p>
+                        <p class="card-text text-center" th:if="${v.state == 'running'}">상태 : 실행 중</p>
+                        <p class="card-text text-center" th:if="${v.state == 'stop'}">상태 : 중지</p>
                         <div class="btn-wrap">
 
-                            <span th:if="${vm.state == 'running'}">
-                                <button class="btn btn-primary" th:onclick="|javascript:alert('${v.port}')|">접속</button>
-                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/stop/{id}(id=${vm.id})}" method="post">
-                                    <button class="btn btn-primary" type="submit">중지</button>
+                            <div class="row d-flex justify-content-center" th:if="${v.state == 'running'}">
+                                <div class="form-inline m-0 p-0 col-4">
+                                    <button class="btn-main btn" th:onclick="|javascript:alert('${v.port}')|">접속</button>
+                                </div>
+                                <form class="form-inline m-0 p-0 col-4" th:action="@{/vm/stop/{id}(id=${v.id})}" method="post">
+                                    <button class="btn-main btn" type="submit">중지</button>
                                 </form>
-                            </span>
-                            <span th:if="${vm.state == 'stop'}">
-                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/start/{id}(id=${vm.id})}" method="post">
-                                    <button class="btn btn-primary" type="submit">실행</button>
-                                </form>
-                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/save/{id}(id=${vm.id})}" method="post">
-                                    <button class="btn btn-primary" type="submit">저장</button>
-                                </form>
-                                <form class="form-inline my-2 my-lg-0" th:action="@{/vm/delete/{id}(id=${vm.id})}" method="post">
-                                    <button class="btn btn-primary" type="submit">삭제</button>
-                                </form>
-                            </span>
+                            </div>
+
+                            <div class="row d-flex justify-content-center" th:if="${v.state == 'stop'}">
+                                <div class="row d-flex justify-content-center" >
+                                    <form class="form-inline m-1 p-0 col-3" th:action="@{/vm/start/{id}(id=${v.id})}" method="post">
+                                        <button class="btn-main btn" type="submit">실행</button>
+                                    </form>
+                                    <form class="form-inline m-1 p-0 col-3" th:action="@{/vm/save/{id}(id=${v.id})}" method="post">
+                                        <button class="btn-main btn" type="submit">저장</button>
+                                    </form>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -64,6 +90,12 @@
         </div>
     </div>
 </div>
+
+    </div>
+</section>
+
+<!-- 공통 footer -->
+<div th:replace="/fragments/footer.html::fragment-footer"></div>
 
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
@@ -83,22 +115,32 @@
             }
         })
     }
-    function access(id, port) {
-        const form = document.createElement("form");
-        form.setAttribute("method", "post");
-        form.setAttribute("action", "/vm/" + id + "/access");
-        document.body.appendChild(form);
-        form.submit();
 
-        const newWindow = window.open("", "_blank");
-        newWindow.location.href = "http://3.34.181.183:" + port;
+    function exportImage(imageId) {
+        Swal.fire({
+            title: '아래의 키를 복사해서 사용하세요',
+            text: imageId,
+            confirmButtonColor: '#2487ce',
+            confirmButtonText: '확인'
+        });
     }
-    function save(id) {
-        const form = document.createElement("form");
-        form.setAttribute("method", "post");
-        form.setAttribute("action", "/vm/" + id + "/save");
-        document.body.appendChild(form);
-        form.submit();
-    }
+
+    // function access(id, port) {
+    //     const form = document.createElement("form");
+    //     form.setAttribute("method", "post");
+    //     form.setAttribute("action", "/vm/" + id + "/access");
+    //     document.body.appendChild(form);
+    //     form.submit();
+    //
+    //     const newWindow = window.open("", "_blank");
+    //     newWindow.location.href = "http://3.34.181.183:" + port;
+    // }
+    // function save(id) {
+    //     const form = document.createElement("form");
+    //     form.setAttribute("method", "post");
+    //     form.setAttribute("action", "/vm/" + id + "/save");
+    //     document.body.appendChild(form);
+    //     form.submit();
+    // }
 </script>
 </html>
