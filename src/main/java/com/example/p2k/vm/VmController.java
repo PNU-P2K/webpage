@@ -69,13 +69,19 @@ public class VmController {
     @GetMapping("/update/{id}")
     public String update(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         Vm vm = vmService.findById(id);
+
         CourseResponse.CoursesDTO coursesDTOs = courseService.findCourses(id);
         VmRequest.UpdateDTO vmDTO = VmRequest.UpdateDTO.builder()
                 .id(vm.getId())
                 .description(vm.getDescription())
-                .courseId(vm.getCourse().getId())
                 .name(vm.getVmname())
                 .build();
+
+        if (vm.getCourse()==null) {
+            vmDTO.setCourseId(null);
+        } else {
+            vmDTO.setCourseId(vm.getCourse().getId());
+        }
 
         model.addAttribute("courseDTOs", coursesDTOs);
         model.addAttribute("user", userDetails.getUser());
