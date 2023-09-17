@@ -27,7 +27,7 @@ public class VmRequest {
         private Boolean control;
     }
 
-    @Getter
+    @Getter @Setter
     @Builder
     public static class UpdateDTO {
 

@@ -11,6 +11,8 @@ public class VmRequestStF {
         private Long id;
         private int port;
         private String password;
+        private Boolean scope;
+        private Boolean control;
     }
 
     @Getter @Setter
@@ -26,6 +28,9 @@ public class VmRequestStF {
     public static class startDTO {
         private int port;
         private String containerId;
+        private String password;
+        private Boolean scope;
+        private Boolean control;
     }
 
     @Getter @Setter

@@ -69,13 +69,19 @@ public class VmController {
     @GetMapping("/update/{id}")
     public String update(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         Vm vm = vmService.findById(id);
+
         CourseResponse.CoursesDTO coursesDTOs = courseService.findCourses(id);
         VmRequest.UpdateDTO vmDTO = VmRequest.UpdateDTO.builder()
                 .id(vm.getId())
                 .description(vm.getDescription())
-                .courseId(vm.getCourse().getId())
                 .name(vm.getVmname())
                 .build();
+
+        if (vm.getCourse()==null) {
+            vmDTO.setCourseId(null);
+        } else {
+            vmDTO.setCourseId(vm.getCourse().getId());
+        }
 
         model.addAttribute("courseDTOs", coursesDTOs);
         model.addAttribute("user", userDetails.getUser());
@@ -127,4 +133,27 @@ public class VmController {
         return "redirect:/vm";
     }
 
+    // 가상환경 조회 페이지
+    @GetMapping("/search")
+    public String search(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        //UserResponse.FindByIdDTO user = userService.findById(userDetails.getUser().getId());
+        VmResponse.FindAllDTO vmList = vmService.findAll();
+        model.addAttribute("user", userDetails.getUser());
+        model.addAttribute("vm", vmList);
+        return "vm/search";
+    }
+
+    // 가상환경 조회 페이지에서 검색하기
+    @PostMapping("/search")
+    public String search(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam String keyword, Model model) {
+        if (keyword.isEmpty()) {
+            return "redirect:/vm/search";
+        }
+
+        VmResponse.FindAllDTO vmList = vmService.findAllByKeyword(keyword);
+        model.addAttribute("user", userDetails.getUser());
+        model.addAttribute("vm", vmList);
+
+        return "vm/search";
+    }
 }

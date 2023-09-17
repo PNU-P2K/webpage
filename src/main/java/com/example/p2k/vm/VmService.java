@@ -51,6 +51,18 @@ public class VmService {
     }
 
     @Transactional
+    public VmResponse.FindAllDTO findAll() {
+        List<Vm> vmList = vmRepository.findAll(true);
+        return new VmResponse.FindAllDTO(vmList);
+    }
+
+    @Transactional
+    public VmResponse.FindAllDTO findAllByKeyword(String keyword) {
+        List<Vm> vmList = vmRepository.findAllByKeyword(keyword);
+        return new VmResponse.FindAllDTO(vmList);
+    }
+
+    @Transactional
     public void save(Vm vm) {
         vmRepository.save(vm);
     }
@@ -87,6 +99,8 @@ public class VmService {
         requestDTOStF.setId(user.getId());
         requestDTOStF.setPort(portnum);
         requestDTOStF.setPassword(requestDTO.getPassword());
+        requestDTOStF.setScope(requestDTO.getScope());
+        requestDTOStF.setControl(requestDTO.getControl());
 
         // json을 string으로
         String jsonStr = ob.writeValueAsString(requestDTOStF);
@@ -101,11 +115,6 @@ public class VmService {
         System.out.println("res = " + res.getContainerId());
         System.out.println("res.getImageId() = " + res.getImageId());
 
-        // 임시로 제어권은 true로 설정
-        if (requestDTO.getControl()==null) {
-            requestDTO.setControl(true);
-        }
-
         // flask에서 받은 응답으로 가상환경 생성하고 저장
         Vm vm = Vm.builder()
                 .vmname(requestDTO.getVmname())
@@ -116,7 +125,7 @@ public class VmService {
                 .port(portnum)
                 .containerId(res.getContainerId())
                 .imageId(res.getImageId())
-                .state("stop")
+                .state("running")
                 .build();
 
         vmRepository.save(vm);
@@ -195,6 +204,9 @@ public class VmService {
         VmRequestStF.startDTO requestDTOStF = new VmRequestStF.startDTO();
         requestDTOStF.setPort(vm.getPort());
         requestDTOStF.setContainerId(vm.getContainerId());
+        requestDTOStF.setPassword(vm.getPassword());
+        requestDTOStF.setScope(vm.getScope());
+        requestDTOStF.setControl(vm.getControl());
         String jsonStr = ob.writeValueAsString(requestDTOStF);
 
         // header, body로 requestDTO 만들기
