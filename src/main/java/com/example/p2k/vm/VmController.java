@@ -127,4 +127,27 @@ public class VmController {
         return "redirect:/vm";
     }
 
+    // 가상환경 조회 페이지
+    @GetMapping("/search")
+    public String search(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        //UserResponse.FindByIdDTO user = userService.findById(userDetails.getUser().getId());
+        VmResponse.FindAllDTO vmList = vmService.findAll();
+        model.addAttribute("user", userDetails.getUser());
+        model.addAttribute("vm", vmList);
+        return "vm/search";
+    }
+
+    // 가상환경 조회 페이지에서 검색하기
+    @PostMapping("/search")
+    public String search(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam String keyword, Model model) {
+        if (keyword.isEmpty()) {
+            return "redirect:/vm/search";
+        }
+
+        VmResponse.FindAllDTO vmList = vmService.findAllByKeyword(keyword);
+        model.addAttribute("user", userDetails.getUser());
+        model.addAttribute("vm", vmList);
+
+        return "vm/search";
+    }
 }

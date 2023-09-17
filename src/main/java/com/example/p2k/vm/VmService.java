@@ -51,6 +51,18 @@ public class VmService {
     }
 
     @Transactional
+    public VmResponse.FindAllDTO findAll() {
+        List<Vm> vmList = vmRepository.findAll(true);
+        return new VmResponse.FindAllDTO(vmList);
+    }
+
+    @Transactional
+    public VmResponse.FindAllDTO findAllByKeyword(String keyword) {
+        List<Vm> vmList = vmRepository.findAllByKeyword(keyword);
+        return new VmResponse.FindAllDTO(vmList);
+    }
+
+    @Transactional
     public void save(Vm vm) {
         vmRepository.save(vm);
     }

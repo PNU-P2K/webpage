@@ -13,6 +13,12 @@ import java.util.Optional;
 @Repository
 public interface VmRepository extends JpaRepository<Vm, Long> {
 
+    @Query("select v from Vm v where v.scope=:scope")
+    List<Vm> findAll(@Param("scope") Boolean scope);
+
+    @Query("select v from Vm v where v.vmname=:keyword")
+    List<Vm> findAllByKeyword(@Param("keyword") String keyword);
+
     @Query("select v from Vm v where v.user.id= :id")
     List<Vm> findAllByUserId(@Param("id") Long id);
 

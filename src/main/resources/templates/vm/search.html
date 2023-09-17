@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 header -->
+<div th:replace="/fragments/header.html::fragment-header"></div>
+
+<body>
+
+<!-- 공통 navigation-->
+<div th:replace="/fragments/nav.html::fragment-nav(${user})"></div>
+
+<!-- Page content-->
+<main id="main">
+
+  <!-- ======= Pricing Section ======= -->
+  <section id="pricing" class="pricing">
+    <div class="container" data-aos="fade-up">
+      </br>
+      </br>
+
+      <div class="section-title">
+        <h2>가상환경 조회하기</h2>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <form class="d-flex justify-content-center" th:action="@{/vm/search}" method="post">
+            <div class="input-group">
+              <input type="search" class="form-control rounded" id="keyword" name="keyword"
+                     placeholder="가상환경 이름" aria-label="Search" aria-describedby="search-addon" />
+              <button type="submit" class="btn btn-outline-primary btn-main btn m-0">검색</button>
+            </div>
+        </form>
+      </div>
+
+      </br>
+      <div class="row">
+        <div class="col-lg-3 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="v : ${vm.getVms()}">
+
+          <div class="box p-3">
+            <div class="row">
+              <h3 class="col-8" th:text="${v.name}"></h3>
+            </div>
+
+            <input hidden id="vmId" type="text" th:value="${v.id}"/>
+            <input hidden id="vmPort" type="text" th:value="${v.port}"/>
+            <input hidden id="vmImageId" type="text" th:value="${v.imageId}"/>
+
+            <p class="card-text text-center"><span th:if="${v.scope}">전체공개</span></p>
+            <p class="card-text text-center"><span th:if="!${v.scope}">비공개</span></p>
+            <p class="card-text text-center"><span th:if="${v.control}">누구나 제어 가능</span></p>
+            <p class="card-text text-center"><span th:if="!${v.control}">보기만 가능</span></p>
+            <p class="card-text text-center" th:if="${v.state == 'running'}">상태 : 실행 중</p>
+            <p class="card-text text-center" th:if="${v.state == 'stop'}">상태 : 중지</p>
+            <div class="btn-wrap">
+
+              <div class="row d-flex justify-content-center" th:if="${v.state == 'running'}">
+                <div class="form-inline m-0 p-0 col-4">
+                  <button class="btn-main btn" th:onclick="|javascript:alert('${v.port}')|">접속</button>
+                </div>
+<!--                <form class="form-inline m-0 p-0 col-4" th:action="@{/vm/stop/{id}(id=${v.id})}" method="post">-->
+<!--                  <button class="btn-main btn" type="submit">중지</button>-->
+<!--                </form>-->
+              </div>
+
+              <div class="row d-flex justify-content-center" th:if="${v.state == 'stop'}">
+                <div class="row d-flex justify-content-center" >
+<!--                  <form class="form-inline m-1 p-0 col-3">-->
+<!--                    <button class="btn-main btn" type="submit">실행</button>-->
+<!--                  </form>-->
+<!--                  <form class="form-inline m-1 p-0 col-3" th:action="@{/vm/save/{id}(id=${v.id})}" method="post">-->
+<!--                    <button class="btn-main btn" type="submit">저장</button>-->
+<!--                  </form>-->
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section><!-- End Pricing Section -->
+
+</main><!-- End #main -->
+<!-- 공통 footer -->
+<div th:replace="/fragments/footer.html::fragment-footer"></div>
+
+<!-- 공통 script -->
+<div th:replace="/fragments/script.html::fragment-script"></div>
+<script th:inline="javascript">
+
+  function alert(port) {
+    Swal.fire({
+      title : "접속하시겠습니까?",
+      showCancelButton: true,
+      confirmButtonColor: '#2487ce',
+      cancelButtonColor: '#fa5f5f',
+      confirmButtonText: '접속',
+      cancelButtonText: '취소'
+    }).then((result) => {
+      if(result.isConfirmed) {
+        //location.href = "http://localhost:"+port; // 기존 창에서 이동
+        window.open("https://43.200.182.194:"+port, "_blank") // 새 창에서 켜짐
+      }
+    })
+  }
+
+  function exportImage(imageId) {
+    Swal.fire({
+      title: '아래의 키를 복사해서 사용하세요',
+      text: imageId,
+      confirmButtonColor: '#2487ce',
+      confirmButtonText: '확인'
+    });
+  }
+
+  $('#dropdownBtn').on('show.bs.dropdown', function () {
+    //클릭하는 순간 하위 버튼들이 보여질 때
+  })
+
+  $('#dropdownBtn').on('shown.bs.dropdown', function () {
+    //하위 버튼들이 다 보여지고 난 뒤
+  })
+
+  $('#dropdownBtn').on('hide.bs.dropdown', function () {
+    //하위 버튼이 닫혔을 때
+  })
+
+  $('#dropdownBtn').on('hidden.bs.dropdown', function () {
+    //하위 버튼이 닫힌 후
+  })
+</script>
+</body>
+
+</html>
