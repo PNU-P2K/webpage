@@ -20,7 +20,7 @@ public class JoinValidator implements Validator {
     @Override
     public void validate(Object obj, Errors errors) {
         UserRequest.JoinDTO joinDTO = (UserRequest.JoinDTO) obj;
-        if(!((UserRequest.JoinDTO) obj).getPassword().equals(((UserRequest.JoinDTO) obj).getPassword1())){
+        if(!((UserRequest.JoinDTO) obj).getPassword().equals(((UserRequest.JoinDTO) obj).getPasswordConf())){
             //비밀번호와 비밀번호 확인이 다르다면
             errors.rejectValue("password", "key","비밀번호가 일치하지 않습니다.");
         } else if(userRepository.findByEmail(((UserRequest.JoinDTO) obj).getEmail()) !=null){
