@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>>
+  <style>
+      .chart-wrap{
+        width: 300px;
+        height: 250px;
+      }
+  </style>
+</head>
 
 <!-- 공통 header -->
 <div th:replace="/fragments/header.html::fragment-header"></div>
@@ -20,7 +29,9 @@
         <div class="section-title">
           <h2>리소스 관리</h2>
         </div>
-
+        <div class="chart-wrap">
+          <canvas id="myChart"></canvas>
+        </div>
       </div>
     </div>
   </div>
@@ -32,5 +43,52 @@
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
 </body>
+<script>
+  const ctx = document.getElementById('myChart');
 
+  const data = {
+    labels: ['a', 'b', 'c', 'd', 'e', 'f'],
+    datasets: [{
+      data: [12, 19, 3, 5, 2, 3],
+      borderColor: 'rgb(75, 192, 192)',
+      borderWidth: 1
+    }]
+  };
+  new Chart(ctx, {
+    type: 'line',
+    data: data,
+    options: {
+      plugins:{
+        legend: {
+          display: false
+        },
+        title: {
+          display: true,
+          text: "CPU utilization",
+          font: {
+            size: 18,
+          },
+        },
+      },
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          grid:{
+            display: false
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: "Percent",
+            font: {
+              size: 15,
+            },
+          },
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
 </html>
