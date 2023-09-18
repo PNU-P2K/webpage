@@ -27,7 +27,7 @@ public class UserService {
             throw new Exception400("중복된 이메일입니다.");
         }
 
-        String enPassword = bCryptPasswordEncoder.encode(requestDTO.getPassword1()); // 비밀번호 암호화
+        String enPassword = bCryptPasswordEncoder.encode(requestDTO.getPasswordConf()); // 비밀번호 암호화
 
         User user = User.builder()
                 .email(requestDTO.getEmail())
