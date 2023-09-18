@@ -30,7 +30,7 @@ public class PostService {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createdDate")); //정렬조건
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        Page<Post> posts = postRepository.findPostByCategory(pageable, id, category, user.getId());
+        Page<Post> posts = postRepository.findPostByCategory(pageable, id, category, Scope.PUBLIC, user.getId());
         return new PostResponse.FindPostsDTO(posts);
     }
 
@@ -54,7 +54,7 @@ public class PostService {
                 .author(user.getName())
                 .content(saveDTO.getContent())
                 .category(category)
-                .open(saveDTO.getOpen())
+                .scope(saveDTO.getScope())
                 .course(course)
                 .user(user)
                 .build();
@@ -69,7 +69,7 @@ public class PostService {
                 () -> new Exception404("해당 게시글을 찾을 수 없습니다.")
         );
         if(post.getUser().getId().equals(user.getId())){
-            postRepository.update(updateDTO.getTitle(), updateDTO.getContent(), updateDTO.getOpen(), postId);
+            postRepository.update(updateDTO.getTitle(), updateDTO.getContent(), updateDTO.getScope(), postId);
         }
     }
 

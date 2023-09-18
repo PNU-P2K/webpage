@@ -29,7 +29,8 @@ public class Post extends BaseTimeEntity {
 
     private String content;
 
-    private Boolean open;
+    @Enumerated(EnumType.STRING)
+    private Scope scope;
 
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -46,12 +47,12 @@ public class Post extends BaseTimeEntity {
     private List<Reply> replies;
 
     @Builder
-    public Post(Long id, String title, String author, String content, Boolean open, Category category, Course course, User user, List<Reply> replies) {
+    public Post(Long id, String title, String author, String content, Scope scope, Category category, Course course, User user, List<Reply> replies) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.content = content;
-        this.open = open;
+        this.scope = scope;
         this.category = category;
         this.course = course;
         this.user = user;

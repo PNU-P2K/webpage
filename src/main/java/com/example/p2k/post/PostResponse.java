@@ -59,7 +59,7 @@ public class PostResponse {
             private final String author;
             private final String content;
             private final LocalDate createdDate;
-            private final Boolean open;
+            private final Scope scope;
 
             public PostDTO(Post post) {
                 this.id = post.getId();
@@ -67,7 +67,7 @@ public class PostResponse {
                 this.author = post.getAuthor();
                 this.content = post.getContent();
                 this.createdDate = post.getCreatedDate() != null ? post.getCreatedDate().toLocalDate() : null;
-                this.open = post.getOpen();
+                this.scope = post.getScope();
             }
         }
     }
@@ -81,7 +81,7 @@ public class PostResponse {
         private final String content;
         private final LocalDate createdDate;
         private final Long userId;
-        private final Boolean open;
+        private final Scope scope;
 
         public FindPostByIdDTO(Post post) {
             this.id = post.getId();
@@ -90,7 +90,7 @@ public class PostResponse {
             this.content = post.getContent();
             this.createdDate = post.getCreatedDate() != null ? post.getCreatedDate().toLocalDate() : null;
             this.userId = post.getUser().getId();
-            this.open = post.getOpen();
+            this.scope = post.getScope();
         }
     }
 }

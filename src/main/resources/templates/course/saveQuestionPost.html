@@ -47,9 +47,12 @@
                     <div class="row mb-3">
                         <label class="col-sm-2 col-form-label">공개</label>
                         <div class="col-sm-10">
-                            전체 공개 <input type="radio" class="radio-scope" name="scope" th:field="*{open}" th:value="true">
-                            &nbsp;
-                            교육자 공개 <input type="radio" class="radio-scope" name="scope" checked th:field="*{open}" th:value="false">
+                            <div class="row">
+                                <div th:each="type : ${scopes}" class="col-sm-6">
+                                    <label class="col-sm-5 col-form-label" th:text="${type.description}">공개</label>
+                                    <input type="radio" class="radio-scope" name="scope" th:field="*{scope}" th:value="${type.name()}">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row justify-content-center">

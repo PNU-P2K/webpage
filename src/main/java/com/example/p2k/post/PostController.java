@@ -85,7 +85,6 @@ public class PostController {
     @PostMapping("/notice-board/save")
     public String saveNoticePost(@PathVariable Long courseId, @ModelAttribute PostRequest.SaveDTO requestDTO,
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
-        requestDTO.setOpen(true);
         postService.savePost(requestDTO, Category.NOTICE, userDetails.getUser(), courseId);
         return "redirect:/courses/{courseId}/notice-board";
     }
@@ -263,5 +262,10 @@ public class PostController {
     public String deleteFreePost(@PathVariable Long postId, @AuthenticationPrincipal CustomUserDetails userDetails){
         postService.deletePost(postId, userDetails.getUser());
         return "redirect:/courses/{courseId}/free-board";
+    }
+
+    @ModelAttribute("scopes")
+    public Scope[] scopes() {
+        return Scope.values();
     }
 }
