@@ -36,20 +36,24 @@ public class PostService {
 
     //게시글 아이디로 게시글 찾기
     public PostResponse.FindPostByIdDTO findPostById(Long postId){
-        Post post = postRepository.findById(postId).get();
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new Exception404("해당 게시글을 찾을 수 없습니다.")
+        );
         return new PostResponse.FindPostByIdDTO(post);
     }
 
     //게시글 작성하기
     @Transactional
-    public void savePost(PostRequest.SaveDTO saveDTO, User user, Long courseId){
-        Course course = courseRepository.findById(courseId).get();
+    public void savePost(PostRequest.SaveDTO saveDTO, Category category, User user, Long courseId){
+        Course course = courseRepository.findById(courseId).orElseThrow(
+                () -> new Exception404("해당 강좌를 찾을 수 없습니다.")
+        );
 
         Post post = Post.builder()
                 .title(saveDTO.getTitle())
                 .author(user.getName())
                 .content(saveDTO.getContent())
-                .category(saveDTO.getCategory())
+                .category(category)
                 .open(saveDTO.getOpen())
                 .course(course)
                 .user(user)

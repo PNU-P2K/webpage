@@ -85,9 +85,8 @@ public class PostController {
     @PostMapping("/notice-board/save")
     public String saveNoticePost(@PathVariable Long courseId, @ModelAttribute PostRequest.SaveDTO requestDTO,
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
-        requestDTO.setCategory(Category.NOTICE);
         requestDTO.setOpen(true);
-        postService.savePost(requestDTO, userDetails.getUser(), courseId);
+        postService.savePost(requestDTO, Category.NOTICE, userDetails.getUser(), courseId);
         return "redirect:/courses/{courseId}/notice-board";
     }
 
@@ -155,8 +154,7 @@ public class PostController {
     @PostMapping("/question-board/save")
     public String saveQuestionPost(@PathVariable Long courseId, @ModelAttribute PostRequest.SaveDTO requestDTO,
                                    @AuthenticationPrincipal CustomUserDetails userDetails){
-        requestDTO.setCategory(Category.QUESTION);
-        postService.savePost(requestDTO, userDetails.getUser(), courseId);
+        postService.savePost(requestDTO, Category.QUESTION, userDetails.getUser(), courseId);
         return "redirect:/courses/{courseId}/question-board";
     }
 
@@ -221,8 +219,8 @@ public class PostController {
     @PostMapping("/free-board/save")
     public String saveFreePost(@PathVariable Long courseId, @ModelAttribute PostRequest.SaveDTO requestDTO,
                                @AuthenticationPrincipal CustomUserDetails userDetails){
-        requestDTO.setCategory(Category.FREE);
-        postService.savePost(requestDTO, userDetails.getUser(), courseId);
+
+        postService.savePost(requestDTO, Category.FREE, userDetails.getUser(), courseId);
         return "redirect:/courses/{courseId}/free-board";
     }
 
