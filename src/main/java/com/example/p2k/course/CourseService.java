@@ -96,10 +96,10 @@ public class CourseService {
                 () -> new Exception404("해당 강좌를 찾을 수 없습니다.")
         );
 
-        if(course.getUser() == null){
+        if(course.getInstructorId() == null){
             throw new Exception400("해당 강좌의 교육자가 존재하지 않습니다.");
         }
-        List<Vm> vms = vmRepository.findUserIdAndCourseIdOpen(course.getUser().getId(), id);
+        List<Vm> vms = vmRepository.findUserIdAndCourseIdOpen(course.getInstructorId(), id);
         return new VmResponse.FindAllDTO(vms);
     }
 
@@ -112,7 +112,11 @@ public class CourseService {
     //강좌 생성
     @Transactional
     public void create(CourseRequest.SaveDTO requestDTO, User user){
-        Course course = Course.builder().name(requestDTO.getName()).description(requestDTO.getDescription()).build();
+        Course course = Course.builder()
+                .name(requestDTO.getName())
+                .description(requestDTO.getDescription())
+                .instructorId(user.getId())
+                .build();
         courseRepository.save(course);
 
         CourseUser courseUser = CourseUser.builder().course(course).user(user).accept(true).build();

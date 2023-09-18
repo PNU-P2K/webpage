@@ -23,15 +23,13 @@ public class Course extends BaseTimeEntity {
     @Column(length = 256, nullable = false)
     private String description;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private Long instructorId;
 
     @Builder
-    public Course(Long id, String name, String description, User user) {
+    public Course(Long id, String name, String description, Long instructorId) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.user = user;
+        this.instructorId = instructorId;
     }
 }
