@@ -41,7 +41,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         User user = null;
 
         if (existingUser != null) {
-            existingUser.update(attributes.getEmail());
+            existingUser.updateEmail(attributes.getEmail());
             user = existingUser;
         } else {
             user = attributes.toEntity();

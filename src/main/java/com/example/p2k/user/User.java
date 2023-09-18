@@ -33,7 +33,7 @@ public class User extends BaseTimeEntity {
         this.role = role;
     }
 
-    public User update(String email){
+    public User updateEmail(String email){
         this.email = email;
         return this;
     }
