@@ -43,17 +43,20 @@
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
 </body>
-<script>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
   const ctx = document.getElementById('myChart');
 
   const data = {
-    labels: ['a', 'b', 'c', 'd', 'e', 'f'],
+    labels: [[${timestamp}]],
     datasets: [{
-      data: [12, 19, 3, 5, 2, 3],
+      data: [[${value}]],
       borderColor: 'rgb(75, 192, 192)',
       borderWidth: 1
     }]
   };
+
   new Chart(ctx, {
     type: 'line',
     data: data,
@@ -90,5 +93,6 @@
       }
     }
   });
+  /*]]>*/
 </script>
 </html>

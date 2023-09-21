@@ -1,55 +1,62 @@
 package com.example.p2k.admin;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cloudwatch.CloudWatchClient;
 import software.amazon.awssdk.services.cloudwatch.model.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping("/cloudwatch")
-public class CloudWatchController {
+public class CloudWatchService {
 
-    String instancePublicIp = "3.37.55.57";
-    String accessKey = "AKIAXTAISJOS7G2P6CTN";
-    String secretKey = "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";
-    AwsCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
-    StaticCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(credentials);
+
 
     @GetMapping("/cpuUsage")
-    public List<MetricDataResult> getCPUUsageData(){
+    public MetricDataResponse getCPUUsageData(){
+        String identifier = "InstanceId";
+        String instanceId = "i-0f1336b61e3b8d2a5";
+        String instancePublicIp = "3.37.55.57";
+        String accessKey = "AKIAXTAISJOS7G2P6CTN";
 
+        ZoneId ZONE_ID = ZoneId.of("Asia/Seoul");
         Region region = Region.AP_NORTHEAST_2;
+        Instant start = LocalDate.now(ZONE_ID).minusDays(1).atStartOfDay(ZONE_ID).toInstant();
+        Instant end = LocalDate.now(ZONE_ID).atStartOfDay(ZONE_ID).toInstant();
+        String namespace = "AWS/EC2";
+        String metricName = "CPUUtilization";
+        int period = 60; //메트릭 데이터 주기(5분)
+        int maxDataPoints = 100; //가져올 데이터 포인트 수
+        String stat = "Average";
+
+        String secretKey = "gYidLTrhHf6LJwcs6sAimoo3v2Eoiw13T+IL8GUj";
+        AwsCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
+        AwsCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(credentials);
+
         CloudWatchClient cloudWatchClient = CloudWatchClient.builder()
                 .region(region)
                 .credentialsProvider(credentialsProvider)
                 .build();
 
-        Dimension dimension = Dimension.builder()
-                .name("i-0f1336b61e3b8d2a5")
-                .value(instancePublicIp)
-                .build();
-
         try{
-            Instant start = Instant.now().minusSeconds(3600); //시작 시간 설정(최근 1시간)
-            Instant end = Instant.now();
-            String namespace = "AWS/EC2";
-            String metricName = "CPUUtilization";
-            int period = 300; //메트릭 데이터 주기(5분)
-            int maxDataPoints = 100; //가져올 데이터 포인트 수
+
+            Dimension dimension = Dimension.builder()
+                    .name(identifier)
+                    .value(instanceId)
+                    .build();
 
             Metric metric = Metric.builder()
                     .namespace(namespace)
@@ -58,7 +65,7 @@ public class CloudWatchController {
                     .build();
 
             MetricStat metricStat = MetricStat.builder()
-                    .stat("Average") //메트릭 통계 유형(평균)
+                    .stat(stat) //메트릭 통계 유형(평균)
                     .period(period)
                     .metric(metric)
                     .build();
@@ -76,17 +83,25 @@ public class CloudWatchController {
                     .startTime(start)
                     .endTime(end)
                     .metricDataQueries(queries)
-                    .scanBy("TimestampDescending")
+                    //.scanBy("TimestampDescending")
                     .maxDatapoints(maxDataPoints)
                     .build();
 
             GetMetricDataResponse response = cloudWatchClient.getMetricData(request);
+            List<Instant> timestamps = new ArrayList<>();
+            List<Double> values = new ArrayList<>();
 
-            for (MetricDataResult item : response.metricDataResults()) {
-                System.out.println("The label is " + item.label());
-                System.out.println("The status code is " + item.statusCode().toString());
+            for (MetricDataResult result : response.metricDataResults()) {
+                timestamps = result.timestamps();
+                values = result.values();
+
+                System.out.println(String.format("id : %s", result.id()));
+                for (int i=values.size()-1; i>=0; i--) {
+                    System.out.println(String.format("timestamp : %s, value : %s", timestamps.get(i).atZone(ZONE_ID), values.get(i)));
+                }
             }
-            return response.metricDataResults();
+
+            return new MetricDataResponse(timestamps, values);
 
         }catch(CloudWatchException e){
             log.info(e.awsErrorDetails().errorMessage());

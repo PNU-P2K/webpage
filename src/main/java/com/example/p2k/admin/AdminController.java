@@ -16,11 +16,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AdminController {
 
     private final AdminService adminService;
+    private final CloudWatchService cloudWatchService;
 
     @GetMapping("/resources")
     public String manageResources(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
         User user = userDetails.getUser();
+        MetricDataResponse cpuUsageData = cloudWatchService.getCPUUsageData();
         model.addAttribute("user", user);
+        model.addAttribute("timestamp", cpuUsageData.getTimestamps());
+        model.addAttribute("value", cpuUsageData.getValue());
         return "admin/resources";
     }
 
