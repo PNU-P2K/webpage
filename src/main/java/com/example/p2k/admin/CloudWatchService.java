@@ -1,6 +1,7 @@
 package com.example.p2k.admin;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,32 +20,67 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@RestController
-@RequestMapping("/cloudwatch")
+@Service
 public class CloudWatchService {
 
+    String identifier = "InstanceId";
+    String instanceId = "i-0f1336b61e3b8d2a5";
+    ZoneId ZONE_ID = ZoneId.of("Asia/Seoul");
+    Region region = Region.AP_NORTHEAST_2;
+    Instant start = LocalDate.now(ZONE_ID).minusDays(1).atStartOfDay(ZONE_ID).toInstant();
+    Instant end = LocalDate.now(ZONE_ID).atStartOfDay(ZONE_ID).toInstant();
+    String namespace = "AWS/EC2";
 
+    public MetricDataResponse getCPUUtilization(){
+        return getMetricDataResponse("CPUUtilization", "cpuUtilizationQuery");
+    }
 
-    @GetMapping("/cpuUsage")
-    public MetricDataResponse getCPUUsageData(){
-        String identifier = "InstanceId";
-        String instanceId = "i-0f1336b61e3b8d2a5";
-        String instancePublicIp = "3.37.55.57";
-        String accessKey = "AKIAXTAISJOS7G2P6CTN";
+    public MetricDataResponse getStatusCheckFailedSystem(){
+        return getMetricDataResponse("StatusCheckFailed_System", "statusCheckFailedSystemQuery");
+    }
 
-        ZoneId ZONE_ID = ZoneId.of("Asia/Seoul");
-        Region region = Region.AP_NORTHEAST_2;
-        Instant start = LocalDate.now(ZONE_ID).minusDays(1).atStartOfDay(ZONE_ID).toInstant();
-        Instant end = LocalDate.now(ZONE_ID).atStartOfDay(ZONE_ID).toInstant();
-        String namespace = "AWS/EC2";
-        String metricName = "CPUUtilization";
-        int period = 60; //메트릭 데이터 주기(5분)
+    public MetricDataResponse getStatusCheckFailedInstance(){
+        return getMetricDataResponse("StatusCheckFailed_Instance", "statusCheckFailedInstanceQuery");
+    }
+
+    public MetricDataResponse getNetworkIn(){
+        return getMetricDataResponse("NetworkIn", "networkInQuery");
+    }
+
+    public MetricDataResponse getNetworkOut(){
+        return getMetricDataResponse("NetworkOut", "networkOutQuery");
+    }
+
+    public MetricDataResponse getNetworkPacketsIn(){
+        return getMetricDataResponse("NetworkPacketsIn", "networkPacketInQuery");
+    }
+
+    public MetricDataResponse getNetworkPacketsOut(){
+        return getMetricDataResponse("NetworkPacketsOut", "networkPacketOutQuery");
+    }
+
+    public MetricDataResponse getDiskReads(){
+        return getMetricDataResponse("DiskReadBytes", "diskReadQuery");
+    }
+
+    public MetricDataResponse getDiskReadOperations(){
+        return getMetricDataResponse("DiskReadOps", "diskReadOpsQuery");
+    }
+
+    public MetricDataResponse getDiskWrites(){
+        return getMetricDataResponse("DiskWriteBytes", "diskWriteQuery");
+    }
+
+    public MetricDataResponse getDiskWriteOperations(){
+        return getMetricDataResponse("DiskWriteOps", "diskWriteOpsQuery");
+    }
+
+    private MetricDataResponse getMetricDataResponse(String metricName, String dataQueryId) {
+        int period = 300; //메트릭 데이터 주기(5분)
         int maxDataPoints = 100; //가져올 데이터 포인트 수
         String stat = "Average";
 
-        String secretKey = "gYidLTrhHf6LJwcs6sAimoo3v2Eoiw13T+IL8GUj";
-        AwsCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
-        AwsCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(credentials);
+        AwsCredentialsProvider credentialsProvider = getCredentialsProvider();
 
         CloudWatchClient cloudWatchClient = CloudWatchClient.builder()
                 .region(region)
@@ -52,7 +88,6 @@ public class CloudWatchService {
                 .build();
 
         try{
-
             Dimension dimension = Dimension.builder()
                     .name(identifier)
                     .value(instanceId)
@@ -72,7 +107,7 @@ public class CloudWatchService {
 
             MetricDataQuery dataQuery = MetricDataQuery.builder()
                     .metricStat(metricStat)
-                    .id("cpuUsageQuery")
+                    .id(dataQueryId)
                     .returnData(true)
                     .build();
 
@@ -83,7 +118,6 @@ public class CloudWatchService {
                     .startTime(start)
                     .endTime(end)
                     .metricDataQueries(queries)
-                    //.scanBy("TimestampDescending")
                     .maxDatapoints(maxDataPoints)
                     .build();
 
@@ -101,6 +135,8 @@ public class CloudWatchService {
                 }
             }
 
+            log.info("timestamp size=" + timestamps.size());
+
             return new MetricDataResponse(timestamps, values);
 
         }catch(CloudWatchException e){
@@ -110,5 +146,12 @@ public class CloudWatchService {
         }finally{
             cloudWatchClient.close();
         }
+    }
+
+    private static AwsCredentialsProvider getCredentialsProvider() {
+        String accessKey = "AKIAXTAISJOS7G2P6CTN";
+        String secretKey = "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";
+        AwsCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
+        return StaticCredentialsProvider.create(credentials);
     }
 }

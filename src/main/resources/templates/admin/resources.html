@@ -3,6 +3,9 @@
 <head>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    .container2 {
+      max-width: 1300px;
+    }
     .chart-wrap{
       width: 300px;
       height: 250px;
@@ -14,6 +17,18 @@
     }
     .chart-item {
       flex-basis: calc(25% - 20px);
+    }
+
+    @media screen and (max-width: 768px) {
+      .chart-item {
+        flex-basis: calc(50% - 20px); /* 화면 크기가 768px 이하일 때, 2개의 열로 표시 */
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .chart-item {
+        flex-basis: calc(100% - 20px); /* 화면 크기가 480px 이하일 때, 1개의 열로 표시 */
+      }
     }
   </style>
 </head>
@@ -37,19 +52,22 @@
         <div class="section-title">
           <h2>리소스 관리</h2>
         </div>
-        <div class="chart-grid">
-          <div class="chart-item"><div class="chart-wrap"><canvas id="chart1"></canvas></div></div>
-          <div class="chart-item"><div class="chart-wrap"><canvas id="chart2"></canvas></div></div>
-          <div class="chart-item"><div class="chart-wrap"><canvas id="chart3"></canvas></div></div>
-          <div class="chart-item"><div class="chart-wrap"><canvas id="chart4"></canvas></div></div>
-          <div class="chart-item"><div class="chart-wrap"><canvas id="chart5"></canvas></div></div>
-          <div class="chart-item"><div class="chart-wrap"><canvas id="chart6"></canvas></div></div>
-          <div class="chart-item"><div class="chart-wrap"><canvas id="chart7"></canvas></div></div>
-          <div class="chart-item"><div class="chart-wrap"><canvas id="chart8"></canvas></div></div>
-          <div class="chart-item"><div class="chart-wrap"><canvas id="chart9"></canvas></div></div>
-          <div class="chart-item"><div class="chart-wrap"><canvas id="chart10"></canvas></div></div>
-          <div class="chart-item"><div class="chart-wrap"><canvas id="chart11"></canvas></div></div>
-          <div class="chart-item"><div class="chart-wrap"><canvas id="chart12"></canvas></div></div>
+        <div class="container2">
+          <div class="chart-grid">
+            <div class="chart-item"><div class="chart-wrap"><canvas id="chart1"></canvas></div></div>
+            <div class="chart-item"><div class="chart-wrap"><canvas id="chart2"></canvas></div></div>
+            <div class="chart-item"><div class="chart-wrap"><canvas id="chart3"></canvas></div></div>
+            <div class="chart-item"><div class="chart-wrap"><canvas id="chart4"></canvas></div></div>
+            <div class="chart-item"><div class="chart-wrap"><canvas id="chart5"></canvas></div></div>
+            <div class="chart-item"><div class="chart-wrap"><canvas id="chart6"></canvas></div></div>
+            <div class="chart-item"><div class="chart-wrap"><canvas id="chart7"></canvas></div></div>
+            <div class="chart-item"><div class="chart-wrap"><canvas id="chart8"></canvas></div></div>
+            <div class="chart-item"><div class="chart-wrap"><canvas id="chart9"></canvas></div></div>
+            <div class="chart-item"><div class="chart-wrap"><canvas id="chart10"></canvas></div></div>
+            <div class="chart-item"><div class="chart-wrap"><canvas id="chart11"></canvas></div></div>
+            <div class="chart-item"><div class="chart-wrap"><canvas id="chart12"></canvas></div></div>
+            <div class="chart-item"><div class="chart-wrap"><canvas id="chart13"></canvas></div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -68,11 +86,17 @@
   function createChart(chartName, title, timestamp, value, yAxisLabel){
     const ctx = document.getElementById(chartName);
 
+    // Instant 객체를 hh:mm 형식의 문자열로 변환
+    const timeLabels = timestamp.map(instant => {
+      const date = new Date(instant);
+      return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false });
+    });
+
     const data = {
-      labels: timestamp,
+      labels: timeLabels,
       datasets: [{
         data: value,
-        borderColor: 'rgb(75, 192, 192)',
+        borderColor: 'rgb(0, 78, 162)',
         borderWidth: 1
       }]
     };
@@ -87,17 +111,32 @@
           },
           title: {
             display: true,
+            align:'center',
+            position:'top',
             text: title,
             font: {
-              size: 18,
-            },
+              size: 15,
+              weight: 'normal',
+              color: 'black'
+            }
           },
+        },
+        elements: {
+          point: {
+            radius: 0
+          }
         },
         maintainAspectRatio: false,
         scales: {
           x: {
             grid:{
               display: false
+            },
+            ticks: {
+              maxTicksLimit: 7,
+              font: {
+                size: 10
+              }
             }
           },
           y: {
@@ -105,8 +144,13 @@
               display: true,
               text: yAxisLabel,
               font: {
-                size: 15,
+                size: 12,
               },
+            },
+            ticks: {
+              font: {
+                size: 10
+              }
             },
             beginAtZero: true
           }
@@ -115,20 +159,17 @@
     });
   }
 
-  const cpuTimestamp = /*[[${timestamp}]]*/;
-  const cpuValue = /*[[${value}]]*/;
-  createChart('chart1', 'CPU 사용률(%)', cpuTimestamp, cpuValue, 'Percent');
-  createChart('chart2', '상태 검사 실패(전체)(개수)', cpuTimestamp, cpuValue, 'Count');
-  createChart('chart3', '상태 검사 실패(인스턴스)(개수)', cpuTimestamp, cpuValue, 'Count');
-  createChart('chart4', '상태 검사 실패(시스템)(개수)', cpuTimestamp, cpuValue, 'Count');
-  createChart('chart5', '네트워크 입력(바이트)', cpuTimestamp, cpuValue, 'Bytes');
-  createChart('chart6', '네트워크 출력(바이트)', cpuTimestamp, cpuValue, 'Bytes');
-  createChart('chart7', '네트워크 패킷 입력(개수)', cpuTimestamp, cpuValue, 'Count');
-  createChart('chart8', '네트워크 패킷 출력(개수)', cpuTimestamp, cpuValue, 'Count');
-  createChart('chart9', '디스크 읽기(바이트)', cpuTimestamp, cpuValue, 'Bytes');
-  createChart('chart10', '디스크 읽기 작업(작업)', cpuTimestamp, cpuValue, 'Count');
-  createChart('chart11', '디스크 쓰기(바이트)', cpuTimestamp, cpuValue, 'Bytes');
-  createChart('chart12', '디스크 쓰기 작업(작업)', cpuTimestamp, cpuValue, 'Count');
+  createChart('chart1', 'CPU 사용률(%)', /*[[${cpuTimestamp}]]*/, /*[[${cpuValue}]]*/, 'Percent');
+  createChart('chart2', '상태 검사 실패(인스턴스)(개수)', /*[[${statusSystemTimestamp}]]*/, /*[[${statusSystemValue}]]*/, 'Count');
+  createChart('chart3', '상태 검사 실패(시스템)(개수)', /*[[${statusInstanceTimestamp}]]*/, /*[[${statusInstanceValue}]]*/, 'Count');
+  createChart('chart4', '네트워크 입력(바이트)', /*[[${networkInTimestamp}]]*/, /*[[${networkInValue}]]*/, 'Bytes');
+  createChart('chart5', '네트워크 출력(바이트)', /*[[${networkOutTimestamp}]]*/, /*[[${networkOutValue}]]*/, 'Bytes');
+  createChart('chart6', '네트워크 패킷 입력(개수)', /*[[${networkPacketsInTimestamp}]]*/, /*[[${networkPacketsInValue}]]*/, 'Count');
+  createChart('chart7', '네트워크 패킷 출력(개수)', /*[[${networkPacketsOutTimestamp}]]*/, /*[[${networkPacketsOutValue}]]*/, 'Count');
+  createChart('chart8', '디스크 읽기(바이트)', /*[[${diskReadsTimestamp}]]*/, /*[[${diskReadsValue}]]*/, 'Bytes');
+  createChart('chart9', '디스크 읽기 작업(작업)', /*[[${diskReadOpsTimestamp}]]*/, /*[[${diskReadOpsValue}]]*/, 'Count');
+  createChart('chart10', '디스크 쓰기(바이트)', /*[[${diskWritesTimestamp}]]*/, /*[[${diskWritesValue}]]*/, 'Bytes');
+  createChart('chart11', '디스크 쓰기 작업(작업)', /*[[${diskWriteOpsTimestamp}]]*/, /*[[${diskWriteOpsValue}]]*/, 'Count');
   /*]]>*/
 </script>
 </html>
