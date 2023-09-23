@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-      .chart-wrap{
-        width: 300px;
-        height: 250px;
-      }
+    .chart-wrap{
+      width: 300px;
+      height: 250px;
+    }
+    .chart-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .chart-item {
+      flex-basis: calc(25% - 20px);
+    }
   </style>
 </head>
 
@@ -29,7 +37,20 @@
         <div class="section-title">
           <h2>리소스 관리</h2>
         </div>
-        <div th:insert="~{/admin/chart.html::chart('myChart', 'CPU utilization', ${timestamp}, ${value}, 'Percent')}"></div>
+        <div class="chart-grid">
+          <div class="chart-item"><div class="chart-wrap"><canvas id="chart1"></canvas></div></div>
+          <div class="chart-item"><div class="chart-wrap"><canvas id="chart2"></canvas></div></div>
+          <div class="chart-item"><div class="chart-wrap"><canvas id="chart3"></canvas></div></div>
+          <div class="chart-item"><div class="chart-wrap"><canvas id="chart4"></canvas></div></div>
+          <div class="chart-item"><div class="chart-wrap"><canvas id="chart5"></canvas></div></div>
+          <div class="chart-item"><div class="chart-wrap"><canvas id="chart6"></canvas></div></div>
+          <div class="chart-item"><div class="chart-wrap"><canvas id="chart7"></canvas></div></div>
+          <div class="chart-item"><div class="chart-wrap"><canvas id="chart8"></canvas></div></div>
+          <div class="chart-item"><div class="chart-wrap"><canvas id="chart9"></canvas></div></div>
+          <div class="chart-item"><div class="chart-wrap"><canvas id="chart10"></canvas></div></div>
+          <div class="chart-item"><div class="chart-wrap"><canvas id="chart11"></canvas></div></div>
+          <div class="chart-item"><div class="chart-wrap"><canvas id="chart12"></canvas></div></div>
+        </div>
       </div>
     </div>
   </div>
@@ -41,4 +62,73 @@
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
 </body>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+
+  function createChart(chartName, title, timestamp, value, yAxisLabel){
+    const ctx = document.getElementById(chartName);
+
+    const data = {
+      labels: timestamp,
+      datasets: [{
+        data: value,
+        borderColor: 'rgb(75, 192, 192)',
+        borderWidth: 1
+      }]
+    };
+
+    new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: {
+        plugins:{
+          legend: {
+            display: false
+          },
+          title: {
+            display: true,
+            text: title,
+            font: {
+              size: 18,
+            },
+          },
+        },
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            grid:{
+              display: false
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: yAxisLabel,
+              font: {
+                size: 15,
+              },
+            },
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+
+  const cpuTimestamp = /*[[${timestamp}]]*/;
+  const cpuValue = /*[[${value}]]*/;
+  createChart('chart1', 'CPU 사용률(%)', cpuTimestamp, cpuValue, 'Percent');
+  createChart('chart2', '상태 검사 실패(전체)(개수)', cpuTimestamp, cpuValue, 'Count');
+  createChart('chart3', '상태 검사 실패(인스턴스)(개수)', cpuTimestamp, cpuValue, 'Count');
+  createChart('chart4', '상태 검사 실패(시스템)(개수)', cpuTimestamp, cpuValue, 'Count');
+  createChart('chart5', '네트워크 입력(바이트)', cpuTimestamp, cpuValue, 'Bytes');
+  createChart('chart6', '네트워크 출력(바이트)', cpuTimestamp, cpuValue, 'Bytes');
+  createChart('chart7', '네트워크 패킷 입력(개수)', cpuTimestamp, cpuValue, 'Count');
+  createChart('chart8', '네트워크 패킷 출력(개수)', cpuTimestamp, cpuValue, 'Count');
+  createChart('chart9', '디스크 읽기(바이트)', cpuTimestamp, cpuValue, 'Bytes');
+  createChart('chart10', '디스크 읽기 작업(작업)', cpuTimestamp, cpuValue, 'Count');
+  createChart('chart11', '디스크 쓰기(바이트)', cpuTimestamp, cpuValue, 'Bytes');
+  createChart('chart12', '디스크 쓰기 작업(작업)', cpuTimestamp, cpuValue, 'Count');
+  /*]]>*/
+</script>
 </html>
