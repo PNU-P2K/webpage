@@ -29,9 +29,7 @@
         <div class="section-title">
           <h2>리소스 관리</h2>
         </div>
-        <div class="chart-wrap">
-          <canvas id="myChart"></canvas>
-        </div>
+        <div th:insert="~{/admin/chart.html::chart('myChart', 'CPU utilization', ${timestamp}, ${value}, 'Percent')}"></div>
       </div>
     </div>
   </div>
@@ -43,56 +41,4 @@
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
 </body>
-
-<script th:inline="javascript">
-  /*<![CDATA[*/
-  const ctx = document.getElementById('myChart');
-
-  const data = {
-    labels: [[${timestamp}]],
-    datasets: [{
-      data: [[${value}]],
-      borderColor: 'rgb(75, 192, 192)',
-      borderWidth: 1
-    }]
-  };
-
-  new Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: {
-      plugins:{
-        legend: {
-          display: false
-        },
-        title: {
-          display: true,
-          text: "CPU utilization",
-          font: {
-            size: 18,
-          },
-        },
-      },
-      maintainAspectRatio: false,
-      scales: {
-        x: {
-          grid:{
-            display: false
-          }
-        },
-        y: {
-          title: {
-            display: true,
-            text: "Percent",
-            font: {
-              size: 15,
-            },
-          },
-          beginAtZero: true
-        }
-      }
-    }
-  });
-  /*]]>*/
-</script>
 </html>
