@@ -1,10 +1,12 @@
 package com.example.p2k.course;
 
 import com.example.p2k._core.exception.Exception400;
+import com.example.p2k._core.exception.Exception403;
 import com.example.p2k._core.exception.Exception404;
 import com.example.p2k.courseuser.CourseUser;
 import com.example.p2k.courseuser.CourseUserRepository;
 import com.example.p2k.post.PostRepository;
+import com.example.p2k.user.Role;
 import com.example.p2k.user.User;
 import com.example.p2k.vm.Vm;
 import com.example.p2k.vm.VmRepository;
@@ -99,6 +101,7 @@ public class CourseService {
         if(course.getInstructorId() == null){
             throw new Exception400("해당 강좌의 교육자가 존재하지 않습니다.");
         }
+
         List<Vm> vms = vmRepository.findUserIdAndCourseIdOpen(course.getInstructorId(), id);
         return new VmResponse.FindAllDTO(vms);
     }
@@ -112,6 +115,10 @@ public class CourseService {
     //강좌 생성
     @Transactional
     public void create(CourseRequest.SaveDTO requestDTO, User user){
+        if(user.getPending() || user.getRole() != Role.ROLE_INSTRUCTOR){
+            throw new Exception403("권한이 없는 사용자입니다.");
+        }
+
         Course course = Course.builder()
                 .name(requestDTO.getName())
                 .description(requestDTO.getDescription())
@@ -124,7 +131,10 @@ public class CourseService {
     }
 
     //수강생 관리
-    public CourseResponse.FindStudentsDTO findStudents(Long id){
+    public CourseResponse.FindStudentsDTO findStudents(Long id, User user){
+        if(user.getPending() || user.getRole() != Role.ROLE_INSTRUCTOR){
+            throw new Exception403("권한이 없는 사용자입니다.");
+        }
         List<User> students = courseUserRepository.findAcceptedUserByCourseId(id);
         return new CourseResponse.FindStudentsDTO(students);
     }
@@ -137,19 +147,28 @@ public class CourseService {
 
     //강좌 신청 수락
     @Transactional
-    public void accept(Long courseId, Long userId){
+    public void accept(Long courseId, Long userId, User user){
+        if(!user.getPending() || user.getRole() != Role.ROLE_INSTRUCTOR){
+            throw new Exception403("권한이 없는 사용자입니다.");
+        }
         courseUserRepository.updateAccept(courseId, userId);
     }
 
     //강좌 신청 거절
     @Transactional
-    public void reject(Long courseId, Long userId){
+    public void reject(Long courseId, Long userId, User user){
+        if(user.getPending() || user.getRole() != Role.ROLE_INSTRUCTOR){
+            throw new Exception403("권한이 없는 사용자입니다.");
+        }
         courseUserRepository.deleteByCourseIdAndUserId(courseId, userId);
     }
 
     //강좌 삭제
     @Transactional
-    public void delete(Long id){
+    public void delete(Long id, User user){
+        if(user.getPending() || user.getRole() != Role.ROLE_INSTRUCTOR){
+            throw new Exception403("권한이 없는 사용자입니다.");
+        }
         courseUserRepository.deleteByCourseId(id);
         postRepository.deleteAllByCourseId(id);
         courseRepository.deleteById(id);
