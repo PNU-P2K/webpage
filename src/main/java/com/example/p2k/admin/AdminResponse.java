@@ -63,6 +63,7 @@ public class AdminResponse {
             private final String name;
             private final String email;
             private final Role role;
+            private final Boolean pending;
             private final int vmNum;
             private final int courseNum;
             private final int postNum;
@@ -74,6 +75,7 @@ public class AdminResponse {
                 this.name = user.getName();
                 this.email = user.getEmail();
                 this.role = user.getRole();
+                this.pending = user.getPending();
                 this.vmNum = user.getVms().size();
                 this.courseNum = user.getCourseUsers().size();
                 this.postNum = user.getPosts().size();

@@ -10,7 +10,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name="user_tb")
@@ -23,14 +23,16 @@ public class User extends BaseTimeEntity {
     @Column(length = 30, nullable = false, unique = true)
     private String email; // 중복 체크 필요
 
-    //@Column(length = 20, nullable = false) //소셜 로그인은 이름 필요 없음 - 보류
+    //@Column(length = 20, nullable = false)
     private String name;
 
-    //@Column(length = 256, nullable = false) //소셜 로그인은 패스워드 필요 없음 - 보류
+    //@Column(length = 256, nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;    // 학생, 교육자, 관리자
+
+    private Boolean pending; //승인 여부
 
     @OneToMany(mappedBy = "user")
     private List<Vm> vms = new ArrayList<>();
@@ -45,13 +47,16 @@ public class User extends BaseTimeEntity {
     private List<Reply> replies = new ArrayList<>();
 
     @Builder
-    public User(Long id, String email, String name, String password, Role role, List<Vm> vms, List<Post> posts, List<Reply> replies) {
+    public User(Long id, String email, String name, String password, Role role, Boolean pending,
+                List<Vm> vms, List<CourseUser> courseUsers, List<Post> posts, List<Reply> replies) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.password = password;
         this.role = role;
+        this.pending = pending;
         this.vms = vms;
+        this.courseUsers = courseUsers;
         this.posts = posts;
         this.replies = replies;
     }
@@ -59,5 +64,9 @@ public class User extends BaseTimeEntity {
     public User updateEmail(String email){
         this.email = email;
         return this;
+    }
+
+    public void changePending(boolean status){
+        this.pending = status;
     }
 }
