@@ -129,13 +129,11 @@ public class CloudWatchService {
                 timestamps = result.timestamps();
                 values = result.values();
 
-                System.out.println(String.format("id : %s", result.id()));
+                log.info("id=" + result.id());
                 for (int i=values.size()-1; i>=0; i--) {
-                    System.out.println(String.format("timestamp : %s, value : %s", timestamps.get(i).atZone(ZONE_ID), values.get(i)));
+                    log.info("timestamp=" + timestamps.get(i).atZone(ZONE_ID) + ", value=" + values.get(i));
                 }
             }
-
-            log.info("timestamp size=" + timestamps.size());
 
             return new MetricDataResponse(timestamps, values);
 
