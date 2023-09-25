@@ -115,9 +115,9 @@ public class CourseController {
     //수강생 관리 페이지
     @GetMapping("/{courseId}/students")
     public String findStudents(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        CourseResponse.FindStudentsDTO studentDTOs = courseService.findStudents(courseId);
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
         User user = userDetails.getUser();
+        CourseResponse.FindStudentsDTO studentDTOs = courseService.findStudents(courseId, user);
+        CourseResponse.FindById courseDTO = courseService.findById(courseId);
         model.addAttribute("user", user);
         model.addAttribute("studentDTOs", studentDTOs);
         model.addAttribute("courseDTO", courseDTO);
@@ -127,10 +127,10 @@ public class CourseController {
     //설정 및 관리 페이지
     @GetMapping("/{courseId}/setting")
     public String setting(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
-        CourseResponse.FindStudentsDTO studentDTOs = courseService.findStudents(courseId);
-        CourseResponse.FindUnacceptedUserDTO unacceptedUserDTOs = courseService.findApplications(courseId);
         User user = userDetails.getUser();
+        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        CourseResponse.FindStudentsDTO studentDTOs = courseService.findStudents(courseId, user);
+        CourseResponse.FindUnacceptedUserDTO unacceptedUserDTOs = courseService.findApplications(courseId);
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
         model.addAttribute("studentDTOs", studentDTOs);
@@ -140,22 +140,24 @@ public class CourseController {
 
     //강좌 신청 수락
     @PostMapping("/{courseId}/application/{userId}/accept")
-    public String accept(@PathVariable Long courseId, @PathVariable Long userId){
-        courseService.accept(courseId, userId);
+    public String accept(@PathVariable Long courseId, @PathVariable Long userId,
+                         @AuthenticationPrincipal CustomUserDetails userDetails){
+        courseService.accept(courseId, userId, userDetails.getUser());
         return "redirect:/courses/{courseId}/setting";
     }
 
     //강좌 신청 거절
     @PostMapping("/{courseId}/application/{userId}/reject")
-    public String reject(@PathVariable Long courseId, @PathVariable Long userId){
-        courseService.reject(courseId, userId);
+    public String reject(@PathVariable Long courseId, @PathVariable Long userId,
+                         @AuthenticationPrincipal CustomUserDetails userDetails){
+        courseService.reject(courseId, userId, userDetails.getUser());
         return "redirect:/courses/{courseId}/setting";
     }
 
     //강좌 삭제
     @PostMapping("/{courseId}/delete")
-    public String delete(@PathVariable Long courseId){
-        courseService.delete(courseId);
+    public String delete(@PathVariable Long courseId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        courseService.delete(courseId, userDetails.getUser());
         return "redirect:/courses";
     }
 }

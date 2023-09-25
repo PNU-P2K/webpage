@@ -33,21 +33,48 @@
             <div class="row container2 mx-auto">
                 <h4 class="mt-4">강좌 가입 신청</h4>
                 <hr class="my-4">
-                <div th:each="unacceptedUserDTO : ${unacceptedUserDTOs.getStudents()}">
-                    <div class="border rounded p-4">
-                        <p th:text="${unacceptedUserDTO.name}">강좌 구성원 이름</p>
-                        <button type="button" class="btn btn-outline-primary"
-                                th:onclick="|javascript:accept(${courseDTO.id}, ${unacceptedUserDTO.id})|">수락</button>
-                        <button type="button" class="btn btn-outline-danger"
-                                th:onclick="|javascript:reject(${courseDTO.id}, ${unacceptedUserDTO.id})|">거절</button>
+                <div class="row container2 mx-auto">
+                    <div class="col table-responsive">
+                        <table class="table table-hover section-bg">
+                            <tr th:each="unacceptedUserDTO : ${unacceptedUserDTOs.getStudents()}">
+                                <td class="align-middle">
+                                    <div class="row">
+                                        <div class="col-md-9 d-flex align-items-center">
+                                            <span th:text="${unacceptedUserDTO.name}" class="pl-2">강좌 구성원 이름</span>
+                                        </div>
+                                        <div class="col-md-3 text-right">
+                                            <button type="button" class="btn btn-outline-primary"
+                                                    th:onclick="|javascript:accept(${courseDTO.id}, ${unacceptedUserDTO.id})|">수락</button>
+                                            <button type="button" class="btn btn-outline-danger"
+                                                    th:onclick="|javascript:reject(${courseDTO.id}, ${unacceptedUserDTO.id})|">거절</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
                     </div>
                 </div>
 
                 <h4 class="mt-4">강좌 구성원</h4>
                 <hr class="my-4">
-                <div th:each="studentDTO : ${studentDTOs.getStudents()}">
-                    <div class="border rounded p-4">
-                        <p th:text="${studentDTO.name}">강좌 구성원 이름</p>
+                <div class="row container2 mx-auto">
+                    <div class="col table-responsive">
+                        <table class="table table-hover section-bg">
+                            <tr th:each="studentDTO : ${studentDTOs.getStudents()}">
+                                <td class="align-middle">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <span th:text="${studentDTO.name}" class="pl-2">강좌 구성원 이름</span>
+                                        </div>
+                                        <div class="col-md-3 text-right">
+                                            <span th:if="${studentDTO.id == courseDTO.instructorId}" class="pr-2" style="color: blue;">교육자</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
                     </div>
                 </div>
 

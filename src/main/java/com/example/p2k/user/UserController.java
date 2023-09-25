@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @RequiredArgsConstructor
 @Controller
@@ -79,10 +82,15 @@ public class UserController {
     @GetMapping("/logout")
     public void logout() {}
 
-    @GetMapping("/check/{email}")
-    public Boolean email_check(@PathVariable("email") String email) {
-        System.out.println("email = " + email);
-        return userService.findByEmail(email);
+    //이메일 중복 확인
+    @PostMapping("/check-email/{email}")
+    @ResponseBody
+    public Map<String, Boolean> checkEmail(@PathVariable("email") String email) {
+        Map<String, Boolean> response = new HashMap<>();
+        Boolean check = userService.checkEmail(email);
+        log.info("check email=" + check);
+        response.put("available", check);
+        return response;
     }
 
 }

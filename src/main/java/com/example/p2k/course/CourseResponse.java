@@ -92,10 +92,12 @@ public class CourseResponse {
 
         private final Long id;
         private final String name;
+        private final Long instructorId;
 
         public FindById(Course course) {
             this.id = course.getId();
             this.name = course.getName();
+            this.instructorId = course.getInstructorId();
         }
     }
 

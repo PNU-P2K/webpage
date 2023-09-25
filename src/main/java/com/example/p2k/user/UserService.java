@@ -21,7 +21,13 @@ public class UserService {
 
     @Transactional
     public void save(UserRequest.JoinDTO requestDTO) {
-        String enPassword = bCryptPasswordEncoder.encode(requestDTO.getPassword1()); // 비밀번호 암호화
+        if(requestDTO.getEmailAvailability() == null){
+            throw new Exception400("이메일이 확인되지 않았습니다.");
+        } else if(!requestDTO.getEmailAvailability()){
+            throw new Exception400("중복된 이메일입니다.");
+        }
+
+        String enPassword = bCryptPasswordEncoder.encode(requestDTO.getPasswordConf()); // 비밀번호 암호화
 
         User user = User.builder()
                 .email(requestDTO.getEmail())
@@ -29,18 +35,13 @@ public class UserService {
                 .password(enPassword)
                 .role(requestDTO.getRole())
                 .build();
+        user.changePending(requestDTO.getRole() == Role.ROLE_INSTRUCTOR);
 
         userRepository.save(user);
     }
 
-    public Boolean findByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(null);
-
-        if (user==null) {
-            return false;
-        } else {
-            return true;
-        }
+    public Boolean checkEmail(String email) {
+        return !userRepository.existsByEmail(email);
     }
 
     public UserResponse.FindByIdDTO findById(Long id){

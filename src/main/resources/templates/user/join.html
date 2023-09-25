@@ -44,7 +44,7 @@
             <input type="text" class="form-control" id="email" th:field="*{email}" name="email" placeholder="Email" required>
             <label for="email">Email</label>
 <!--            <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">중복 이메일</div>-->
-            <a th:href="@{/user/check/{email}(email=${user.email})}"> <button id="email_check" type="button">중복확인</button> </a>
+            <button id="email_check" type="button" onclick="checkEmail()">중복확인</button>
         </div>
         <div class="form-floating">
             <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Name" required>
@@ -56,15 +56,15 @@
             <label for="password">password</label>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control" id="password1" th:field="*{password1}" placeholder="Password" required>
-            <label for="password1">password 확인</label>
+            <input type="password" class="form-control" id="passwordConf" th:field="*{passwordConf}" placeholder="Password" required>
+            <label for="passwordConf">password 확인</label>
         </div>
         <div>
             <label><input type="radio" name="role" value="student" checked th:field="*{role}" th:value="${user.role.ROLE_STUDENT}"> 학생</label>
             <label><input type="radio" name="role" value="instructor" th:field="*{role}" th:value="${user.role.ROLE_INSTRUCTOR}"> 교육자</label>
         </div>
 
-        <button class="w-100 btn btn-lg btn-primary" type="submit" id="join-btn">회원가입</button>
+        <input type="hidden" id="emailAvailability" name="emailAvailability" th:field="*{emailAvailability}" th:value="false">
         <!--        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>-->
     </form>
 
@@ -72,5 +72,30 @@
 
 <!--<script src="/js/scripts.js"></script>-->
 <div th:replace="/fragments/script.html::fragment-script"></div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function checkEmail() {
+        var email = $("#email").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/user/check-email/" + email,
+            success: function (response) {
+                if (response.available) {
+                    alert("사용 가능한 이메일입니다.");
+                    $("#emailAvailability").val("true");
+                } else {
+                    alert("중복된 이메일입니다.");
+                    $("#emailAvailability").val("false");
+                }
+            },
+            error: function () {
+                console.error("이메일 중복 확인 요청 실패");
+            }
+        });
+    }
+</script>
+
+
 </body>
 </html>

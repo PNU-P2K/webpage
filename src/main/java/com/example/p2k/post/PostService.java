@@ -30,27 +30,31 @@ public class PostService {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createdDate")); //정렬조건
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        Page<Post> posts = postRepository.findPostByCategory(pageable, id, category, user.getId());
+        Page<Post> posts = postRepository.findPostByCategory(pageable, id, category, Scope.PUBLIC, user.getId());
         return new PostResponse.FindPostsDTO(posts);
     }
 
     //게시글 아이디로 게시글 찾기
     public PostResponse.FindPostByIdDTO findPostById(Long postId){
-        Post post = postRepository.findById(postId).get();
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new Exception404("해당 게시글을 찾을 수 없습니다.")
+        );
         return new PostResponse.FindPostByIdDTO(post);
     }
 
     //게시글 작성하기
     @Transactional
-    public void savePost(PostRequest.SaveDTO saveDTO, User user, Long courseId){
-        Course course = courseRepository.findById(courseId).get();
+    public void savePost(PostRequest.SaveDTO saveDTO, Category category, User user, Long courseId){
+        Course course = courseRepository.findById(courseId).orElseThrow(
+                () -> new Exception404("해당 강좌를 찾을 수 없습니다.")
+        );
 
         Post post = Post.builder()
                 .title(saveDTO.getTitle())
                 .author(user.getName())
                 .content(saveDTO.getContent())
-                .category(saveDTO.getCategory())
-                .open(saveDTO.getOpen())
+                .category(category)
+                .scope(saveDTO.getScope())
                 .course(course)
                 .user(user)
                 .build();
@@ -65,7 +69,7 @@ public class PostService {
                 () -> new Exception404("해당 게시글을 찾을 수 없습니다.")
         );
         if(post.getUser().getId().equals(user.getId())){
-            postRepository.update(updateDTO.getTitle(), updateDTO.getContent(), updateDTO.getOpen(), postId);
+            postRepository.update(updateDTO.getTitle(), updateDTO.getContent(), updateDTO.getScope(), postId);
         }
     }
 
