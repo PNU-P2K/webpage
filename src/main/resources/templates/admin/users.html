@@ -46,9 +46,9 @@
                   <th scope="col">유형</th>
                   <th scope="col">상태</th>
                   <th scope="col">가상환경</th>
-                  <th scope="col" style="width: 20%;">강좌/글/댓글</th>
+                  <th scope="col" style="width: 15%;">강좌/글/댓글</th>
                   <th scope="col">가입일</th>
-
+                  <th scope="col" style="width: 15%;"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -57,10 +57,14 @@
                   <td class="align-middle" th:text="${userDTO.name}">이름</td>
                   <td class="align-middle" th:text="${userDTO.email}">이메일</td>
                   <td class="align-middle" th:text="${userDTO.role.value}">유형</td>
-                  <td class="align-middle" th:text="${userDTO.name}">상태</td>
+                  <td class="align-middle" th:text="${userDTO.pending ? '승인대기' : '승인'}">상태</td>
                   <td class="align-middle" th:text="${userDTO.vmNum}">가상 환경</td>
                   <td class="align-middle" th:text="|${userDTO.courseNum}/${userDTO.postNum}/${userDTO.replyNum}|">강좌/글/댓글</td>
                   <td class="align-middle" th:text="${userDTO.createdDate}">가입일</td>
+                  <td class="align-middle">
+                    <form class="form-inline m-0 p-0" th:if="${userDTO.pending}" th:action="@{/admin/users/{id}/accept(id=${userDTO.id})}" method="post">
+                      <button class="btn btn-outline-primary btn-main btn m-0" type="submit">승인하기</button>
+                    </form>
                 </tr>
                 </tbody>
               </table>

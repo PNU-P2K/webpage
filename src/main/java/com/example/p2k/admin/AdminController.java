@@ -6,9 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/admin")
 @RequiredArgsConstructor
@@ -76,5 +74,11 @@ public class AdminController {
         model.addAttribute("user", user);
         model.addAttribute("users", users);
         return "admin/users";
+    }
+
+    @PostMapping("/users/{userId}/accept")
+    public String acceptUser(@PathVariable Long userId){
+        adminService.accept(userId);
+        return "redirect:/admin/users";
     }
 }

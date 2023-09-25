@@ -1,5 +1,6 @@
 package com.example.p2k.admin;
 
+import com.example.p2k._core.exception.Exception404;
 import com.example.p2k.course.Course;
 import com.example.p2k.course.CourseResponse;
 import com.example.p2k.user.User;
@@ -39,5 +40,12 @@ public class AdminService {
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         Page<Vm> vms = vmRepository.findAll(pageable);
         return new AdminResponse.VmsDTO(vms);
+    }
+
+    public void accept(Long id){
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new Exception404("해당 사용자를 찾을 수 없습니다.")
+        );
+        userRepository.updatePending(user.getId());
     }
 }

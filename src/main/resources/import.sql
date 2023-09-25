@@ -2,7 +2,7 @@ insert into user_tb(email, name, password, role, pending) values('tngus@naver.co
 insert into user_tb(email, name, password, role, pending) values('soso@naver.com', '박소현', '$2a$12$AFOtb0QbI6BcLVTLaiYpuOnBlMDg5jTfGRez9miMYwC0wFCbbXT6q', 'ROLE_STUDENT', false);
 insert into user_tb(email, name, password, role, pending) values('gihae@naver.com', '김기해', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_STUDENT', false);
 insert into user_tb(email, name, password, role, pending) values('gihae2@naver.com', '김기해2', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_INSTRUCTOR', false);
-insert into user_tb(email, name, password, role, pending) values('gihae3@naver.com', '김기해2', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_INSTRUCTOR', true);
+insert into user_tb(email, name, password, role, pending) values('gihae3@naver.com', '김기해3', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_INSTRUCTOR', true);
 insert into user_tb(email, name, password, role, pending) values('admin@naver.com', 'admin', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_ADMIN', false);
 
 insert into course_tb(name, description, instructor_id) values('자료구조 059', '2-2', 4);
