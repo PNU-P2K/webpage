@@ -119,6 +119,7 @@ public class VmService {
         Vm vm = Vm.builder()
                 .vmname(requestDTO.getVmname())
                 .password(requestDTO.getPassword())
+                .description(requestDTO.getDescription())
                 .scope(requestDTO.getScope().booleanValue())
                 .control(requestDTO.getControl().booleanValue())
                 .user(user)

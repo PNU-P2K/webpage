@@ -5,7 +5,7 @@
 <div th:replace="/fragments/header.html::fragment-header"></div>
 <style>
     .container2 {
-        max-width: 900px;
+        max-width: 850px;
     }
     .table th {
         width: 10%;
@@ -44,7 +44,7 @@
                     <button th:if="${user.role.name() == 'ROLE_INSTRUCTOR'}"
                             type="button" class="btn btn-outline-primary float-end"
                             th:onclick="'javascript:createPost('+${courseDTO.id}+')'">글쓰기</button>
-                    <table class="table table-hover table-responsive section-bg">
+                    <table class="table table-hover table-responsive">
                         <thead>
                         <tr>
                             <th>제목</th>

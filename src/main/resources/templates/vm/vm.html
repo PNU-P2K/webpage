@@ -34,9 +34,9 @@
                                 </button>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" th:onclick="exportImage([[${v.imageId}]])">내보내기</a>
-                                    <a class="dropdown-item" type="submit" onclick="document.getElementById('delete').submit();">
-                                        <form class="form-inline m-1 p-0 col-3" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">
-                                            <input type="submit" style="border: 0; outline: 0; background-color: #fff" value='삭제하기'>
+                                    <a class="dropdown-item" >
+                                        <form class="form-inline m-0 p-0 col-3" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">
+                                            <input type="submit" class="m-0 p-0" style="background-color:transparent;border:0px transparent solid;" value="삭제하기">
                                         </form>
                                     </a>
                                     <div class="dropdown-item" th:onclick="|location.href='@{/vm/update/{id}(id=${v.id})}'|">수정하기</div>
@@ -122,6 +122,23 @@
             text: imageId,
             confirmButtonColor: '#2487ce',
             confirmButtonText: '확인'
+        });
+    }
+
+    function deleteVm(id) {
+        Swal.fire({
+            title: '가상환경을 삭제하시겠습니까?',
+            confirmButtonColor: '#2487ce',
+            cancelButtonColor: '#fa5f5f',
+            confirmButtonText: '확인',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if(result.isConfirmed) {
+                $.ajax({
+                    method : 'DELETE',
+                    url : '/vm/delete/'+id
+                })
+            }
         });
     }
 
