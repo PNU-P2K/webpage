@@ -4,22 +4,30 @@
 <!-- 공통 header -->
 <div th:replace="/fragments/header.html::fragment-header"></div>
 <style>
-    .container {
+    .container2 {
         max-width: 700px;
     }
 </style>
 <body>
+
+<!-- 공통 navigation-->
+<div th:replace="/fragments/nav-before.html::fragment-nav-before"></div>
+</br>
+</br>
+
+<section id="pricing" class="pricing">
+    <div class="container ms-4" data-aos="fade-up">
+
 <div class="d-flex" id="wrapper">
     <div id="page-content-wrapper">
-        <!-- 공통 navigation-->
-        <div th:replace="/fragments/nav-before.html::fragment-nav-before"></div>
+
+        <div class="section-title">
+            <h2>비밀번호 재설정</h2>
+        </div>
 
         <!-- Page content-->
         <div class="container-fluid">
-            <div class="container">
-                <div class="py-5 text-center">
-                    <h1 class="mt-4">비밀번호 재설정</h1>
-                </div>
+            <div class="container2 mx-auto ">
                 <form th:action th:object="${resetDTO}" method="post" class="g-3 needs-validation" novalidate>
                     <div class="row mb-3">
                         <label for="email"  class="col-sm-2 col-form-label">이메일</label>
@@ -49,6 +57,9 @@
         </div>
     </div>
 </div>
+
+    </div>
+</section>
 
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
