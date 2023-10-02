@@ -70,7 +70,7 @@ public class VmController {
     public String update(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         Vm vm = vmService.findById(id);
 
-        CourseResponse.CoursesDTO coursesDTOs = courseService.findCourses(id);
+        CourseResponse.CoursesDTO coursesDTOs = courseService.findCourses(userDetails.getUser().getId());
         VmRequest.UpdateDTO vmDTO = VmRequest.UpdateDTO.builder()
                 .id(vm.getId())
                 .description(vm.getDescription())
@@ -87,7 +87,7 @@ public class VmController {
         model.addAttribute("user", userDetails.getUser());
         model.addAttribute("vmDTO", vmDTO);
 
-        return "/vm/update";
+        return "vm/update";
     }
 
     // 가상환경 수정하기

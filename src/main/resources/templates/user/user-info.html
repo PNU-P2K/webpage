@@ -17,16 +17,19 @@
 </br>
 </br>
 
+<section id="pricing" class="pricing">
+    <div class="container ms-4" data-aos="fade-up">
+
 <div class="d-flex" id="wrapper">
     <div id="page-content-wrapper">
+
+        <div class="section-title">
+            <h2>회원 정보 수정</h2>
+        </div>
 
         <!-- Page content-->
         <div class="container-fluid">
             <div class="container-info mx-auto">
-                <div class="py-5">
-                    <h2 class="mt-4">회원 정보 수정</h2>
-                    <hr class="my-4">
-                </div>
                 <form th:action th:object="${user}" method="post" class="g-3 needs-validation" novalidate>
                     <div class="row mb-3">
                         <label for="email"  class="col-sm-2 col-form-label">이메일</label>
@@ -57,17 +60,23 @@
                         </div>
                     </div>
                 </form>
+
                 <div class="py-5">
-                    <h2 class="mt-4">회원 탈퇴하기</h2>
-                    <hr class="my-4">
-                    <button class="btn btn-outline-danger"
+                    <button class="btn btn-outline-danger float-right"
                             th:onclick="|location.href='@{/user/delete}'|"
                             type="button">탈퇴하기</button>
                 </div>
+
             </div>
         </div>
     </div>
 </div>
+
+    </div>
+</section>
+
+<!-- 공통 footer -->
+<div th:replace="/fragments/footer.html::fragment-footer"></div>
 
 <!-- 공통 script -->
 <div th:replace="/fragments/script.html::fragment-script"></div>
