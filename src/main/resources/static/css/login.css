@@ -43,3 +43,8 @@ body {
   /*border-top-left-radius: 10px;*/
   /*border-top-right-radius: 10px;*/
 }
+
+* {
+  font-family: 'GmarketSansMedium' !important;
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+}
