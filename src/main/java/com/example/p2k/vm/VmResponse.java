@@ -51,6 +51,7 @@ public class VmResponse {
             private final Boolean control;
             private final String imageId;
             private final String key;
+            private final String courseName;
 
             public VmDTO(Vm vm) {
                 this.id = vm.getId();
@@ -61,6 +62,11 @@ public class VmResponse {
                 this.control = vm.getControl();
                 this.imageId = vm.getImageId();
                 this.key = vm.getVmKey();
+                if (vm.getCourse()!=null) {
+                    this.courseName = vm.getCourse().getName();
+                } else {
+                    this.courseName = null;
+                }
             }
         }
     }
