@@ -1,19 +1,16 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- 공통 header -->
+<div th:replace="/fragments/header.html::fragment-header"></div>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.84.0">
-    <title>회원가입</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
-
-    <!-- Bootstrap core CSS -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-
     <style>
+        @font-face {
+            font-family: 'GmarketSansMedium' !important;
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         .bd-placeholder-img {
             font-size: 1.125rem;
             text-anchor: middle;
@@ -27,24 +24,61 @@
                 font-size: 3.5rem;
             }
         }
+
+        .bg-login {
+            border-radius: 20px;
+            padding-left: 50px !important;
+            padding-right: 50px !important;
+        }
+
+        #hero2 {
+            font-family: 'GmarketSansMedium' !important;
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            background-size: cover;
+            position: relative;
+        }
+
+        #white-back {
+            background-color: rgba(255, 255, 255, 0.85) !important;
+        }
+
+        .btn-primary {
+            --bs-btn-color: #fff;
+            --bs-btn-bg: #2487ce;
+            --bs-btn-border-color: #2487ce;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: #3194db;
+            --bs-btn-hover-border-color: #3194db;
+            --bs-btn-focus-shadow-rgb: 49, 132, 253;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: #3194db;
+            --bs-btn-active-border-color: #3194db;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #fff;
+            --bs-btn-disabled-bg: #2487fd;
+            --bs-btn-disabled-border-color: #2487fd;
+        }
     </style>
 
     <!-- Custom styles for this template -->
     <link href="/css/login.css" rel="stylesheet">
 </head>
 
-<body class="text-center">
-
-<main class="form-signin">
-    <form th:action="@{/user/join}" th:object="${user}" method="POST">
-        <img class="mb-4" src="/assets/cloud.png" alt="" width="120" height="120">
-        <h1 class="h3 mb-3 fw-normal">회원 가입</h1>
+<body class="text-center bg-body row" id="hero2">
+<section class="pb-1 pt-5">
+    <main class="bg-login form-signin bg-main1" data-aos="fade-up" id="white-back">
+        <div class="container mb-2">
+        <form th:action="@{/user/join}" th:object="${user}" method="POST">
+            <img class="mb-4" src="/assets/p2k_logo.png" href="/" alt="" width="150" height="105">
+        <h1 class="h3 mb-3 fw-normal">회원가입</h1>
 
         <div class="form-floating">
             <input type="text" class="form-control" id="email" th:field="*{email}" name="email" placeholder="Email" required>
             <label for="email">Email</label>
 <!--            <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">중복 이메일</div>-->
-            <button id="email_check" type="button" onclick="checkEmail()">중복확인</button>
+            <button class="w-100 mb-2 btn btn-primary" id="email_check" type="button" onclick="checkEmail()">중복확인</button>
         </div>
         <div class="form-floating">
             <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Name" required>
@@ -66,13 +100,16 @@
 
         <input type="hidden" id="emailAvailability" name="emailAvailability" th:field="*{emailAvailability}" th:value="false">
         <!--        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>-->
+
+        <button class="w-100 mb-2 btn btn-primary" type="submit">회원가입</button>
+
     </form>
-
+        </div>
 </main>
-
+</section>
 <!--<script src="/js/scripts.js"></script>-->
 <div th:replace="/fragments/script.html::fragment-script"></div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     function checkEmail() {
         var email = $("#email").val();
