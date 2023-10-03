@@ -35,8 +35,8 @@ public class VmService {
     private int portnum = 6081;
     private final int maxNum = 3;
 
-//    private final String baseURL = "http://43.200.182.194:5000";
-    private final String baseURL = "http://localhost:5000";
+    private final String baseURL = "http://3.37.62.95:5000";
+//    private final String baseURL = "http://localhost:5000";
 
     @Transactional
     public Vm findById(Long id) {
@@ -71,8 +71,8 @@ public class VmService {
     }
 
     @Transactional
-    public void update(Long id, VmRequest.UpdateDTO requestDTO) {
-//        vmRepository.update(id, requestDTO.getName(), requestDTO.getDescription(), requestDTO.getCourseId());
+    public void update(Long id, VmRequest.UpdateDTO requestDTO) throws Exception {
+       //vmRepository.update(id, requestDTO.getName(), requestDTO.getDescription(), requestDTO.getCourseId());
 
         Vm vm = vmRepository.findById(id).orElseThrow(
                 () -> new Exception404("해당 가상환경은 존재하지 않습니다.")
@@ -100,9 +100,6 @@ public class VmService {
 
         // 요청을 보낼 flask url
         String url = baseURL+"/create";
-
-        // 암호화한 key
-        String key = bCryptPasswordEncoder.encode(user.getPassword());
 
         // requestDTO header 설정
         HttpHeaders headers = new HttpHeaders();
@@ -165,6 +162,8 @@ public class VmService {
         requestDTOStF.setId(user.getId());
         requestDTOStF.setPort(portnum);
         requestDTOStF.setPassword(requestDTO.getPassword());
+        requestDTOStF.setScope(requestDTO.getScope());
+        requestDTOStF.setControl(requestDTO.getControl());
         requestDTOStF.setKey(requestDTO.getKey()); // 로드할 이미지의 id (지금은 key라고함)
         String jsonStr = ob.writeValueAsString(requestDTOStF);
 
