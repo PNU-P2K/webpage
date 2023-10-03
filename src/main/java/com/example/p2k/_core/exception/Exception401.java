@@ -1,20 +1,11 @@
-package com.example.tily._core.errors.exception;
+package com.example.p2k._core.exception;
 
-
-import com.example.tily._core.utils.ApiUtils;
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+public class Exception401 extends RuntimeException{
 
-// 인증 안됨
-@Getter
-public class Exception401 extends RuntimeException {
     public Exception401(String message) {
         super(message);
-    }
-
-    public ApiUtils.ApiResult<?> body(){
-        return ApiUtils.error(getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     public HttpStatus status(){
