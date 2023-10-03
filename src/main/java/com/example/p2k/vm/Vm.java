@@ -80,7 +80,12 @@ public class Vm extends BaseTimeEntity {
         this.imageId = imageId;
     }
 
-    public void update(Vm vm) {
-        this.vmname = vm.getVmname();
+    public void update(VmRequest.UpdateDTO requestDTO, Course course) {
+        this.vmname = requestDTO.getName();
+        this.description = requestDTO.getDescription();
+        this.password = requestDTO.getPassword();
+        this.scope = requestDTO.getScope();
+        this.control = requestDTO.getControl();
+        this.course  = course;
     }
 }

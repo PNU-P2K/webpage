@@ -22,6 +22,8 @@ public class VmRequestStF {
         private int port;
         private String password;
         private String key;
+        private Boolean scope;
+        private Boolean control;
     }
 
     @Getter @Setter

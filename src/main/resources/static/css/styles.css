@@ -2854,11 +2854,11 @@ textarea.form-control-lg {
   transition: 0.5s;
   margin-top: 30px;
   color: #fff !important;
-  background: #2487ce !important;
+  background: #ced4da !important;
 }
 
 .btn-main:hover {
-  background: #3194db;
+  background: #2487ce !important;
 }
 
 .btn-primary {

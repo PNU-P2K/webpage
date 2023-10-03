@@ -23,6 +23,11 @@
             <img src="/assets/p2k_logo_b.png" alt="loading">
         </div>
 
+        <div>
+            <input type="hidden" class="error" th:if="${vmError.errorMsg == 'true'}" th:value="true">
+            <input type="hidden" class="error" th:unless="${vmError.errorMsg == 'true'}" th:value="false">
+        </div>
+
         <div class="row icon-boxes d-flex justify-content-center">
             <div class="col-md-6 aos-init aos-animate mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="200">
                 <div class="icon-box">
@@ -54,17 +59,17 @@
                                 <img src="/assets/question-mark.png" style="width: 20px; height: 20px;" title="공개 범위는 다른 사용자들에게 가상환경을 공개하는 범위를 말합니다. 전체공개 시 모든 사용자가 접속을 할 수 있고, 비공개 시 생성자만 접속 가능합니다.">
                             </label>
                             <div class="col-sm-5">
-                                전체공개 <input type="radio" class="radio-scope" name="scope" th:field="*{scope}" th:value="true">
+                                전체공개 <input type="radio" class="radio-scope" name="scope" th:field="*{scope}" th:value="true" required>
                                 비공개 <input type="radio" class="radio-scope" name="scope" checked th:field="*{scope}" th:value="false">
                             </div>
                         </div>
 
                         <div class="m-4 row justify-content-center">
                             <label class="col-sm-4 col-form-label" style="font-weight: bolder;">접속자 권한 범위
-                                <img src="/assets/question-mark.png" style="width: 20px; height: 20px;" title="접속자 권한 범위는 전체 공개로 설정했을 시에 접속자의 제어 여부를 나타냅니다. 제어 가능은 접속자도 가상환경을 제어할 수 있고, 보기만 가능은 접속자는 가상환경을 제어하지 못하고 관전만 가능합니다.">
+                                <img src="/assets/question-mark.png" style="width: 20px; height: 20px;" title="접속자 권한 범위는 전체 공개로 설정했을 시에 접속자의 제어 여부를 나타냅니다. '제어 가능'은 접속자도 가상환경을 제어할 수 있고, '보기만 가능'은 접속자는 가상환경을 제어하지 못하고 관전만 가능합니다.">
                             </label>
                             <div class="col-sm-5">
-                                <label>제어 가능 <input type="radio" class="radio-control" name="control" th:field="*{control}" th:value="false"></label>&nbsp;
+                                <label>제어 가능 <input type="radio" class="radio-control" name="control" th:field="*{control}" th:value="false" required></label>&nbsp;
                                 <label>보기만 가능 <input type="radio" class="radio-control" name="control" checked th:field="*{control}" th:value="true"></label>&nbsp;
                             </div>
                         </div>
@@ -97,7 +102,6 @@
     });
 
     function alert(port) {
-
         Swal.fire({
             title : "로드하시겠습니까?",
             showCancelButton: true,
@@ -111,6 +115,16 @@
             }
         })
     }
+
+    $(document).ready(function() {
+        if ($('.error').val() == 'true' ) {
+            Swal.fire({
+                title: '해당 key 값으로 가상환경을 로드할 수 없습니다.',
+                confirmButtonColor: '#2487ce',
+                confirmButtonText: '확인'
+            });
+        }
+    });
 </script>
 </body>
 
