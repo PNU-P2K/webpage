@@ -15,7 +15,7 @@ insert into course_tb(name, description, instructor_id) values('알고리즘', '
 insert into course_tb(name, description, instructor_id) values('DB', '3-2', 4);
 insert into course_tb(name, description, instructor_id) values('사물인터넷', '4-2', 4);
 
-insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(1, '알고리즘', 1, 6000, 1, 1, 'stop', '이 가상환경은 알고리즘 수업을 위한 가상환경이다');
+insert into vm_tb(user_id, vmname, password, course_id, port, scope, control, state, description) values(1, '알고리즘', '1234' ,1, 6000, 1, 1, 'stop', '이 가상환경은 알고리즘 수업을 위한 가상환경이다');
 insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(2, '알고리즘059', 1, 6001, 1, 0, 'running', '알고리즘 059수업');
 insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(2, '네트워크', 1, 6002, 1, 1, 'stop', '이 가상환경은 네트워크 공부를 위한 가상환경이다. 지금은 사용하지 않고 있지만, 추후에 많이 수정할 예정이다.');
 insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(3, '자료구조', 1, 6003, 1, 1, 'running', '이 가상환경은 자료구조를 위해 만든 가상환경이다. 아무나 확인할 수 있다.');
