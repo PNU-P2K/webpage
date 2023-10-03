@@ -60,8 +60,8 @@
                         <p class="m-0 ms-5 card-text text-start" th:if="${v.state == 'stop'}"><span style="font-size: 12px; color: #adb5bd">상태</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;중지</span></p>
                         <p class="m-0 ms-5 card-text text-start"><span th:if="${v.scope}"><span style="font-size: 12px; color: #adb5bd">공개 범위</span><span>&nbsp;&nbsp;&nbsp;&nbsp;전체 공개</span></span></p>
                         <p class="m-0 ms-5 card-text text-start"><span th:if="!${v.scope}"><span style="font-size: 12px; color: #adb5bd">공개 범위</span><span>&nbsp;&nbsp;&nbsp;&nbsp;비공개</span></span></p>
-                        <p class="m-0 ms-5 card-text text-start"><span th:if="${v.control}"><span style="font-size: 12px; color: #adb5bd">접속자 권한</span><span>&nbsp;&nbsp;제어 가능</span></span></p>
-                        <p class="m-0 ms-5 card-text text-start"><span th:if="!${v.control}"><span style="font-size: 12px; color: #adb5bd">접속자 권한</span><span>&nbsp;&nbsp;보기만 가능</span></span></p>
+                        <p class="m-0 ms-5 card-text text-start"><span th:if="${v.scope} and ${v.control}"><span style="font-size: 12px; color: #adb5bd">접속자 권한</span><span>&nbsp;&nbsp;제어 가능</span></span></p>
+                        <p class="m-0 ms-5 card-text text-start"><span th:if="${v.scope} and !${v.control}"><span style="font-size: 12px; color: #adb5bd">접속자 권한</span><span>&nbsp;&nbsp;보기만 가능</span></span></p>
                         <p class="m-0 ms-5 card-text text-start" th:if="${v.courseName != null}"><span style="font-size: 12px; color: #adb5bd">연결된 강좌</span>&nbsp;&nbsp;<span th:text="${v.courseName}"></span></p>
 
 
