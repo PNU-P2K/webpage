@@ -30,7 +30,7 @@
                         <div class="row">
                             <div class="dropdown col-2" th:if="${v.state == 'stop'}">
                                 <button class="btn dropdown-toggle z" type="button" data-toggle="dropdown" id="dropdownBtn">
-                                    <!--                                <img src="/assets/drop-down.png" width="10px" height="10px"/>-->
+                                    <!-- <img src="/assets/drop-down.png" width="10px" height="10px"/>-->
                                 </button>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" th:onclick="exportImage([[${v.imageId}]])">내보내기</a>
@@ -76,14 +76,6 @@
                                     <button class="btn-main btn" type="submit">저장</button>
                                 </form>
                                 </div>
-<!--                                <div class="row d-flex justify-content-center">-->
-<!--                                <form class="form-inline m-1 p-0 col-3" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">-->
-<!--                                    <button class="btn-main btn" type="submit">삭제</button>-->
-<!--                                </form>-->
-<!--                                <div class="form-inline m-1 p-0 col-6">-->
-<!--                                    <button class="btn-main btn" th:onclick="exportImage([[${v.imageId}]])">내보내기</button>-->
-<!--                                </div>-->
-<!--                                </div>-->
                             </div>
 
                         </div>

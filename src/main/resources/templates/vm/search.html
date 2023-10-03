@@ -37,39 +37,33 @@
         <div class="col-lg-3 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="v : ${vm.getVms()}">
 
           <div class="box p-3">
-            <div class="row">
-              <h3 class="col-8" th:text="${v.name}"></h3>
+            <div>
+              <h3 th:text="${v.name}"></h3>
             </div>
 
             <input hidden id="vmId" type="text" th:value="${v.id}"/>
             <input hidden id="vmPort" type="text" th:value="${v.port}"/>
             <input hidden id="vmImageId" type="text" th:value="${v.imageId}"/>
 
-            <p class="card-text text-center"><span th:if="${v.scope}">전체공개</span></p>
-            <p class="card-text text-center"><span th:if="!${v.scope}">비공개</span></p>
-            <p class="card-text text-center"><span th:if="${v.control}">누구나 제어 가능</span></p>
-            <p class="card-text text-center"><span th:if="!${v.control}">보기만 가능</span></p>
-            <p class="card-text text-center" th:if="${v.state == 'running'}">상태 : 실행 중</p>
-            <p class="card-text text-center" th:if="${v.state == 'stop'}">상태 : 중지</p>
-            <div class="btn-wrap">
+            <p class="m-0 ms-5 card-text text-start" th:if="${v.state == 'running'}"><span style="font-size: 12px; color: #adb5bd">상태</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;실행 중</span></p>
+            <p class="m-0 ms-5 card-text text-start" th:if="${v.state == 'stop'}"><span style="font-size: 12px; color: #adb5bd">상태</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;중지</span></p>
+            <p class="m-0 ms-5 card-text text-start"><span th:if="${v.scope}"><span style="font-size: 12px; color: #adb5bd">공개 범위</span><span>&nbsp;&nbsp;&nbsp;&nbsp;전체 공개</span></span></p>
+            <p class="m-0 ms-5 card-text text-start"><span th:if="!${v.scope}"><span style="font-size: 12px; color: #adb5bd">공개 범위</span><span>&nbsp;&nbsp;&nbsp;&nbsp;비공개</span></span></p>
+            <p class="m-0 ms-5 card-text text-start"><span th:if="${v.control}"><span style="font-size: 12px; color: #adb5bd">접속자 권한</span><span>&nbsp;&nbsp;제어 가능</span></span></p>
+            <p class="m-0 ms-5 card-text text-start"><span th:if="!${v.control}"><span style="font-size: 12px; color: #adb5bd">접속자 권한</span><span>&nbsp;&nbsp;보기만 가능</span></span></p>
+            <p class="m-0 ms-5 card-text text-start" th:if="${v.courseName != null}"><span style="font-size: 12px; color: #adb5bd">연결된 강좌</span>&nbsp;&nbsp;<span th:text="${v.courseName}"></span></p>
+
+            <div class="btn-wrap pb-0">
 
               <div class="row d-flex justify-content-center" th:if="${v.state == 'running'}">
-                <div class="form-inline m-0 p-0 col-4">
-                  <button class="btn-main btn" th:onclick="|javascript:alert('${v.port}')|">접속</button>
+                <div class="m-0 p-0 col-4">
+                  <button class="btn-main btn mt-0" th:onclick="|javascript:alert('${v.port}')|">접속</button>
                 </div>
-<!--                <form class="form-inline m-0 p-0 col-4" th:action="@{/vm/stop/{id}(id=${v.id})}" method="post">-->
-<!--                  <button class="btn-main btn" type="submit">중지</button>-->
-<!--                </form>-->
               </div>
 
               <div class="row d-flex justify-content-center" th:if="${v.state == 'stop'}">
-                <div class="row d-flex justify-content-center" >
-<!--                  <form class="form-inline m-1 p-0 col-3">-->
-<!--                    <button class="btn-main btn" type="submit">실행</button>-->
-<!--                  </form>-->
-<!--                  <form class="form-inline m-1 p-0 col-3" th:action="@{/vm/save/{id}(id=${v.id})}" method="post">-->
-<!--                    <button class="btn-main btn" type="submit">저장</button>-->
-<!--                  </form>-->
+                <div class="row d-flex justify-content-center">
+                  <br>
                 </div>
               </div>
 

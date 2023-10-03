@@ -15,10 +15,12 @@ insert into course_tb(name, description, instructor_id) values('알고리즘', '
 insert into course_tb(name, description, instructor_id) values('DB', '3-2', 4);
 insert into course_tb(name, description, instructor_id) values('사물인터넷', '4-2', 4);
 
-insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(1, '알고리즘', 1, 6085, 1, 1, 'stop', '이 가상환경은 알고리즘 수업을 위한 가상환경이다');
-insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(2, '21', 1, 6090, 1, 0, 'running', '이 가상환경은 알고리즘 수업을 위한 가상환경이다');
-insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(2, '22', 1, 6091, 1, 1, 'stop', '이 가상환경은 알고리즘 수업을 위한 가상환경이다');
-insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(3, '31', 1, 6092, 1, 1, 'running', '이 가상환경은 알고리즘 수업을 위한 가상환경이다');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(1, '알고리즘', 1, 6000, 1, 1, 'stop', '이 가상환경은 알고리즘 수업을 위한 가상환경이다');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(2, '21', 1, 6001, 1, 0, 'running', '이 가상환경은 알고리즘 수업을 위한 가상환경이다');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(2, '22', 1, 6002, 1, 1, 'stop', '이 가상환경은 알고리즘 수업을 위한 가상환경이다');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(3, '31', 1, 6003, 1, 1, 'running', '이 가상환경은 알고리즘 수업을 위한 가상환경이다');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(4, '알고리즘(교육자)', 1, 6004, 1, 1, 'stop', '이 가상환경은 알고리즘 수업을 위한 교육자의 가상환경이다');
+
 
 --insert into vm_tb(user_id, vmname, course_id, port, scope, control, state) values(2, '자료구조', 1, 6086, 0, 1, 'stop');
 --insert into vm_tb(user_id, vmname, course_id, port, scope, control, state) values(3, '알고리즘', 1, 6087, 1, 1, 'stop');
