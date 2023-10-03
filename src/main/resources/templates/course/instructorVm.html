@@ -36,22 +36,8 @@
                         <div class="col-lg-4 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="v : ${instructorVms.getVms()}">
 
                             <div class="box p-3">
-                                <div class="row">
-                                    <div class="dropdown col-2" th:if="${v.state == 'stop'}">
-                                        <button class="btn dropdown-toggle z" type="button" data-toggle="dropdown" id="dropdownBtn">
-                                            <!-- <img src="/assets/drop-down.png" width="10px" height="10px"/>-->
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" th:onclick="exportImage([[${v.imageId}]])">내보내기</a>
-                                            <a class="dropdown-item" >
-                                                <form class="form-inline m-0 p-0 col-3" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">
-                                                    <input type="submit" class="m-0 p-0" style="background-color:transparent;border:0px transparent solid;" value="삭제하기">
-                                                </form>
-                                            </a>
-                                            <div class="dropdown-item" th:onclick="|location.href='@{/vm/update/{id}(id=${v.id})}'|">수정하기</div>
-                                        </div>
-                                    </div>
-                                    <h3 class="col-8 mb-4" th:text="${v.name}" style="font-size:25px"></h3>
+                                <div>
+                                    <h3 th:text="${v.name}" style="font-size:25px"></h3>
                                 </div>
 
                                 <input hidden id="vmId" type="text" th:value="${v.id}"/>
@@ -71,22 +57,7 @@
                                         <div class="form-inline m-0 p-0 col-4">
                                             <button class="btn-main btn" th:onclick="|javascript:alert('${v.port}')|">접속</button>
                                         </div>
-                                        <form class="form-inline m-0 p-0 col-4" th:action="@{/vm/stop/{id}(id=${v.id})}" method="post">
-                                            <button class="btn-main btn" type="submit">중지</button>
-                                        </form>
                                     </div>
-
-                                    <div class="row d-flex justify-content-center" th:if="${v.state == 'stop'}">
-                                        <div class="row d-flex justify-content-center" >
-                                            <form class="form-inline m-1 p-0 col-3" th:action="@{/vm/start/{id}(id=${v.id})}" method="post">
-                                                <button class="btn-main btn" type="submit">실행</button>
-                                            </form>
-                                            <form class="form-inline m-1 p-0 col-3" th:action="@{/vm/save/{id}(id=${v.id})}" method="post">
-                                                <button class="btn-main btn" type="submit">저장</button>
-                                            </form>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>

@@ -52,6 +52,8 @@ public class VmResponse {
             private final String imageId;
             private final String key;
             private final String courseName;
+            private final String creator;
+            private final String description;
 
             public VmDTO(Vm vm) {
                 this.id = vm.getId();
@@ -67,6 +69,8 @@ public class VmResponse {
                 } else {
                     this.courseName = null;
                 }
+                this.creator = vm.getUser().getName();
+                this.description = vm.getDescription();
             }
         }
     }
