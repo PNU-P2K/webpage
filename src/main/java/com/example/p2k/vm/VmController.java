@@ -77,6 +77,9 @@ public class VmController {
                 .id(vm.getId())
                 .description(vm.getDescription())
                 .name(vm.getVmname())
+                .password(vm.getPassword())
+                .control(vm.getControl())
+                .scope(vm.getScope())
                 .build();
 
         if (vm.getCourse()==null) {

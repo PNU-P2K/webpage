@@ -91,12 +91,18 @@ public class VmResponse {
         private Long id;
         private String name;
         private String description;
+        private String password;
+        private Boolean scope;
+        private Boolean control;
         private Long courseId;
 
         public UpdateDTO(Vm vm) {
             this.id = vm.getId();
             this.name = vm.getVmname();
             this.description = vm.getDescription();
+            this.password = vm.getPassword();
+            this.scope = vm.getScope();
+            this.control = vm.getControl();
             this.courseId = vm.getCourse().getId();
         }
     }

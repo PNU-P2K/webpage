@@ -34,6 +34,9 @@ public class VmRequest {
         private Long id;
         private String name;
         private String description;
+        private String password;
+        private Boolean scope;
+        private Boolean control;
         private Long courseId;
     }
 }
