@@ -100,4 +100,14 @@ public class VmResponse {
             this.courseId = vm.getCourse().getId();
         }
     }
+
+    @Getter
+    public static class LoadDTO {
+
+        private final String errorMsg;
+
+        public LoadDTO(String errorMsg) {
+            this.errorMsg = errorMsg;
+        }
+    }
 }

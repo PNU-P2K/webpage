@@ -1,6 +1,7 @@
 package com.example.p2k.vm;
 
 import com.example.p2k._core.exception.Exception400;
+import com.example.p2k._core.exception.Exception404;
 import com.example.p2k._core.security.CustomUserDetails;
 import com.example.p2k.course.CourseResponse;
 import com.example.p2k.course.CourseService;
@@ -45,11 +46,11 @@ public class VmController {
     // 가상환경 생성하기
     @PostMapping("/create")
     public String create(@AuthenticationPrincipal CustomUserDetails userDetails, @ModelAttribute("vm") VmRequest.CreateDTO requestDTO, Model model) throws Exception {
+        User user = userDetails.getUser();
+
         try {
-            vmService.create(userDetails.getUser(), requestDTO);
+            vmService.create(user, requestDTO);
         } catch (Exception400 e) {
-            System.out.println("controller : 에러 발견");
-            User user = userDetails.getUser();
             model.addAttribute("user", user);
             model.addAttribute("vmError", new VmResponse.CreateDTO("true"));
             return "vm/create";
@@ -62,7 +63,8 @@ public class VmController {
     public String load(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         model.addAttribute("user", userDetails.getUser());
         model.addAttribute("loadDTO", new VmRequest.LoadDTO());
-        return "/vm/load";
+        model.addAttribute("vmError", new VmResponse.LoadDTO("false"));
+        return "vm/load";
     }
 
     // 가상환경 수정 페이지
@@ -99,9 +101,16 @@ public class VmController {
 
     // 가상환경 로드하기
     @PostMapping("/load")
-    public String load(@AuthenticationPrincipal CustomUserDetails userDetails, @ModelAttribute("loadDTO") VmRequest.LoadDTO requestDTO) throws Exception {
-        System.out.println("requestDTO = " + requestDTO);
-        vmService.load(userDetails.getUser(), requestDTO);
+    public String load(@AuthenticationPrincipal CustomUserDetails userDetails, @ModelAttribute("loadDTO") VmRequest.LoadDTO requestDTO, Model model) throws Exception {
+        User user = userDetails.getUser();
+        try {
+            vmService.load(user, requestDTO);
+        } catch (Exception e) {
+            model.addAttribute("user", user);
+            model.addAttribute("loadDTO", new VmRequest.LoadDTO());
+            model.addAttribute("vmError", new VmResponse.LoadDTO("true"));
+            return "vm/load";
+        }
         return "redirect:/vm";
     }
 

@@ -23,6 +23,11 @@
             <img src="/assets/p2k_logo_b.png" alt="loading">
         </div>
 
+        <div>
+            <input type="hidden" class="error" th:if="${vmError.errorMsg == 'true'}" th:value="true">
+            <input type="hidden" class="error" th:unless="${vmError.errorMsg == 'true'}" th:value="false">
+        </div>
+
         <div class="row icon-boxes d-flex justify-content-center">
             <div class="col-md-6 aos-init aos-animate mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="200">
                 <div class="icon-box">
@@ -97,7 +102,6 @@
     });
 
     function alert(port) {
-
         Swal.fire({
             title : "로드하시겠습니까?",
             showCancelButton: true,
@@ -111,6 +115,16 @@
             }
         })
     }
+
+    $(document).ready(function() {
+        if ($('.error').val() == 'true' ) {
+            Swal.fire({
+                title: '해당 key 값으로 가상환경을 로드할 수 없습니다.',
+                confirmButtonColor: '#2487ce',
+                confirmButtonText: '확인'
+            });
+        }
+    });
 </script>
 </body>
 

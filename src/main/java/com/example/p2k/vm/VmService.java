@@ -1,6 +1,7 @@
 package com.example.p2k.vm;
 
 import com.example.p2k._core.exception.Exception400;
+import com.example.p2k._core.exception.Exception401;
 import com.example.p2k._core.exception.Exception404;
 import com.example.p2k.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,8 +33,8 @@ public class VmService {
     private int portnum = 6081;
     private final int maxNum = 3;
 
-    private final String baseURL = "http://43.200.182.194:5000";
-    //private final String baseURL = "http://localhost:5000";
+//    private final String baseURL = "http://43.200.182.194:5000";
+    private final String baseURL = "http://localhost:5000";
 
     @Transactional
     public Vm findById(Long id) {
@@ -161,8 +162,11 @@ public class VmService {
         ResponseEntity<?> response = restTemplate.postForEntity(url, entity, VmResponseFtS.loadDTO.class);
         String responseBody = ob.writeValueAsString(response.getBody());
         VmResponseFtS.loadDTO res = ob.readValue(responseBody, VmResponseFtS.loadDTO.class);
-        System.out.println("res = " + res.getContainerId());
-        System.out.println("res.getImageId() = " + res.getImageId());
+
+        // key값으로 가상환경을 찾을 수 없는 경우
+        if (res.getContainerId() == "null") {
+            throw new Exception404("해당 가상환경은 존재하지 않습니다. ");
+        }
 
         // 임시로 제어권은 true로 설정
         if (requestDTO.getControl()==null) {
