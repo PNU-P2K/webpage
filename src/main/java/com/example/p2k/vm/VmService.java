@@ -32,7 +32,9 @@ public class VmService {
     private int portnum = 6081;
     private final int maxNum = 3;
 
-    private final String baseURL = "http://43.200.182.194:5000";
+    private int nodePort = 30000; // 30000~32768까지 사용 가능
+
+    private final String baseURL = "http://223.130.137.170:5000"; // k8s에게 명령을 내리는 서버
     //private final String baseURL = "http://localhost:5000";
 
     @Transactional
@@ -98,6 +100,7 @@ public class VmService {
         VmRequestStF.createDTO requestDTOStF = new VmRequestStF.createDTO();
         requestDTOStF.setId(user.getId());
         requestDTOStF.setPort(portnum);
+        requestDTOStF.setNodePort(nodePort);
         requestDTOStF.setPassword(requestDTO.getPassword());
         requestDTOStF.setScope(requestDTO.getScope());
         requestDTOStF.setControl(requestDTO.getControl());
@@ -123,6 +126,7 @@ public class VmService {
                 .control(requestDTO.getControl().booleanValue())
                 .user(user)
                 .port(portnum)
+                .nodePort(nodePort)
                 .containerId(res.getContainerId())
                 .imageId(res.getImageId())
                 .state("running")
@@ -130,6 +134,7 @@ public class VmService {
 
         vmRepository.save(vm);
         portnum+=1;
+        nodePort+=1;
     }
 
     @Transactional
@@ -149,6 +154,7 @@ public class VmService {
         VmRequestStF.loadDTO requestDTOStF = new VmRequestStF.loadDTO();
         requestDTOStF.setId(user.getId());
         requestDTOStF.setPort(portnum);
+        requestDTOStF.setNodePort(nodePort);
         requestDTOStF.setPassword(requestDTO.getPassword());
         requestDTOStF.setKey(requestDTO.getKey()); // 로드할 이미지의 id (지금은 key라고함)
         String jsonStr = ob.writeValueAsString(requestDTOStF);
@@ -176,6 +182,7 @@ public class VmService {
                 .control(requestDTO.getControl().booleanValue())
                 .user(user)
                 .port(portnum)
+                .nodePort(nodePort)
                 .containerId(res.getContainerId())
                 .imageId(res.getImageId())
                 .state("stop")
@@ -184,6 +191,7 @@ public class VmService {
 
         vmRepository.save(vm);
         portnum+=1;
+        nodePort+=1;
 
     }
 
@@ -203,6 +211,7 @@ public class VmService {
         // requestDTO body 만들기 - port, 컨테이너id
         VmRequestStF.startDTO requestDTOStF = new VmRequestStF.startDTO();
         requestDTOStF.setPort(vm.getPort());
+        requestDTOStF.setNodePort(vm.getNodePort());
         requestDTOStF.setContainerId(vm.getContainerId());
         requestDTOStF.setPassword(vm.getPassword());
         requestDTOStF.setScope(vm.getScope());
@@ -234,6 +243,8 @@ public class VmService {
         // requestDTO body 만들기 - port, 컨테이너id
         VmRequestStF.stopDTO requestDTOStF = new VmRequestStF.stopDTO();
         requestDTOStF.setPort(vm.getPort());
+        requestDTOStF.setNodePort(vm.getNodePort());
+
         requestDTOStF.setContainerId(vm.getContainerId());
         String jsonStr = ob.writeValueAsString(requestDTOStF);
 
@@ -263,6 +274,7 @@ public class VmService {
         VmRequestStF.saveDTO requestDTOStF = new VmRequestStF.saveDTO();
         requestDTOStF.setId(user.getId());
         requestDTOStF.setPort(vm.getPort());
+        requestDTOStF.setNodePort(vm.getNodePort());
         requestDTOStF.setPwd(vm.getPassword());
         requestDTOStF.setImageId(vm.getImageId());
         requestDTOStF.setContainerId(vm.getContainerId());
@@ -297,6 +309,7 @@ public class VmService {
         VmRequestStF.deleteDTO requestDTOStF = new VmRequestStF.deleteDTO();
         requestDTOStF.setId(user.getId());
         requestDTOStF.setPort(vm.getPort());
+        requestDTOStF.setNodePort(vm.getNodePort());
         requestDTOStF.setContainerId(vm.getContainerId());
         requestDTOStF.setImageId(vm.getImageId());
         String jsonStr = ob.writeValueAsString(requestDTOStF);
