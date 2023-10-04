@@ -33,6 +33,7 @@ public class VmService {
     private final int maxNum = 3;
 
     private int nodePort = 30000; // 30000~32768까지 사용 가능
+    private final String baseImagePath = "registry.p2kcloud.com/base/";
 
     private final String baseURL = "http://223.130.137.170:5000"; // k8s에게 명령을 내리는 서버
     //private final String baseURL = "http://localhost:5000";
@@ -92,6 +93,8 @@ public class VmService {
         // 암호화한 key
         String key = bCryptPasswordEncoder.encode(user.getPassword());
 
+        String imagePath = baseImagePath+1+":6081"; // create시에는 base/1을 기준으로 생성
+
         // requestDTO header 설정
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -101,6 +104,7 @@ public class VmService {
         requestDTOStF.setId(user.getId());
         requestDTOStF.setPort(portnum);
         requestDTOStF.setNodePort(nodePort);
+        requestDTOStF.setImagePath(imagePath);
         requestDTOStF.setPassword(requestDTO.getPassword());
         requestDTOStF.setScope(requestDTO.getScope());
         requestDTOStF.setControl(requestDTO.getControl());
@@ -150,11 +154,14 @@ public class VmService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
+        String imagePath = baseImagePath+user.getId()+":latest";
+
         // requestDTO body 만들기 - port, pwd
         VmRequestStF.loadDTO requestDTOStF = new VmRequestStF.loadDTO();
         requestDTOStF.setId(user.getId());
         requestDTOStF.setPort(portnum);
         requestDTOStF.setNodePort(nodePort);
+        requestDTOStF.setImagePath(imagePath);
         requestDTOStF.setPassword(requestDTO.getPassword());
         requestDTOStF.setKey(requestDTO.getKey()); // 로드할 이미지의 id (지금은 key라고함)
         String jsonStr = ob.writeValueAsString(requestDTOStF);
