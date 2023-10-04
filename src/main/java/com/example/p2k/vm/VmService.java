@@ -99,7 +99,7 @@ public class VmService {
         // requestDTO body 만들기 - port, pwd
         VmRequestStF.createDTO requestDTOStF = new VmRequestStF.createDTO();
         requestDTOStF.setId(user.getId());
-        requestDTOStF.setVmName(requestDTOStF.getVmName());
+        requestDTOStF.setVmName(requestDTO.getVmname());
         requestDTOStF.setPort(portnum);
         requestDTOStF.setNodePort(nodePort);
         requestDTOStF.setPassword(requestDTO.getPassword());
@@ -154,7 +154,7 @@ public class VmService {
         // requestDTO body 만들기 - port, pwd
         VmRequestStF.loadDTO requestDTOStF = new VmRequestStF.loadDTO();
         requestDTOStF.setId(user.getId());
-        requestDTOStF.setVmName(requestDTOStF.getVmName());
+        requestDTOStF.setVmName(requestDTO.getName());
         requestDTOStF.setPort(portnum);
         requestDTOStF.setNodePort(nodePort);
         requestDTOStF.setPassword(requestDTO.getPassword());
