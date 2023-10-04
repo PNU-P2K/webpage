@@ -46,7 +46,7 @@
                         </div>
 
                         <input hidden id="vmId" type="text" th:value="${v.id}"/>
-                        <input hidden id="vmPort" type="text" th:value="${v.port}"/>
+                        <input hidden id="vmNodePort" type="text" th:value="${v.nodePort}"/>
                         <input hidden id="vmImageId" type="text" th:value="${v.imageId}"/>
                         <p class="card-text text-center"><span th:if="${v.scope}">전체공개</span></p>
                         <p class="card-text text-center"><span th:if="!${v.scope}">비공개</span></p>
@@ -58,7 +58,7 @@
 
                             <div class="row d-flex justify-content-center" th:if="${v.state == 'running'}">
                                 <div class="form-inline m-0 p-0 col-4">
-                                    <button class="btn-main btn" th:onclick="|javascript:alert('${v.port}')|">접속</button>
+                                    <button class="btn-main btn" th:onclick="|javascript:alert('${v.nodePort}')|">접속</button>
                                 </div>
                                 <form class="form-inline m-0 p-0 col-4" th:action="@{/vm/stop/{id}(id=${v.id})}" method="post">
                                     <button class="btn-main btn" type="submit">중지</button>
@@ -100,7 +100,7 @@
 <div th:replace="/fragments/script.html::fragment-script"></div>
 <script th:inline="javascript">
 
-    function alert(port) {
+    function alert(nodePort) {
         Swal.fire({
             title : "접속하시겠습니까?",
             showCancelButton: true,
@@ -111,7 +111,7 @@
         }).then((result) => {
             if(result.isConfirmed) {
                 //location.href = "http://localhost:"+port; // 기존 창에서 이동
-                window.open("https://175.45.203.169:"+port, "_blank") // 새 창에서 켜짐
+                window.open("https://175.45.203.169:"+nodePort, "_blank") // 새 창에서 켜짐
                 // k8s가 동작하는 서버
                 // k8s에게 명령을 내리는 서버와 k8s가 동작되는 서버는 다름
              }
