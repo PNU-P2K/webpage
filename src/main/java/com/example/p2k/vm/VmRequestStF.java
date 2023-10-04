@@ -13,6 +13,8 @@ public class VmRequestStF {
         private String password;
         private Boolean scope;
         private Boolean control;
+        private int nodePort;
+        private String imagePath;
     }
 
     @Getter @Setter
@@ -22,6 +24,8 @@ public class VmRequestStF {
         private int port;
         private String password;
         private String key;
+        private int nodePort;
+        private String imagePath;
         private Boolean scope;
         private Boolean control;
     }
@@ -33,12 +37,14 @@ public class VmRequestStF {
         private String password;
         private Boolean scope;
         private Boolean control;
+        private int nodePort;
     }
 
     @Getter @Setter
     public static class stopDTO {
         private int port;
         private String containerId;
+        private int nodePort;
     }
 
     @Getter @Setter
@@ -48,6 +54,7 @@ public class VmRequestStF {
         private String pwd;
         private String containerId;
         private String imageId;
+        private int nodePort;
     }
 
     @Getter @Setter
@@ -56,5 +63,6 @@ public class VmRequestStF {
         private int port;
         private String containerId;
         private String imageId;
+        private int nodePort;
     }
 }

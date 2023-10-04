@@ -46,6 +46,7 @@ public class VmResponse {
             private final Long id;
             private final String name;
             private final int port;
+            private final int nodePort;
             private final String state;
             private final Boolean scope;
             private final Boolean control;
@@ -59,6 +60,7 @@ public class VmResponse {
                 this.id = vm.getId();
                 this.name = vm.getVmname();
                 this.port = vm.getPort();
+                this.nodePort = vm.getNodePort();
                 this.state = vm.getState();
                 this.scope = vm.getScope();
                 this.control = vm.getControl();
