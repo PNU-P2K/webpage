@@ -10980,3 +10980,8 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
 .menu #expand-menu:not(:checked) ~ ul { /* 데스크탑 화면에서도 메뉴를 접었더 펼칠 수 있음 */
   display: none;
 }
+
+* {
+  font-family: 'GmarketSansMedium' !important;
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+}

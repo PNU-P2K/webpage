@@ -5,7 +5,7 @@
 <div th:replace="/fragments/header.html::fragment-header"></div>
 <style>
     .container2 {
-        max-width: 900px;
+        max-width: 850px;
     }
 </style>
 <body>
@@ -35,7 +35,7 @@
                 <hr class="my-4">
                 <div class="row container2 mx-auto">
                     <div class="col table-responsive">
-                        <table class="table table-hover section-bg">
+                        <table class="table table-hover">
                             <tr th:each="unacceptedUserDTO : ${unacceptedUserDTOs.getStudents()}">
                                 <td class="align-middle">
                                     <div class="row">
