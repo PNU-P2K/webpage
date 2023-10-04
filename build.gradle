@@ -45,7 +45,7 @@ dependencies {
 	implementation 'software.amazon.awssdk:sso'
 	implementation 'software.amazon.awssdk:ssooidc'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
 }
 
 tasks.named('test') {
