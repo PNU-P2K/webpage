@@ -60,7 +60,7 @@ public class CourseService {
     //강좌 신청 페이지
     public CourseResponse.FindCoursesDTO findSearchCourses(String keyword, int page){
         Pageable pageable = getPageable(page);
-        Page<Course> courses = courseRepository.findByNameContaining(pageable, keyword);
+        Page<Course> courses = courseRepository.findByNameContainingIgnoreCase(pageable, keyword);
         return new CourseResponse.FindCoursesDTO(courses);
     }
 
