@@ -28,9 +28,10 @@
 
                     <div class="box p-3">
                         <div class="row">
-                            <div class="dropdown col-2" th:if="${v.state == 'stop'}">
+                            <div class="dropdown col-2">
+                                <div th:if="${v.state == 'stop'}">
                                 <button class="btn dropdown-toggle z" type="button" data-toggle="dropdown" id="dropdownBtn">
-                                    <!--                                <img src="/assets/drop-down.png" width="10px" height="10px"/>-->
+                                    <!-- <img src="/assets/drop-down.png" width="10px" height="10px"/>-->
                                 </button>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" th:onclick="exportImage([[${v.imageId}]])">내보내기</a>
@@ -41,22 +42,25 @@
                                     </a>
                                     <div class="dropdown-item" th:onclick="|location.href='@{/vm/update/{id}(id=${v.id})}'|">수정하기</div>
                                 </div>
+                                </div>
                             </div>
-                        <h3 class="col-8" th:text="${v.name}"></h3>
+                        <h3 class="col-8 mb-4" th:text="${v.name}" style="font-size:25px"></h3>
                         </div>
 
                         <input hidden id="vmId" type="text" th:value="${v.id}"/>
                         <input hidden id="vmNodePort" type="text" th:value="${v.nodePort}"/>
                         <input hidden id="vmImageId" type="text" th:value="${v.imageId}"/>
-                        <p class="card-text text-center"><span th:if="${v.scope}">전체공개</span></p>
-                        <p class="card-text text-center"><span th:if="!${v.scope}">비공개</span></p>
-                        <p class="card-text text-center"><span th:if="${v.control}">누구나 제어 가능</span></p>
-                        <p class="card-text text-center"><span th:if="!${v.control}">보기만 가능</span></p>
-                        <p class="card-text text-center" th:if="${v.state == 'running'}">상태 : 실행 중</p>
-                        <p class="card-text text-center" th:if="${v.state == 'stop'}">상태 : 중지</p>
-                        <div class="btn-wrap">
+                        <p class="m-0 ms-5 card-text text-start" th:if="${v.state == 'running'}"><span style="font-size: 12px; color: #adb5bd">상태</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;실행 중</span></p>
+                        <p class="m-0 ms-5 card-text text-start" th:if="${v.state == 'stop'}"><span style="font-size: 12px; color: #adb5bd">상태</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;중지</span></p>
+                        <p class="m-0 ms-5 card-text text-start"><span th:if="${v.scope}"><span style="font-size: 12px; color: #adb5bd">공개 범위</span><span>&nbsp;&nbsp;&nbsp;&nbsp;전체 공개</span></span></p>
+                        <p class="m-0 ms-5 card-text text-start"><span th:if="!${v.scope}"><span style="font-size: 12px; color: #adb5bd">공개 범위</span><span>&nbsp;&nbsp;&nbsp;&nbsp;비공개</span></span></p>
+                        <p class="m-0 ms-5 card-text text-start"><span th:if="${v.scope} and ${v.control}"><span style="font-size: 12px; color: #adb5bd">접속자 권한</span><span>&nbsp;&nbsp;제어 가능</span></span></p>
+                        <p class="m-0 ms-5 card-text text-start"><span th:if="${v.scope} and !${v.control}"><span style="font-size: 12px; color: #adb5bd">접속자 권한</span><span>&nbsp;&nbsp;보기만 가능</span></span></p>
+                        <p class="m-0 ms-5 card-text text-start" th:if="${v.courseName != null}"><span style="font-size: 12px; color: #adb5bd">연결된 강좌</span>&nbsp;&nbsp;<span th:text="${v.courseName}"></span></p>
 
-                            <div class="row d-flex justify-content-center" th:if="${v.state == 'running'}">
+
+                        <div class="btn-wrap p-0">
+                            <div class="row d-flex justify-content-center m-0" th:if="${v.state == 'running'}">
                                 <div class="form-inline m-0 p-0 col-4">
                                     <button class="btn-main btn" th:onclick="|javascript:alert('${v.nodePort}')|">접속</button>
                                 </div>
@@ -74,14 +78,6 @@
                                     <button class="btn-main btn" type="submit">저장</button>
                                 </form>
                                 </div>
-<!--                                <div class="row d-flex justify-content-center">-->
-<!--                                <form class="form-inline m-1 p-0 col-3" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">-->
-<!--                                    <button class="btn-main btn" type="submit">삭제</button>-->
-<!--                                </form>-->
-<!--                                <div class="form-inline m-1 p-0 col-6">-->
-<!--                                    <button class="btn-main btn" th:onclick="exportImage([[${v.imageId}]])">내보내기</button>-->
-<!--                                </div>-->
-<!--                                </div>-->
                             </div>
 
                         </div>
@@ -111,9 +107,13 @@
         }).then((result) => {
             if(result.isConfirmed) {
                 //location.href = "http://localhost:"+port; // 기존 창에서 이동
+
                 window.open("https://175.45.203.169:"+nodePort, "_blank") // 새 창에서 켜짐
                 // k8s가 동작하는 서버
                 // k8s에게 명령을 내리는 서버와 k8s가 동작되는 서버는 다름
+              
+                //window.open("https://3.37.62.95:"+port, "_blank") // 새 창에서 켜짐
+
              }
         })
     }
