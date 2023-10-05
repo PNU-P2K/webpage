@@ -6,7 +6,6 @@ import com.example.p2k._core.exception.Exception404;
 import com.example.p2k.courseuser.CourseUser;
 import com.example.p2k.courseuser.CourseUserRepository;
 import com.example.p2k.post.PostRepository;
-import com.example.p2k.reply.ReplyRepository;
 import com.example.p2k.user.Role;
 import com.example.p2k.user.User;
 import com.example.p2k.user.UserRepository;
@@ -91,13 +90,10 @@ public class CourseService {
     public VmResponse.FindAllDTO findInstructorVm(Long courseId, User user){
         checkStudentAuthorization(user);
 
-        Course course = getCourse(courseId);
+        Long instructorId = getCourse(courseId).getInstructorId();
+        validateInstructorExistence(instructorId);
 
-        if(course.getInstructorId() == null){
-            throw new Exception400("해당 강좌의 교육자가 존재하지 않습니다.");
-        }
-
-        List<Vm> vms = vmRepository.findUserIdAndCourseIdOpen(course.getInstructorId(), courseId);
+        List<Vm> vms = vmRepository.findByUserIdAndCourseIdAndScopeIsTrue(instructorId, courseId);
         return new VmResponse.FindAllDTO(vms);
     }
 
@@ -106,18 +102,20 @@ public class CourseService {
     public void cancel(Long courseId, Long userId){
         User user = getUser(userId);
         checkStudentAuthorization(user);
-        courseUserRepository.deleteByCourseIdAndUserId(courseId, userId);
+        CourseUser courseUser = getCourseUser(courseId, userId);
+        courseUserRepository.deleteById(courseUser.getId());
     }
 
     //강좌 생성
     @Transactional
-    public void create(CourseRequest.SaveDTO requestDTO, User user){
+    public void create(CourseRequest.SaveDTO requestDTO, Long userId){
+        User user = getUser(userId);
         checkInstructorAuthorization(user);
 
         Course course = Course.builder()
                 .name(requestDTO.getName())
                 .description(requestDTO.getDescription())
-                .instructorId(user.getId())
+                .instructorId(userId)
                 .build();
         courseRepository.save(course);
 
@@ -125,17 +123,17 @@ public class CourseService {
         courseUserRepository.save(courseUser);
     }
 
-    //수강생 관리
-    public CourseResponse.FindStudentsDTO findStudents(Long id, User user){
+    //수강생 목록
+    public CourseResponse.FindStudentsDTO findStudents(Long courseId, User user){
         checkInstructorAuthorization(user);
-        List<User> students = courseUserRepository.findAcceptedUserByCourseId(id);
-        return new CourseResponse.FindStudentsDTO(students);
+        List<User> users = courseUserRepository.findByCourseIdAndAcceptIsTrue(courseId);
+        return new CourseResponse.FindStudentsDTO(users);
     }
 
     //강좌 신청 대기 수강생 목록
     public CourseResponse.FindUnacceptedUserDTO findApplications(Long courseId, User user){
         checkInstructorAuthorization(user);
-        List<User> users = courseUserRepository.findUnacceptedUserByCourseId(courseId);
+        List<User> users = courseUserRepository.findByCourseIdAndAcceptIsFalse(courseId);
         return new CourseResponse.FindUnacceptedUserDTO(users);
     }
 
@@ -143,7 +141,8 @@ public class CourseService {
     @Transactional
     public void accept(Long courseId, Long applicationId, User user){
         checkInstructorAuthorization(user);
-        CourseUser courseUser = getCourseUser(courseId, applicationId);
+        Course course = getCourse(courseId);
+        CourseUser courseUser = getCourseUser(course.getId(), applicationId);
         courseUser.updateAccept(true);
     }
 
@@ -151,7 +150,8 @@ public class CourseService {
     @Transactional
     public void reject(Long courseId, Long applicationId, User user){
         checkInstructorAuthorization(user);
-        CourseUser courseUser = getCourseUser(courseId, applicationId);
+        Course course = getCourse(courseId);
+        CourseUser courseUser = getCourseUser(course.getId(), applicationId);
         courseUserRepository.deleteById(courseUser.getId());
     }
 
@@ -181,6 +181,13 @@ public class CourseService {
         return userRepository.findById(userId).orElseThrow(
                 () -> new Exception404("해당 사용자를 찾을 수 없습니다.")
         );
+    }
+
+    private void validateInstructorExistence(Long instructorId) {
+        if(instructorId == null){
+            throw new Exception400("해당 강좌의 교육자가 존재하지 않습니다.");
+        }
+        getUser(instructorId);
     }
 
     private static void checkInstructorAuthorization(User user) {

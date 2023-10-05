@@ -76,7 +76,7 @@ public class CourseController {
     @PostMapping("/create")
     public String create(@ModelAttribute CourseRequest.SaveDTO requestDTO,
                          @AuthenticationPrincipal CustomUserDetails userDetails){
-        courseService.create(requestDTO, userDetails.getUser());
+        courseService.create(requestDTO, userDetails.getUser().getId());
         return "redirect:/courses";
     }
 

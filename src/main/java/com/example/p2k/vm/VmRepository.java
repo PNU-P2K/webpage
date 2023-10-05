@@ -4,11 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface VmRepository extends JpaRepository<Vm, Long> {
@@ -25,8 +23,7 @@ public interface VmRepository extends JpaRepository<Vm, Long> {
     @Query("select v from Vm v where v.user.id = :userId and v.course.id = :id")
     List<Vm> findUserIdAndCourseId(@Param("userId") Long userId, @Param("id") Long id);
 
-    @Query("select v from Vm v where v.user.id = :userId and v.course.id = :id and v.scope = true")
-    List<Vm> findUserIdAndCourseIdOpen(@Param("userId") Long userId, @Param("id") Long id);
+    List<Vm> findByUserIdAndCourseIdAndScopeIsTrue(Long userId, Long courseId);
 
     @Modifying
     @Query("delete from Vm v where v.user.id = :userId")

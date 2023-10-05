@@ -18,20 +18,16 @@ public interface CourseUserRepository extends JpaRepository<CourseUser, Long> {
     Optional<CourseUser> findByCourseIdAndUserId(Long courseId, Long userId);
 
     @Query("select cu.user from CourseUser cu where cu.course.id = :courseId and cu.accept = true")
-    List<User> findAcceptedUserByCourseId(@Param("courseId") Long courseId);
+    List<User> findByCourseIdAndAcceptIsTrue(@Param("courseId") Long courseId);
 
     @Query("select cu.user from CourseUser cu where cu.course.id = :courseId and cu.accept = false")
-    List<User> findUnacceptedUserByCourseId(@Param("courseId") Long courseId);
+    List<User> findByCourseIdAndAcceptIsFalse(@Param("courseId") Long courseId);
 
     @Query("select cu.course from CourseUser cu where cu.user.id = :userId and cu.accept = true")
     List<Course> findByUserIdAndAcceptIsTrue(@Param("userId")Long userId);
 
     @Query("select cu.course from CourseUser cu where cu.user.id = :userId and cu.accept = true")
     Page<Course> findByUserIdAndAcceptIsTrue(Pageable pageable, @Param("userId")Long userId);
-
-    @Transactional
-    @Modifying
-    void deleteByCourseIdAndUserId(Long courseId, Long userId);
 
     @Transactional
     @Modifying
