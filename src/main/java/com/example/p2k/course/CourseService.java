@@ -30,7 +30,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class CourseService {
-    private final ReplyRepository replyRepository;
 
     public static final int DEFAULT_PAGE_SIZE = 10;
 
@@ -142,16 +141,18 @@ public class CourseService {
 
     //강좌 신청 수락
     @Transactional
-    public void accept(Long courseId, Long applicantId, User user){
+    public void accept(Long courseId, Long applicationId, User user){
         checkInstructorAuthorization(user);
-        courseUserRepository.updateAccept(courseId, applicantId);
+        CourseUser courseUser = getCourseUser(courseId, applicationId);
+        courseUser.updateAccept(true);
     }
 
     //강좌 신청 거절
     @Transactional
-    public void reject(Long courseId, Long applicantId, User user){
+    public void reject(Long courseId, Long applicationId, User user){
         checkInstructorAuthorization(user);
-        courseUserRepository.deleteByCourseIdAndUserId(courseId, applicantId);
+        CourseUser courseUser = getCourseUser(courseId, applicationId);
+        courseUserRepository.deleteById(courseUser.getId());
     }
 
     //강좌 삭제
@@ -162,6 +163,12 @@ public class CourseService {
         courseUserRepository.deleteByCourseId(course.getId());
         postRepository.deleteByCourseId(course.getId());
         courseRepository.deleteById(course.getId());
+    }
+
+    private CourseUser getCourseUser(Long courseId, Long userId) {
+        return courseUserRepository.findByCourseIdAndUserId(courseId, userId).orElseThrow(
+                () -> new Exception404("해당 사용자-강좌를 찾을 수 없습니다.")
+        );
     }
 
     private Course getCourse(Long courseId) {

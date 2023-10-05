@@ -15,8 +15,7 @@ import java.util.Optional;
 
 public interface CourseUserRepository extends JpaRepository<CourseUser, Long> {
 
-    @Query("select cu from CourseUser cu where cu.course.id = :courseId and cu.user.id = :userId")
-    Optional<CourseUser> findByCourseIdAndUserId(@Param("courseId") Long courseId, @Param("userId") Long userId);
+    Optional<CourseUser> findByCourseIdAndUserId(Long courseId, Long userId);
 
     @Query("select cu.user from CourseUser cu where cu.course.id = :courseId and cu.accept = true")
     List<User> findAcceptedUserByCourseId(@Param("courseId") Long courseId);
@@ -29,10 +28,6 @@ public interface CourseUserRepository extends JpaRepository<CourseUser, Long> {
 
     @Query("select cu.course from CourseUser cu where cu.user.id = :userId and cu.accept = true")
     Page<Course> findByUserIdAndAcceptIsTrue(Pageable pageable, @Param("userId")Long userId);
-
-    @Modifying
-    @Query("update CourseUser cu SET cu.accept = true where cu.course.id = :courseId and cu.user.id = :userId")
-    void updateAccept(@Param("courseId") Long courseId, @Param("userId") Long userId);
 
     @Transactional
     @Modifying
