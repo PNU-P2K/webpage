@@ -44,6 +44,8 @@ dependencies {
 	implementation 'software.amazon.awssdk:s3:'
 	implementation 'software.amazon.awssdk:sso'
 	implementation 'software.amazon.awssdk:ssooidc'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
 }
 
 tasks.named('test') {
