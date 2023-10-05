@@ -5,17 +5,16 @@ import lombok.Getter;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CourseResponse {
 
     @Getter
-    public static class CoursesDTO {
+    public static class VmCoursesDTO {
 
-        private final List<CoursesDTO.CourseDTO> courses;
+        private final List<CourseDTO> courses;
 
-        public CoursesDTO(List<Course> courses) {
-            this.courses = courses.stream().map(CoursesDTO.CourseDTO::new).collect(Collectors.toList());
+        public VmCoursesDTO(List<Course> courses) {
+            this.courses = courses.stream().map(CourseDTO::new).toList();
         }
 
         @Getter
@@ -51,7 +50,7 @@ public class CourseResponse {
             this.totalPages = courses.getTotalPages();
             this.startPage = getStartPage();
             this.endPage = getEndPage();
-            this.courses = courses.getContent().stream().map(CourseDTO::new).collect(Collectors.toList());
+            this.courses = courses.getContent().stream().map(CourseDTO::new).toList();
         }
 
         public int getStartPage() {
@@ -107,7 +106,7 @@ public class CourseResponse {
         private final List<FindStudentsDTO.UserDTO> students;
 
         public FindStudentsDTO(List<User> students) {
-            this.students = students.stream().map(FindStudentsDTO.UserDTO::new).collect(Collectors.toList());
+            this.students = students.stream().map(FindStudentsDTO.UserDTO::new).toList();
         }
 
         @Getter
@@ -128,7 +127,7 @@ public class CourseResponse {
         private final List<UnAcceptedUserDTO> students;
 
         public FindUnacceptedUserDTO(List<User> students) {
-            this.students = students.stream().map(UnAcceptedUserDTO::new).collect(Collectors.toList());
+            this.students = students.stream().map(UnAcceptedUserDTO::new).toList();
         }
 
         @Getter

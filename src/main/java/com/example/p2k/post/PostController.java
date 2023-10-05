@@ -29,7 +29,7 @@ public class PostController {
                                  @RequestParam(value = "page", defaultValue = "0") int page,
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
         User user = userDetails.getUser();
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        CourseResponse.FindById courseDTO = courseService.findCourse(courseId);
         PostResponse.FindPostsDTO postDTOs = postService.findPostsByCategory(courseId, page, Category.NOTICE, user);
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
@@ -43,7 +43,7 @@ public class PostController {
                                    @RequestParam(value = "page", defaultValue = "0") int page,
                                    @AuthenticationPrincipal CustomUserDetails userDetails){
         User user = userDetails.getUser();
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        CourseResponse.FindById courseDTO = courseService.findCourse(courseId);
         PostResponse.FindPostsDTO postDTOs = postService.findPostsByCategory(courseId, page, Category.QUESTION, user);
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
@@ -57,7 +57,7 @@ public class PostController {
                                @RequestParam(value = "page", defaultValue = "0") int page,
                                @AuthenticationPrincipal CustomUserDetails userDetails){
         User user = userDetails.getUser();
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        CourseResponse.FindById courseDTO = courseService.findCourse(courseId);
         PostResponse.FindPostsDTO postDTOs = postService.findPostsByCategory(courseId, page, Category.FREE, user);
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
@@ -71,7 +71,7 @@ public class PostController {
                                  @RequestParam(value = "page", defaultValue = "0") int page,
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
         User user = userDetails.getUser();
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        CourseResponse.FindById courseDTO = courseService.findCourse(courseId);
         PostResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
         ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId, page);
         model.addAttribute("courseDTO", courseDTO);
@@ -92,7 +92,7 @@ public class PostController {
     //공지사항 글 작성 폼
     @GetMapping("/notice-board/save")
     public String getSaveNoticePost(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        CourseResponse.FindById courseDTO = courseService.findCourse(courseId);
         User user = userDetails.getUser();
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
@@ -113,7 +113,7 @@ public class PostController {
     @GetMapping("/notice-board/{postId}/update")
     public String getUpdateNoticePost(@PathVariable Long courseId, @PathVariable Long postId, Model model,
                                       @AuthenticationPrincipal CustomUserDetails userDetails){
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        CourseResponse.FindById courseDTO = courseService.findCourse(courseId);
         PostResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
         User user = userDetails.getUser();
         model.addAttribute("user", user);
@@ -138,7 +138,7 @@ public class PostController {
                                    @RequestParam(value = "page", defaultValue = "0") int page,
                                    @AuthenticationPrincipal CustomUserDetails userDetails){
         User user = userDetails.getUser();
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        CourseResponse.FindById courseDTO = courseService.findCourse(courseId);
         PostResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
         ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId, page);
         model.addAttribute("courseDTO", courseDTO);
@@ -161,7 +161,7 @@ public class PostController {
     @GetMapping("/question-board/save")
     public String getSaveQuestionPost(@PathVariable Long courseId, Model model,
                                       @AuthenticationPrincipal CustomUserDetails userDetails){
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        CourseResponse.FindById courseDTO = courseService.findCourse(courseId);
         User user = userDetails.getUser();
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
@@ -183,7 +183,7 @@ public class PostController {
     public String getUpdateQuestionPost(@PathVariable Long courseId, @PathVariable Long postId, Model model,
                                         @AuthenticationPrincipal CustomUserDetails userDetails){
         User user = userDetails.getUser();
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        CourseResponse.FindById courseDTO = courseService.findCourse(courseId);
         PostResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
@@ -204,7 +204,7 @@ public class PostController {
                                @RequestParam(value = "page", defaultValue = "0") int page,
                                @AuthenticationPrincipal CustomUserDetails userDetails){
         User user = userDetails.getUser();
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        CourseResponse.FindById courseDTO = courseService.findCourse(courseId);
         PostResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
         ReplyResponse.FindRepliesDTO repliesDTO = replyService.findByPostId(postId, page);
         model.addAttribute("courseDTO", courseDTO);
@@ -227,7 +227,7 @@ public class PostController {
     @GetMapping("/free-board/save")
     public String getSaveFreePost(@PathVariable Long courseId, Model model,
                                   @AuthenticationPrincipal CustomUserDetails userDetails){
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        CourseResponse.FindById courseDTO = courseService.findCourse(courseId);
         User user = userDetails.getUser();
         model.addAttribute("user", user);
         model.addAttribute("courseDTO", courseDTO);
@@ -248,7 +248,7 @@ public class PostController {
     @GetMapping("/free-board/{postId}/update")
     public String getUpdateFreePost(@PathVariable Long courseId, @PathVariable Long postId, Model model,
                                     @AuthenticationPrincipal CustomUserDetails userDetails){
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
+        CourseResponse.FindById courseDTO = courseService.findCourse(courseId);
         PostResponse.FindPostByIdDTO postDTO = postService.findPostById(postId);
         User user = userDetails.getUser();
         model.addAttribute("user", user);

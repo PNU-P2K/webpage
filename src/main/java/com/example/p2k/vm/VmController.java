@@ -1,7 +1,6 @@
 package com.example.p2k.vm;
 
 import com.example.p2k._core.exception.Exception400;
-import com.example.p2k._core.exception.Exception404;
 import com.example.p2k._core.security.CustomUserDetails;
 import com.example.p2k.course.CourseResponse;
 import com.example.p2k.course.CourseService;
@@ -72,7 +71,7 @@ public class VmController {
     public String update(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         Vm vm = vmService.findById(id);
 
-        CourseResponse.CoursesDTO coursesDTOs = courseService.findCourses(userDetails.getUser().getId());
+        CourseResponse.VmCoursesDTO vmCoursesDTOs = courseService.findCourses(userDetails.getUser().getId());
         VmRequest.UpdateDTO vmDTO = VmRequest.UpdateDTO.builder()
                 .id(vm.getId())
                 .description(vm.getDescription())
@@ -88,7 +87,7 @@ public class VmController {
             vmDTO.setCourseId(vm.getCourse().getId());
         }
 
-        model.addAttribute("courseDTOs", coursesDTOs);
+        model.addAttribute("courseDTOs", vmCoursesDTOs);
         model.addAttribute("user", userDetails.getUser());
         model.addAttribute("vmDTO", vmDTO);
 

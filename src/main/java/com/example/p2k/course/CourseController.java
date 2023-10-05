@@ -1,7 +1,6 @@
 package com.example.p2k.course;
 
 import com.example.p2k._core.security.CustomUserDetails;
-import com.example.p2k.user.Role;
 import com.example.p2k.user.User;
 import com.example.p2k.vm.VmResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,82 +22,60 @@ public class CourseController {
     @GetMapping
     public String findCourses(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                               @AuthenticationPrincipal CustomUserDetails userDetails){
-        User user = userDetails.getUser();
-        CourseResponse.FindCoursesDTO courseDTOs = courseService.findCourses(user.getId(), page);
-        model.addAttribute("courseDTOs", courseDTOs);
-        model.addAttribute("user", user);
+        model.addAttribute("courseDTOs", getMyCoursesDTO(page, userDetails));
+        model.addAttribute("user", userDetails.getUser());
         return "course/course";
     }
 
     //강좌 신청 페이지
     @GetMapping("/apply")
-    public String applyForm(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
-                            @AuthenticationPrincipal CustomUserDetails userDetails){
-        CourseResponse.FindCoursesDTO courseDTOs = courseService.findAll(page);
-        User user = userDetails.getUser();
-        model.addAttribute("courseDTOs", courseDTOs);
-        model.addAttribute("user", user);
+    public String applyForm(@RequestParam(value = "keyword", defaultValue = "") String keyword,
+                            @RequestParam(value = "page", defaultValue = "0") int page,
+                            Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+        model.addAttribute("courseDTOs", getSearchCoursesDTO(keyword, page));
+        model.addAttribute("user", userDetails.getUser());
         return "course/apply";
     }
 
     //강좌 신청
     @PostMapping("/apply/{courseId}")
     public String apply(@PathVariable Long courseId, @AuthenticationPrincipal CustomUserDetails userDetails){
-        courseService.apply(courseId, userDetails.getUser());
+        courseService.apply(courseId, userDetails.getUser().getId());
         return "redirect:/courses";
-    }
-
-    //강좌 검색
-    @PostMapping("/apply/search")
-    public String search(@RequestParam String keyword, Model model, @RequestParam(value = "page", defaultValue = "0") int page,
-                         @AuthenticationPrincipal CustomUserDetails userDetails){
-        CourseResponse.FindCoursesDTO courseDTOs = courseService.findBySearch(keyword, page);
-        User user = userDetails.getUser();
-
-        model.addAttribute("courseDTOs", courseDTOs);
-        model.addAttribute("user", user);
-
-        return "course/apply";
     }
 
     //나의 가상 환경 조회
     @GetMapping("/{courseId}/my-vm")
     public String findMyVm(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        User user = userDetails.getUser();
-        VmResponse.FindAllDTO myVms = courseService.findMyVm(user, courseId);
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
-
-        model.addAttribute("user", user);
-        model.addAttribute("myVms", myVms);
-        model.addAttribute("courseDTO", courseDTO);
-
+        model.addAttribute("user", userDetails.getUser());
+        model.addAttribute("myVms", getMyVmsDTO(courseId, userDetails.getUser()));
+        model.addAttribute("courseDTO", getCourseDTO(courseId));
         return "course/myVm";
     }
 
     //교육자의 가상 환경 조회
     @GetMapping("/{courseId}/instructor-vm")
-    public String findInstructorVm(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        VmResponse.FindAllDTO instructorVms = courseService.findInstructorVm(courseId);
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
-        User user = userDetails.getUser();
-        model.addAttribute("user", user);
-        model.addAttribute("instructorVms", instructorVms);
-        model.addAttribute("courseDTO", courseDTO);
+    public String findInstructorVm(@PathVariable Long courseId, Model model,
+                                   @AuthenticationPrincipal CustomUserDetails userDetails){
+        model.addAttribute("user", userDetails.getUser());
+        model.addAttribute("instructorVms", getInstructorVmsDTO(courseId, userDetails.getUser()));
+        model.addAttribute("courseDTO", getCourseDTO(courseId));
         return "course/instructorVm";
     }
 
     //강좌 취소
     @GetMapping("/{courseId}/cancel")
-    public String cancel(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        User user = userDetails.getUser();
-        model.addAttribute("user", user);
-        courseService.cancel(courseId, userDetails.getUser());
+    public String cancel(@PathVariable Long courseId, Model model,
+                         @AuthenticationPrincipal CustomUserDetails userDetails){
+        courseService.cancel(courseId, userDetails.getUser().getId());
+        model.addAttribute("user", userDetails.getUser());
         return "redirect:/courses";
     }
 
     //강좌 생성
     @PostMapping("/create")
-    public String create(@ModelAttribute CourseRequest.SaveDTO requestDTO, @AuthenticationPrincipal CustomUserDetails userDetails){
+    public String create(@ModelAttribute CourseRequest.SaveDTO requestDTO,
+                         @AuthenticationPrincipal CustomUserDetails userDetails){
         courseService.create(requestDTO, userDetails.getUser());
         return "redirect:/courses";
     }
@@ -106,58 +83,81 @@ public class CourseController {
     //강좌 생성 폼
     @GetMapping("/create")
     public String createForm(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        User user = userDetails.getUser();
         model.addAttribute("saveDTO", new CourseRequest.SaveDTO());
-        model.addAttribute("user", user);
+        model.addAttribute("user", userDetails.getUser());
         return "course/create";
     }
 
     //수강생 관리 페이지
     @GetMapping("/{courseId}/students")
-    public String findStudents(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        User user = userDetails.getUser();
-        CourseResponse.FindStudentsDTO studentDTOs = courseService.findStudents(courseId, user);
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
-        model.addAttribute("user", user);
-        model.addAttribute("studentDTOs", studentDTOs);
-        model.addAttribute("courseDTO", courseDTO);
+    public String findStudents(@PathVariable Long courseId, Model model,
+                               @AuthenticationPrincipal CustomUserDetails userDetails){
+        model.addAttribute("user", userDetails.getUser());
+        model.addAttribute("studentDTOs", getFindStudentsDTO(courseId, userDetails.getUser()));
+        model.addAttribute("courseDTO", getCourseDTO(courseId));
         return "course/students";
     }
 
     //설정 및 관리 페이지
     @GetMapping("/{courseId}/setting")
-    public String setting(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        User user = userDetails.getUser();
-        CourseResponse.FindById courseDTO = courseService.findById(courseId);
-        CourseResponse.FindStudentsDTO studentDTOs = courseService.findStudents(courseId, user);
-        CourseResponse.FindUnacceptedUserDTO unacceptedUserDTOs = courseService.findApplications(courseId);
-        model.addAttribute("user", user);
-        model.addAttribute("courseDTO", courseDTO);
-        model.addAttribute("studentDTOs", studentDTOs);
-        model.addAttribute("unacceptedUserDTOs", unacceptedUserDTOs);
+    public String setting(@PathVariable Long courseId, Model model,
+                          @AuthenticationPrincipal CustomUserDetails userDetails){
+        model.addAttribute("user", userDetails.getUser());
+        model.addAttribute("courseDTO", getCourseDTO(courseId));
+        model.addAttribute("studentDTOs", getFindStudentsDTO(courseId, userDetails.getUser()));
+        model.addAttribute("unacceptedUserDTOs", getFindUnacceptedUserDTO(courseId, userDetails.getUser()));
         return "course/setting";
     }
 
     //강좌 신청 수락
-    @PostMapping("/{courseId}/application/{userId}/accept")
-    public String accept(@PathVariable Long courseId, @PathVariable Long userId,
+    @PostMapping("/{courseId}/application/{applicantId}/accept")
+    public String accept(@PathVariable Long courseId, @PathVariable Long applicantId,
                          @AuthenticationPrincipal CustomUserDetails userDetails){
-        courseService.accept(courseId, userId, userDetails.getUser());
+        courseService.accept(courseId, applicantId, userDetails.getUser());
         return "redirect:/courses/{courseId}/setting";
     }
 
     //강좌 신청 거절
-    @PostMapping("/{courseId}/application/{userId}/reject")
-    public String reject(@PathVariable Long courseId, @PathVariable Long userId,
+    @PostMapping("/{courseId}/application/{applicantId}/reject")
+    public String reject(@PathVariable Long courseId, @PathVariable Long applicantId,
                          @AuthenticationPrincipal CustomUserDetails userDetails){
-        courseService.reject(courseId, userId, userDetails.getUser());
+        courseService.reject(courseId, applicantId, userDetails.getUser());
         return "redirect:/courses/{courseId}/setting";
     }
 
     //강좌 삭제
     @PostMapping("/{courseId}/delete")
-    public String delete(@PathVariable Long courseId, @AuthenticationPrincipal CustomUserDetails userDetails){
+    public String delete(@PathVariable Long courseId,
+                         @AuthenticationPrincipal CustomUserDetails userDetails){
         courseService.delete(courseId, userDetails.getUser());
         return "redirect:/courses";
+    }
+
+    private CourseResponse.FindCoursesDTO getMyCoursesDTO(int page, CustomUserDetails userDetails) {
+        return courseService.findCourses(userDetails.getUser().getId(), page);
+    }
+
+    private CourseResponse.FindCoursesDTO getSearchCoursesDTO(String keyword, int page) {
+        return courseService.findSearchCourses(keyword, page);
+    }
+
+    private CourseResponse.FindById getCourseDTO(Long courseId) {
+        return courseService.findCourse(courseId);
+    }
+
+    private CourseResponse.FindStudentsDTO getFindStudentsDTO(Long courseId, User user) {
+        return courseService.findStudents(courseId, user);
+    }
+
+    private CourseResponse.FindUnacceptedUserDTO getFindUnacceptedUserDTO(Long courseId, User user) {
+        return courseService.findApplications(courseId, user);
+    }
+
+    private VmResponse.FindAllDTO getInstructorVmsDTO(Long courseId, User user) {
+        return courseService.findInstructorVm(courseId, user);
+    }
+
+    private VmResponse.FindAllDTO getMyVmsDTO(Long courseId, User user) {
+        return courseService.findMyVm(user, courseId);
     }
 }
