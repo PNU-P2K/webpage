@@ -160,7 +160,7 @@ public class CourseService {
         checkInstructorAuthorization(user);
         Course course = getCourse(courseId);
         courseUserRepository.deleteByCourseId(course.getId());
-        postRepository.deleteAllByCourseId(course.getId());
+        postRepository.deleteByCourseId(course.getId());
         courseRepository.deleteById(course.getId());
     }
 

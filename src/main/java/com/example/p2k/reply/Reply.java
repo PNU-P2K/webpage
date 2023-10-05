@@ -34,7 +34,7 @@ public class Reply extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
 

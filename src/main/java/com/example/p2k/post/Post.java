@@ -35,7 +35,7 @@ public class Post extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "course_id")
     private Course course;
 
@@ -43,7 +43,7 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Reply> replies;
 
     @Builder

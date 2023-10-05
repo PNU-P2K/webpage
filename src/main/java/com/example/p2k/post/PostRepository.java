@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -21,11 +22,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("update Post p SET p.title = :title, p.content = :content, p.scope = :scope where p.id = :postId")
     void update(@Param("title") String title, @Param("content") String content, @Param("scope") Scope scope, @Param("postId") Long postId);
 
+    @Transactional
     @Modifying
-    @Query("delete from Post p where p.id = :postId")
-    void deleteById(@Param("postId") Long postId);
-
-    @Modifying
-    @Query("delete from Post p where p.course.id = :courseId")
-    void deleteAllByCourseId(@Param("courseId") Long courseId);
+    void deleteByCourseId(Long courseId);
 }
