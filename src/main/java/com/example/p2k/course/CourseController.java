@@ -28,7 +28,7 @@ public class CourseController {
     }
 
     //강좌 신청 페이지
-    @GetMapping("/apply")
+    @GetMapping("/application")
     public String applyForm(@RequestParam(value = "keyword", defaultValue = "") String keyword,
                             @RequestParam(value = "page", defaultValue = "0") int page,
                             Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
@@ -38,7 +38,7 @@ public class CourseController {
     }
 
     //강좌 신청
-    @PostMapping("/apply/{courseId}")
+    @PostMapping("/application/{courseId}")
     public String apply(@PathVariable Long courseId, @AuthenticationPrincipal CustomUserDetails userDetails){
         courseService.apply(courseId, userDetails.getUser().getId());
         return "redirect:/courses";
@@ -110,18 +110,18 @@ public class CourseController {
     }
 
     //강좌 신청 수락
-    @PostMapping("/{courseId}/application/{applicantId}/accept")
-    public String accept(@PathVariable Long courseId, @PathVariable Long applicantId,
+    @PostMapping("/{courseId}/application/{applicationId}/accept")
+    public String accept(@PathVariable Long courseId, @PathVariable Long applicationId,
                          @AuthenticationPrincipal CustomUserDetails userDetails){
-        courseService.accept(courseId, applicantId, userDetails.getUser());
+        courseService.accept(courseId, applicationId, userDetails.getUser());
         return "redirect:/courses/{courseId}/setting";
     }
 
     //강좌 신청 거절
-    @PostMapping("/{courseId}/application/{applicantId}/reject")
-    public String reject(@PathVariable Long courseId, @PathVariable Long applicantId,
+    @PostMapping("/{courseId}/application/{applicationId}/reject")
+    public String reject(@PathVariable Long courseId, @PathVariable Long applicationId,
                          @AuthenticationPrincipal CustomUserDetails userDetails){
-        courseService.reject(courseId, applicantId, userDetails.getUser());
+        courseService.reject(courseId, applicationId, userDetails.getUser());
         return "redirect:/courses/{courseId}/setting";
     }
 

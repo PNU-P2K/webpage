@@ -35,7 +35,7 @@
         <li class="dropdown"><a href="/courses"><span>강좌</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
                 <li><a href="/courses">나의 강좌 목록</a></li>
-                <li><a th:if="${user.role.name() == 'ROLE_STUDENT' or user.role.name() == 'ROLE_ADMIN'}" href="/courses/apply">강좌 신청하기</a></li>
+                <li><a th:if="${user.role.name() == 'ROLE_STUDENT' or user.role.name() == 'ROLE_ADMIN'}" href="/courses/application">강좌 신청하기</a></li>
                 <li><a th:if="${user.role.name() == 'ROLE_INSTRUCTOR' or user.role.name() == 'ROLE_ADMIN'}" href="/courses/create">강좌 생성하기</a></li>
             </ul>
         </li>
