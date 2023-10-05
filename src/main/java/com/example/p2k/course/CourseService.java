@@ -81,8 +81,8 @@ public class CourseService {
     }
 
     //나의 가상 환경 조회
-    public VmResponse.FindAllDTO findMyVm(User user, Long id){
-        List<Vm> vms = vmRepository.findUserIdAndCourseId(user.getId(), id); //TODO: user 찾아야 할 듯?
+    public VmResponse.FindAllDTO findMyVm(Long courseId, User user){
+        List<Vm> vms = vmRepository.findByUserIdAndCourseId(user.getId(), courseId);
         return new VmResponse.FindAllDTO(vms);
     }
 

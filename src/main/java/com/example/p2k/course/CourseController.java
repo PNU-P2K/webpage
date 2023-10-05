@@ -158,6 +158,6 @@ public class CourseController {
     }
 
     private VmResponse.FindAllDTO getMyVmsDTO(Long courseId, User user) {
-        return courseService.findMyVm(user, courseId);
+        return courseService.findMyVm(courseId, user);
     }
 }
