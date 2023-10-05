@@ -21,7 +21,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -55,14 +54,14 @@ public class CourseService {
     public CourseResponse.FindCoursesDTO findCourses(Long userId, int page){
         Pageable pageable = getPageable(page);
         Page<Course> courses = courseUserRepository.findByUserIdAndAcceptIsTrue(pageable, userId);
-        return new CourseResponse.FindCoursesDTO(courses);
+        return new CourseResponse.FindCoursesDTO(courses, DEFAULT_PAGE_SIZE);
     }
 
     //강좌 신청 페이지
     public CourseResponse.FindCoursesDTO findSearchCourses(String keyword, int page){
         Pageable pageable = getPageable(page);
         Page<Course> courses = courseRepository.findByNameContainingIgnoreCase(pageable, keyword);
-        return new CourseResponse.FindCoursesDTO(courses);
+        return new CourseResponse.FindCoursesDTO(courses, DEFAULT_PAGE_SIZE);
     }
 
     //강좌 신청
