@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -203,8 +204,7 @@ public class CourseService {
     }
 
     private static Pageable getPageable(int page) {
-        List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("id"));
+        List<Sort.Order> sorts = Collections.singletonList(Sort.Order.desc("id"));
         return PageRequest.of(page, DEFAULT_PAGE_SIZE, Sort.by(sorts));
     }
 }
