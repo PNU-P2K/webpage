@@ -29,7 +29,6 @@ public class UserRequest {
 
         private Boolean emailAvailability;
 
-
         private Role role = Role.ROLE_STUDENT;
     }
 
