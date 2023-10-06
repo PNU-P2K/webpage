@@ -17,6 +17,8 @@ public interface CourseUserRepository extends JpaRepository<CourseUser, Long> {
 
     Optional<CourseUser> findByCourseIdAndUserId(Long courseId, Long userId);
 
+    int countByUserId(Long userId);
+
     @Query("select cu.user from CourseUser cu where cu.course.id = :courseId and cu.accept = true")
     List<User> findByCourseIdAndAcceptIsTrue(@Param("courseId") Long courseId);
 

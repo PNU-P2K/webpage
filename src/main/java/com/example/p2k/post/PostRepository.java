@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
+    int countByUserId(Long userId);
+
     @Query("select p from Post p where p.course.id = :courseId and p.category = :category and " +
             "(p.scope = :scope or p.user.id = :userId or p.course.instructorId = :userId)")
     Page<Post> findByCourseIdAndCategoryAndUserIdOrScope(Pageable pageable, @Param("courseId") Long courseId, @Param("category") Category category,

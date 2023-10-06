@@ -1,6 +1,10 @@
 package com.example.p2k.admin;
 
 import com.example.p2k._core.exception.Exception404;
+import com.example.p2k.course.CourseRepository;
+import com.example.p2k.courseuser.CourseUserRepository;
+import com.example.p2k.post.PostRepository;
+import com.example.p2k.reply.ReplyRepository;
 import com.example.p2k.user.User;
 import com.example.p2k.user.UserRepository;
 import com.example.p2k.vm.Vm;
@@ -15,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -28,11 +33,18 @@ public class AdminService {
 
     private final UserRepository userRepository;
     private final VmRepository vmRepository;
+    private final CourseUserRepository courseUserRepository;
+    private final PostRepository postRepository;
+    private final ReplyRepository replyRepository;
 
     public AdminResponse.UsersDTO findAllUsers(int page){
         Pageable pageable = getPageable(page, "name", USER_PAGE_SIZE);
         Page<User> users = userRepository.findAll(pageable);
-        return new AdminResponse.UsersDTO(users, USER_PAGINATION_SIZE);
+        List<Integer> vmNums = users.stream().map(user -> vmRepository.countByUserId(user.getId())).toList();
+        List<Integer> courseNums = users.stream().map(user -> courseUserRepository.countByUserId(user.getId())).toList();
+        List<Integer> postNums = users.stream().map(user -> postRepository.countByUserId(user.getId())).toList();
+        List<Integer> replyNums = users.stream().map(user -> replyRepository.countByUserId(user.getId())).toList();
+        return new AdminResponse.UsersDTO(users, USER_PAGINATION_SIZE, vmNums, courseNums, postNums, replyNums);
     }
 
     public AdminResponse.VmsDTO findAllVms(int page){

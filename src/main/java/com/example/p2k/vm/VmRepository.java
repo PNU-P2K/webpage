@@ -24,6 +24,8 @@ public interface VmRepository extends JpaRepository<Vm, Long> {
 
     List<Vm> findByUserIdAndCourseIdAndScopeIsTrue(Long userId, Long courseId);
 
+    int countByUserId(Long userId);
+
     @Modifying
     @Query("delete from Vm v where v.user.id = :userId")
     void deleteByUserId(@Param("userId") Long userId);

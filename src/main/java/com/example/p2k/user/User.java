@@ -21,52 +21,43 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     @Column(length = 30, nullable = false, unique = true)
-    private String email; // 중복 체크 필요
+    private String email;
 
-    //@Column(length = 20, nullable = false)
+    @Column(length = 20)
     private String name;
 
-    //@Column(length = 256, nullable = false)
+    @Column(length = 256)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;    // 학생, 교육자, 관리자
+    private Role role; // 학생, 교육자, 관리자
 
     private Boolean pending; //승인 여부
 
-    @OneToMany(mappedBy = "user")
-    private List<Vm> vms = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<CourseUser> courseUsers = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Post> posts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Reply> replies = new ArrayList<>();
-
     @Builder
-    public User(Long id, String email, String name, String password, Role role, Boolean pending,
-                List<Vm> vms, List<CourseUser> courseUsers, List<Post> posts, List<Reply> replies) {
+    public User(Long id, String email, String name, String password, Role role, Boolean pending) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.password = password;
         this.role = role;
         this.pending = pending;
-        this.vms = vms;
-        this.courseUsers = courseUsers;
-        this.posts = posts;
-        this.replies = replies;
     }
 
-    public User updateEmail(String email){
+    public void updateEmail(String email){
         this.email = email;
-        return this;
     }
 
     public void updatePending(boolean status){
         this.pending = status;
+    }
+
+    public void updatePassword(String password){
+        this.password = password;
+    }
+
+    public void update(String email, String name){
+        this.email = email;
+        this.name = name;
     }
 }

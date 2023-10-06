@@ -9,6 +9,9 @@ import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class AdminResponse {
 
@@ -18,7 +21,13 @@ public class AdminResponse {
         private final PageData pageData;
         private final List<UserDTO> users;
 
-        public UsersDTO(Page<User> users, int size) {
+        public UsersDTO(Page<User> users, int size,
+                        List<Integer> vmNums, List<Integer> courseNums, List<Integer> postNums, List<Integer> replyNums) {
+            Map<Long, Integer> vmNumsMap = mapByUserId(users, vmNums);
+            Map<Long, Integer> courseNumsMap = mapByUserId(users, courseNums);
+            Map<Long, Integer> postNumsMap = mapByUserId(users, postNums);
+            Map<Long, Integer> replyNumsMap = mapByUserId(users, replyNums);
+
             this.pageData = new PageData(
                     users.hasPrevious(),
                     users.hasNext(),
@@ -27,7 +36,18 @@ public class AdminResponse {
                     users.getTotalPages(),
                     size
             );
-            this.users = users.stream().map(UserDTO::new).toList();
+            this.users = users.stream().map(user ->
+                new UserDTO(user, vmNumsMap.get(user.getId()), courseNumsMap.get(user.getId()), postNumsMap.get(user.getId()), replyNumsMap.get(user.getId()))
+            ).toList();
+        }
+
+        private Map<Long, Integer> mapByUserId(Page<User> users, List<Integer> nums) {
+            return IntStream.range(0, nums.size())
+                    .boxed()
+                    .collect(Collectors.toMap(
+                            userIdx -> users.getContent().get(userIdx).getId(),
+                            nums::get
+                    ));
         }
 
         @Getter
@@ -43,16 +63,16 @@ public class AdminResponse {
             private final int replyNum;
             private final LocalDate createdDate;
 
-            public UserDTO(User user) {
+            public UserDTO(User user, int vmNum, int courseNum, int postNum, int replyNum) {
                 this.id = user.getId();
                 this.name = user.getName();
                 this.email = user.getEmail();
                 this.role = user.getRole();
                 this.pending = user.getPending();
-                this.vmNum = user.getVms().size();
-                this.courseNum = user.getCourseUsers().size();
-                this.postNum = user.getPosts().size();
-                this.replyNum = user.getReplies().size();
+                this.vmNum = vmNum;
+                this.courseNum = courseNum;
+                this.postNum = postNum;
+                this.replyNum = replyNum;
                 this.createdDate = user.getCreatedDate() != null ? user.getCreatedDate().toLocalDate() : null;
             }
         }

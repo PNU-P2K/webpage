@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
+    int countByUserId(Long userId);
+
     @Query("select r from Reply r where r.post.id = :postId order by r.ref, r.refOrder")
     Page<Reply> findByPostId(Pageable pageable, @Param("postId") Long postId);
 
