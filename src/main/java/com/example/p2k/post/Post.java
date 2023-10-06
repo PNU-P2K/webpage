@@ -23,10 +23,13 @@ public class Post extends BaseTimeEntity {
     @Column(name = "post_id")
     private Long id;
 
+    @Column(length = 100, nullable = false)
     private String title;
 
+    @Column(length = 20, nullable = false)
     private String author;
 
+    @Column(length = 500, nullable = false)
     private String content;
 
     @Enumerated(EnumType.STRING)
