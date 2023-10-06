@@ -3,6 +3,7 @@ package com.example.p2k.course;
 import com.example.p2k._core.exception.Exception400;
 import com.example.p2k._core.exception.Exception403;
 import com.example.p2k._core.exception.Exception404;
+import com.example.p2k._core.web.AdminConstants;
 import com.example.p2k.courseuser.CourseUser;
 import com.example.p2k.courseuser.CourseUserRepository;
 import com.example.p2k.post.PostRepository;
@@ -70,6 +71,7 @@ public class CourseService {
     public void apply(Long courseId, Long userId){
         User user = getUser(userId);
         checkStudentAuthorization(user);
+        checkMaxCourseApplication(userId);
 
         courseUserRepository.findByCourseIdAndUserId(courseId, userId)
                 .ifPresent(courseUser -> {
@@ -112,6 +114,7 @@ public class CourseService {
     public void create(CourseRequest.SaveDTO requestDTO, Long userId){
         User user = getUser(userId);
         checkInstructorAuthorization(user);
+        checkMaxCourseCreation(userId);
 
         Course course = Course.builder()
                 .name(requestDTO.getName())
@@ -182,6 +185,20 @@ public class CourseService {
         return userRepository.findById(userId).orElseThrow(
                 () -> new Exception404("해당 사용자를 찾을 수 없습니다.")
         );
+    }
+
+    private void checkMaxCourseCreation(Long userId) {
+        List<Course> courses = courseRepository.findByInstructorId(userId);
+        if(courses.size() >= AdminConstants.COURSE_CREATE_MAX_NUM){
+            throw new Exception400("강좌는 최대 " + AdminConstants.COURSE_CREATE_MAX_NUM + "개까지 생성할 수 있습니다.");
+        }
+    }
+
+    private void checkMaxCourseApplication(Long userId) {
+        List<Course> courses = courseUserRepository.findByUserIdAndAcceptIsTrue(userId);
+        if(courses.size() >= AdminConstants.COURSE_APPLY_MAX_NUM){
+            throw new Exception400("강좌는 최대 " + AdminConstants.COURSE_APPLY_MAX_NUM + "개까지 신청할 수 있습니다.");
+        }
     }
 
     private void validateInstructorExistence(Long instructorId) {

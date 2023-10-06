@@ -121,4 +121,17 @@ public class AdminResponse {
             }
         }
     }
+
+    @Getter
+    public static class SettingDTO{
+        private final int vmMaxNum;
+        private final int courseCreateMaxNum;
+        private final int courseApplyMaxNum;
+
+        public SettingDTO(int vmMaxNum, int courseCreateMaxNum, int courseApplyMaxNum) {
+            this.vmMaxNum = vmMaxNum;
+            this.courseCreateMaxNum = courseCreateMaxNum;
+            this.courseApplyMaxNum = courseApplyMaxNum;
+        }
+    }
 }

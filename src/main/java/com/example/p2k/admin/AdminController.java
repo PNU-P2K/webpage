@@ -1,7 +1,7 @@
 package com.example.p2k.admin;
 
 import com.example.p2k._core.security.CustomUserDetails;
-import com.example.p2k.user.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -74,8 +74,23 @@ public class AdminController {
     }
 
     @PostMapping("/users/{userId}/accept")
-    public String acceptUser(@PathVariable Long userId){
-        adminService.accept(userId);
+    public String acceptUser(@PathVariable Long userId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        adminService.accept(userId, userDetails.getUser());
         return "redirect:/admin/users";
+    }
+
+    @GetMapping("/setting")
+    public String setting(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+        AdminResponse.SettingDTO constants = adminService.getConstants();
+        model.addAttribute("updateDTO", constants);
+        model.addAttribute("user", userDetails.getUser());
+        return "admin/setting";
+    }
+
+    @PostMapping("/setting")
+    public String updateSetting(@Valid @ModelAttribute AdminRequest.UpdateDTO updateDTO, Error errors,
+                                @AuthenticationPrincipal CustomUserDetails userDetails){
+        adminService.updateSetting(updateDTO, userDetails.getUser());
+        return "redirect:/admin/setting";
     }
 }

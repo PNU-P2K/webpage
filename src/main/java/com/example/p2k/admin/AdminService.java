@@ -1,10 +1,12 @@
 package com.example.p2k.admin;
 
+import com.example.p2k._core.exception.Exception403;
 import com.example.p2k._core.exception.Exception404;
-import com.example.p2k.course.CourseRepository;
+import com.example.p2k._core.web.AdminConstants;
 import com.example.p2k.courseuser.CourseUserRepository;
 import com.example.p2k.post.PostRepository;
 import com.example.p2k.reply.ReplyRepository;
+import com.example.p2k.user.Role;
 import com.example.p2k.user.User;
 import com.example.p2k.user.UserRepository;
 import com.example.p2k.vm.Vm;
@@ -19,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -53,16 +54,36 @@ public class AdminService {
         return new AdminResponse.VmsDTO(vms, VM_PAGINATION_SIZE);
     }
 
-    public void accept(Long id){
-        User user = userRepository.findById(id).orElseThrow(
+    @Transactional
+    public void accept(Long findUserId, User user){
+        checkAdminAuthorization(user);
+        User findUser = userRepository.findById(findUserId).orElseThrow(
                 () -> new Exception404("해당 사용자를 찾을 수 없습니다.")
         );
-        user.updatePending(false);
+        findUser.updatePending(false);
+    }
+
+    @Transactional
+    public void updateSetting(AdminRequest.UpdateDTO updateDTO, User user){
+        checkAdminAuthorization(user);
+        AdminConstants.VM_MAX_NUM = updateDTO.getVmMaxNum();
+        AdminConstants.COURSE_CREATE_MAX_NUM = updateDTO.getCourseCreateMaxNum();
+        AdminConstants.COURSE_APPLY_MAX_NUM = updateDTO.getCourseApplyMaxNum();
+    }
+
+    public AdminResponse.SettingDTO getConstants(){
+        return new AdminResponse.SettingDTO(AdminConstants.VM_MAX_NUM, AdminConstants.COURSE_CREATE_MAX_NUM, AdminConstants.COURSE_APPLY_MAX_NUM);
     }
 
     private static Pageable getPageable(int page, String orderBy, int size) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.asc(orderBy));
         return PageRequest.of(page, size, Sort.by(sorts));
+    }
+
+    private static void checkAdminAuthorization(User user) {
+        if(user.getRole() != Role.ROLE_ADMIN){
+            throw new Exception403("관리자 권한이 없는 사용자입니다.");
+        }
     }
 }

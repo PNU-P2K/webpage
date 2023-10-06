@@ -3,6 +3,7 @@ package com.example.p2k.vm;
 import com.example.p2k._core.exception.Exception400;
 import com.example.p2k._core.exception.Exception401;
 import com.example.p2k._core.exception.Exception404;
+import com.example.p2k._core.web.AdminConstants;
 import com.example.p2k.course.Course;
 import com.example.p2k.course.CourseRepository;
 import com.example.p2k.user.User;
@@ -33,7 +34,6 @@ public class VmService {
     private final RestTemplate restTemplate;
     private final ObjectMapper ob = new ObjectMapper();
     private int portnum = 6081;
-    private final int maxNum = 3;
 
     private int nodePort = 30000; // 30000~32768까지 사용 가능
     private final String baseImagePath = "registry.p2kcloud.com/base/";
@@ -100,7 +100,7 @@ public class VmService {
 
         List<Vm> vms = vmRepository.findAllByUserId(user.getId());
         System.out.println("vms.size() = " + vms.size());
-        if (vms.size() > maxNum) {
+        if (vms.size() > AdminConstants.VM_MAX_NUM) {
             System.out.println("가상환경은 최대 3개까지 생성할 수 있습니다." );
             throw new Exception400("가상환경은 최대 3개까지 생성할 수 있습니다.");
         }
