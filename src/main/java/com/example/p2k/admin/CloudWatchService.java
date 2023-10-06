@@ -1,6 +1,7 @@
 package com.example.p2k.admin;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,13 +24,21 @@ import java.util.List;
 @Service
 public class CloudWatchService {
 
-    String identifier = "InstanceId";
-    String instanceId = "i-0f1336b61e3b8d2a5";
-    ZoneId ZONE_ID = ZoneId.of("Asia/Seoul");
-    Region region = Region.AP_NORTHEAST_2;
-    Instant start = LocalDate.now(ZONE_ID).minusDays(1).atStartOfDay(ZONE_ID).toInstant();
-    Instant end = LocalDate.now(ZONE_ID).atStartOfDay(ZONE_ID).toInstant();
-    String namespace = "AWS/EC2";
+    private final String identifier = "InstanceId";
+    private final ZoneId ZONE_ID = ZoneId.of("Asia/Seoul");
+    private final Region region = Region.AP_NORTHEAST_2;
+    private Instant start = LocalDate.now(ZONE_ID).minusDays(1).atStartOfDay(ZONE_ID).toInstant();
+    private Instant end = LocalDate.now(ZONE_ID).atStartOfDay(ZONE_ID).toInstant();
+    private String namespace = "AWS/EC2";
+
+    @Value("${cloudwatch.instance-id}")
+    private static String instanceId;
+
+    @Value("${cloudwatch.access-key}")
+    private static String accessKey;
+
+    @Value("${cloudwatch.secret-key}")
+    private static String secretKey;
 
     public MetricDataResponse getCPUUtilization(){
         return getMetricDataResponse("CPUUtilization", "cpuUtilizationQuery");
@@ -147,8 +156,6 @@ public class CloudWatchService {
     }
 
     private static AwsCredentialsProvider getCredentialsProvider() {
-        String accessKey = "AKIAXTAISJOS7G2P6CTN";
-        String secretKey = "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";
         AwsCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
         return StaticCredentialsProvider.create(credentials);
     }
