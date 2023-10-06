@@ -18,7 +18,6 @@ public class AdminController {
 
     @GetMapping("/resources")
     public String manageResources(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        User user = userDetails.getUser();
         MetricDataResponse cpuUtilization = cloudWatchService.getCPUUtilization();
         MetricDataResponse statusCheckFailedSystem = cloudWatchService.getStatusCheckFailedSystem();
         MetricDataResponse statusCheckFailedInstance = cloudWatchService.getStatusCheckFailedInstance();
@@ -30,7 +29,6 @@ public class AdminController {
         MetricDataResponse diskReadOperations = cloudWatchService.getDiskReadOperations();
         MetricDataResponse diskWrites = cloudWatchService.getDiskWrites();
         MetricDataResponse diskWriteOperations = cloudWatchService.getDiskWriteOperations();
-        model.addAttribute("user", user);
         model.addAttribute("cpuTimestamp", cpuUtilization.getTimestamps());
         model.addAttribute("cpuValue", cpuUtilization.getValue());
         model.addAttribute("statusSystemTimestamp", statusCheckFailedSystem.getTimestamps());
@@ -53,26 +51,25 @@ public class AdminController {
         model.addAttribute("diskWritesValue", diskWrites.getValue());
         model.addAttribute("diskWriteOpsTimestamp", diskWriteOperations.getTimestamps());
         model.addAttribute("diskWriteOpsValue", diskWriteOperations.getValue());
+        model.addAttribute("user", userDetails.getUser());
         return "admin/resources";
     }
 
     @GetMapping("/vms")
     public String manageVms(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                             @AuthenticationPrincipal CustomUserDetails userDetails){
-        User user = userDetails.getUser();
         AdminResponse.VmsDTO vms = adminService.findAllVms(page);
-        model.addAttribute("user", user);
         model.addAttribute("vms", vms);
+        model.addAttribute("user", userDetails.getUser());
         return "admin/vms";
     }
 
     @GetMapping("/users")
     public String manageUsers(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                               @AuthenticationPrincipal CustomUserDetails userDetails){
-        User user = userDetails.getUser();
         AdminResponse.UsersDTO users = adminService.findAllUsers(page);
-        model.addAttribute("user", user);
         model.addAttribute("users", users);
+        model.addAttribute("user", userDetails.getUser());
         return "admin/users";
     }
 

@@ -70,3 +70,11 @@ management:
       exposure:
         include: "*"
 
+logging:
+  level:
+    root: info
+
+cloudwatch:
+  instance-id: "i-0f1336b61e3b8d2a5"
+  access-key: "AKIAXTAISJOS7G2P6CTN"
+  secret-key: "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"

@@ -2,6 +2,7 @@ package com.example.p2k.user;
 
 import com.example.p2k._core.security.CustomUserDetails;
 import com.example.p2k._core.validator.JoinValidator;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +31,7 @@ public class UserController {
 
     // 회원가입 페이지의 데이터 POST
     @PostMapping("/join")
-    public String join (@ModelAttribute("user") UserRequest.JoinDTO requestDTO) {
+    public String join (@Valid @ModelAttribute("user") UserRequest.JoinDTO requestDTO, Error errors) {
         userService.save(requestDTO);
         return "redirect:/user/login";
     }
@@ -52,7 +53,7 @@ public class UserController {
 
     //회원 정보 수정
     @PostMapping("/info")
-    public String update(@ModelAttribute UserRequest.UpdateDTO requestDTO,
+    public String update(@Valid @ModelAttribute UserRequest.UpdateDTO requestDTO, Error errors,
                          @AuthenticationPrincipal CustomUserDetails userDetails) {
         userService.update(userDetails.getUser().getId(), requestDTO);
         return "redirect:/user/info";
@@ -67,7 +68,7 @@ public class UserController {
 
     //비밀번호 재설정
     @PostMapping("/reset")
-    public String resetPassword(@ModelAttribute UserRequest.ResetDTO requestDTO) {
+    public String resetPassword(@Valid @ModelAttribute UserRequest.ResetDTO requestDTO, Error errors) {
         userService.resetPassword(requestDTO);
         return "redirect:/user/login";
     }
@@ -88,7 +89,6 @@ public class UserController {
     public Map<String, Boolean> checkEmail(@PathVariable("email") String email) {
         Map<String, Boolean> response = new HashMap<>();
         Boolean check = userService.checkEmail(email);
-        log.info("check email=" + check);
         response.put("available", check);
         return response;
     }

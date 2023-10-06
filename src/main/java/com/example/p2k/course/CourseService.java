@@ -8,6 +8,7 @@ import com.example.p2k.courseuser.CourseUserRepository;
 import com.example.p2k.post.PostRepository;
 import com.example.p2k.user.Role;
 import com.example.p2k.user.User;
+import com.example.p2k.user.UserRepository;
 import com.example.p2k.vm.Vm;
 import com.example.p2k.vm.VmRepository;
 import com.example.p2k.vm.VmResponse;
@@ -20,9 +21,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -30,99 +30,93 @@ import java.util.Optional;
 @Service
 public class CourseService {
 
+    public static final int DEFAULT_PAGE_SIZE = 10;
+    public static final int DEFAULT_PAGINATION_SIZE = 5;
+
     private final CourseRepository courseRepository;
     private final CourseUserRepository courseUserRepository;
     private final PostRepository postRepository;
     private final VmRepository vmRepository;
+    private final UserRepository userRepository;
 
-    public CourseResponse.CoursesDTO findCourses(Long userId) {
-        List<Course> courses = courseUserRepository.findCourseByUserId(userId);
-        return new CourseResponse.CoursesDTO(courses);
+    //강좌 아이디로 강좌 조회
+    public CourseResponse.FindById findCourse(Long id){
+        Course course = getCourse(id);
+        return new CourseResponse.FindById(course);
+    }
+
+    //사용자 아이디로 강좌 목록 조회
+    public CourseResponse.VmCoursesDTO findCourses(Long userId) {
+        List<Course> courses = courseUserRepository.findByUserIdAndAcceptIsTrue(userId);
+        return new CourseResponse.VmCoursesDTO(courses);
     }
 
     //나의 강좌 조회
     public CourseResponse.FindCoursesDTO findCourses(Long userId, int page){
-        List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("id")); //정렬조건
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        Page<Course> courses = courseUserRepository.findCourseByUserId(pageable, userId);
-        return new CourseResponse.FindCoursesDTO(courses);
+        Pageable pageable = getPageable(page, "id");
+        Page<Course> courses = courseUserRepository.findByUserIdAndAcceptIsTrue(pageable, userId);
+        return new CourseResponse.FindCoursesDTO(courses, DEFAULT_PAGINATION_SIZE);
     }
 
     //강좌 신청 페이지
-    public CourseResponse.FindCoursesDTO findAll(int page){
-        List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("id")); //정렬조건
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        Page<Course> courses = courseRepository.findAll(pageable);
-        return new CourseResponse.FindCoursesDTO(courses);
+    public CourseResponse.FindCoursesDTO findSearchCourses(String keyword, int page){
+        Pageable pageable = getPageable(page, "id");
+        Page<Course> courses = courseRepository.findByNameContainingIgnoreCase(pageable, keyword);
+        return new CourseResponse.FindCoursesDTO(courses, DEFAULT_PAGINATION_SIZE);
     }
 
     //강좌 신청
     @Transactional
-    public void apply(Long id, User user){
-        Optional<CourseUser> findCourseUser = courseUserRepository.findByCourseIdAndUserId(id, user.getId());
-        if(findCourseUser.isPresent()){
-            throw new Exception400("이미 신청한 강좌입니다.");
-        }
+    public void apply(Long courseId, Long userId){
+        User user = getUser(userId);
+        checkStudentAuthorization(user);
 
-        Optional<Course> course = courseRepository.findById(id);
-        if(course.isPresent()){
-            CourseUser courseUser = CourseUser.builder()
-                    .course(course.get())
-                    .user(user)
-                    .accept(false)
-                    .build();
-            courseUserRepository.save(courseUser);
-        }
-    }
+        courseUserRepository.findByCourseIdAndUserId(courseId, userId)
+                .ifPresent(courseUser -> {
+                    throw new Exception400("이미 신청한 강좌입니다.");
+                });
 
-    //강좌 검색
-    public CourseResponse.FindCoursesDTO findBySearch(String keyword, int page){
-        List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("id")); //정렬조건
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        Page<Course> courses = courseRepository.findByNameContaining(pageable, keyword);
-        return new CourseResponse.FindCoursesDTO(courses);
+        Course course = getCourse(courseId);
+        CourseUser courseUser = CourseUser.builder().course(course).user(user).accept(false).build();
+        courseUserRepository.save(courseUser);
     }
 
     //나의 가상 환경 조회
-    public VmResponse.FindAllDTO findMyVm(User user, Long id){
-        List<Vm> vms = vmRepository.findUserIdAndCourseId(user.getId(), id);
+    public VmResponse.FindAllDTO findMyVm(Long courseId, User user){
+        List<Vm> vms = vmRepository.findByUserIdAndCourseId(user.getId(), courseId);
         return new VmResponse.FindAllDTO(vms);
     }
 
     //교육자의 가상 환경 조회
-    public VmResponse.FindAllDTO findInstructorVm(Long id){
-        Course course = courseRepository.findById(id).orElseThrow(
-                () -> new Exception404("해당 강좌를 찾을 수 없습니다.")
-        );
+    public VmResponse.FindAllDTO findInstructorVm(Long courseId, User user){
+        checkStudentAuthorization(user);
 
-        if(course.getInstructorId() == null){
-            throw new Exception400("해당 강좌의 교육자가 존재하지 않습니다.");
-        }
+        Long instructorId = getCourse(courseId).getInstructorId();
+        validateInstructorExistence(instructorId);
 
-        List<Vm> vms = vmRepository.findUserIdAndCourseIdOpen(course.getInstructorId(), id);
+        List<Vm> vms = vmRepository.findByUserIdAndCourseIdAndScopeIsTrue(instructorId, courseId);
         return new VmResponse.FindAllDTO(vms);
     }
 
     //강좌 취소
     @Transactional
-    public void cancel(Long id, User user){
-        courseUserRepository.deleteByCourseIdAndUserId(id, user.getId());
+    public void cancel(Long courseId, Long userId){
+        User user = getUser(userId);
+        checkStudentAuthorization(user);
+        CourseUser courseUser = getCourseUser(courseId, userId);
+        courseUserRepository.deleteById(courseUser.getId());
     }
 
     //강좌 생성
     @Transactional
-    public void create(CourseRequest.SaveDTO requestDTO, User user){
-        if(user.getPending() || user.getRole() != Role.ROLE_INSTRUCTOR){
-            throw new Exception403("권한이 없는 사용자입니다.");
-        }
+    public void create(CourseRequest.SaveDTO requestDTO, Long userId){
+        User user = getUser(userId);
+        checkInstructorAuthorization(user);
 
         Course course = Course.builder()
                 .name(requestDTO.getName())
                 .description(requestDTO.getDescription())
-                .instructorId(user.getId())
+                .instructorId(userId)
                 .build();
         courseRepository.save(course);
 
@@ -130,55 +124,87 @@ public class CourseService {
         courseUserRepository.save(courseUser);
     }
 
-    //수강생 관리
-    public CourseResponse.FindStudentsDTO findStudents(Long id, User user){
-        if(user.getPending() || user.getRole() != Role.ROLE_INSTRUCTOR){
-            throw new Exception403("권한이 없는 사용자입니다.");
-        }
-        List<User> students = courseUserRepository.findAcceptedUserByCourseId(id);
-        return new CourseResponse.FindStudentsDTO(students);
+    //수강생 목록
+    public CourseResponse.FindStudentsDTO findStudents(Long courseId, User user){
+        checkInstructorAuthorization(user);
+        List<User> users = courseUserRepository.findByCourseIdAndAcceptIsTrue(courseId);
+        return new CourseResponse.FindStudentsDTO(users);
     }
 
     //강좌 신청 대기 수강생 목록
-    public CourseResponse.FindUnacceptedUserDTO findApplications(Long id){
-        List<User> users = courseUserRepository.findUnacceptedUserByCourseId(id);
+    public CourseResponse.FindUnacceptedUserDTO findApplications(Long courseId, User user){
+        checkInstructorAuthorization(user);
+        List<User> users = courseUserRepository.findByCourseIdAndAcceptIsFalse(courseId);
         return new CourseResponse.FindUnacceptedUserDTO(users);
     }
 
     //강좌 신청 수락
     @Transactional
-    public void accept(Long courseId, Long userId, User user){
-        if(!user.getPending() || user.getRole() != Role.ROLE_INSTRUCTOR){
-            throw new Exception403("권한이 없는 사용자입니다.");
-        }
-        courseUserRepository.updateAccept(courseId, userId);
+    public void accept(Long courseId, Long applicationId, User user){
+        checkInstructorAuthorization(user);
+        Course course = getCourse(courseId);
+        CourseUser courseUser = getCourseUser(course.getId(), applicationId);
+        courseUser.updateAccept(true);
     }
 
     //강좌 신청 거절
     @Transactional
-    public void reject(Long courseId, Long userId, User user){
-        if(user.getPending() || user.getRole() != Role.ROLE_INSTRUCTOR){
-            throw new Exception403("권한이 없는 사용자입니다.");
-        }
-        courseUserRepository.deleteByCourseIdAndUserId(courseId, userId);
+    public void reject(Long courseId, Long applicationId, User user){
+        checkInstructorAuthorization(user);
+        Course course = getCourse(courseId);
+        CourseUser courseUser = getCourseUser(course.getId(), applicationId);
+        courseUserRepository.deleteById(courseUser.getId());
     }
 
     //강좌 삭제
     @Transactional
-    public void delete(Long id, User user){
-        if(user.getPending() || user.getRole() != Role.ROLE_INSTRUCTOR){
-            throw new Exception403("권한이 없는 사용자입니다.");
-        }
-        courseUserRepository.deleteByCourseId(id);
-        postRepository.deleteAllByCourseId(id);
-        courseRepository.deleteById(id);
+    public void delete(Long courseId, User user){
+        checkInstructorAuthorization(user);
+        Course course = getCourse(courseId);
+        courseUserRepository.deleteByCourseId(course.getId());
+        postRepository.deleteByCourseId(course.getId());
+        courseRepository.deleteById(course.getId());
     }
 
-    //강좌 아이디로 강좌 찾기
-    public CourseResponse.FindById findById(Long id){
-        Course course = courseRepository.findById(id).orElseThrow(
+    private CourseUser getCourseUser(Long courseId, Long userId) {
+        return courseUserRepository.findByCourseIdAndUserId(courseId, userId).orElseThrow(
+                () -> new Exception404("해당 사용자-강좌를 찾을 수 없습니다.")
+        );
+    }
+
+    private Course getCourse(Long courseId) {
+        return courseRepository.findById(courseId).orElseThrow(
                 () -> new Exception404("해당 강좌를 찾을 수 없습니다.")
         );
-        return new CourseResponse.FindById(course);
+    }
+
+    private User getUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(
+                () -> new Exception404("해당 사용자를 찾을 수 없습니다.")
+        );
+    }
+
+    private void validateInstructorExistence(Long instructorId) {
+        if(instructorId == null){
+            throw new Exception400("해당 강좌의 교육자가 존재하지 않습니다.");
+        }
+        getUser(instructorId);
+    }
+
+    private static void checkInstructorAuthorization(User user) {
+        if(user.getPending() || user.getRole() != Role.ROLE_INSTRUCTOR){
+            throw new Exception403("교육자 권한이 없는 사용자입니다.");
+        }
+    }
+
+    private static void checkStudentAuthorization(User user) {
+        if(user.getRole() != Role.ROLE_STUDENT){
+            throw new Exception403("학생 권한이 없는 사용자입니다.");
+        }
+    }
+
+    private static Pageable getPageable(int page, String orderBy) {
+        List<Sort.Order> sorts = Collections.singletonList(Sort.Order.desc(orderBy));
+        return PageRequest.of(page, DEFAULT_PAGE_SIZE, Sort.by(sorts));
     }
 }

@@ -1,7 +1,6 @@
 package com.example.p2k.admin;
 
-import com.example.p2k.course.Course;
-import com.example.p2k.course.CourseResponse;
+import com.example.p2k._core.util.PageData;
 import com.example.p2k.user.Role;
 import com.example.p2k.user.User;
 import com.example.p2k.vm.Vm;
@@ -10,51 +9,45 @@ import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class AdminResponse {
 
     @Getter
     public static class UsersDTO {
 
-        private final Boolean hasPrevious;
-        private final Boolean hasNext;
-        private final Boolean isEmpty;
-        private final int number;
-        private final int totalPages;
-        private final int startPage;
-        private final int endPage;
-        private static final int cnt = 5;
+        private final PageData pageData;
         private final List<UserDTO> users;
 
-        public UsersDTO(Page<User> users) {
-            this.hasPrevious = users.hasPrevious();
-            this.hasNext = users.hasNext();
-            this.isEmpty = users.isEmpty();
-            this.number = users.getNumber();
-            this.totalPages = users.getTotalPages();
-            this.startPage = getStartPage();
-            this.endPage = getEndPage();
-            this.users = users.stream().map(UserDTO::new).collect(Collectors.toList());
+        public UsersDTO(Page<User> users, int size,
+                        List<Integer> vmNums, List<Integer> courseNums, List<Integer> postNums, List<Integer> replyNums) {
+            Map<Long, Integer> vmNumsMap = mapByUserId(users, vmNums);
+            Map<Long, Integer> courseNumsMap = mapByUserId(users, courseNums);
+            Map<Long, Integer> postNumsMap = mapByUserId(users, postNums);
+            Map<Long, Integer> replyNumsMap = mapByUserId(users, replyNums);
+
+            this.pageData = new PageData(
+                    users.hasPrevious(),
+                    users.hasNext(),
+                    users.isEmpty(),
+                    users.getNumber(),
+                    users.getTotalPages(),
+                    size
+            );
+            this.users = users.stream().map(user ->
+                new UserDTO(user, vmNumsMap.get(user.getId()), courseNumsMap.get(user.getId()), postNumsMap.get(user.getId()), replyNumsMap.get(user.getId()))
+            ).toList();
         }
 
-        public int getStartPage() {
-            if(this.getTotalPages() <= cnt){
-                return 0;
-            }
-            int min = 0;
-            int start = this.getNumber() - cnt / 2;
-            int max = this.getTotalPages() - cnt;
-            return Math.min(Math.max(min, start), max);
-        }
-
-        public int getEndPage() {
-            if(this.getTotalPages() <= cnt){
-                return getTotalPages() - 1;
-            }
-            int max = this.getTotalPages() - 1;
-            int end = this.getStartPage() + cnt - 1;
-            return Math.min(end, max);
+        private Map<Long, Integer> mapByUserId(Page<User> users, List<Integer> nums) {
+            return IntStream.range(0, nums.size())
+                    .boxed()
+                    .collect(Collectors.toMap(
+                            userIdx -> users.getContent().get(userIdx).getId(),
+                            nums::get
+                    ));
         }
 
         @Getter
@@ -70,16 +63,16 @@ public class AdminResponse {
             private final int replyNum;
             private final LocalDate createdDate;
 
-            public UserDTO(User user) {
+            public UserDTO(User user, int vmNum, int courseNum, int postNum, int replyNum) {
                 this.id = user.getId();
                 this.name = user.getName();
                 this.email = user.getEmail();
                 this.role = user.getRole();
                 this.pending = user.getPending();
-                this.vmNum = user.getVms().size();
-                this.courseNum = user.getCourseUsers().size();
-                this.postNum = user.getPosts().size();
-                this.replyNum = user.getReplies().size();
+                this.vmNum = vmNum;
+                this.courseNum = courseNum;
+                this.postNum = postNum;
+                this.replyNum = replyNum;
                 this.createdDate = user.getCreatedDate() != null ? user.getCreatedDate().toLocalDate() : null;
             }
         }
@@ -88,44 +81,19 @@ public class AdminResponse {
     @Getter
     public static class VmsDTO {
 
-        private final Boolean hasPrevious;
-        private final Boolean hasNext;
-        private final Boolean isEmpty;
-        private final int number;
-        private final int totalPages;
-        private final int startPage;
-        private final int endPage;
-        private static final int cnt = 5;
+        private final PageData pageData;
         private final List<VmDTO> vms;
 
-        public VmsDTO(Page<Vm> vms) {
-            this.hasPrevious = vms.hasPrevious();
-            this.hasNext = vms.hasNext();
-            this.isEmpty = vms.isEmpty();
-            this.number = vms.getNumber();
-            this.totalPages = vms.getTotalPages();
-            this.startPage = getStartPage();
-            this.endPage = getEndPage();
-            this.vms = vms.stream().map(VmDTO::new).collect(Collectors.toList());
-        }
-
-        public int getStartPage() {
-            if(this.getTotalPages() <= cnt){
-                return 0;
-            }
-            int min = 0;
-            int start = this.getNumber() - cnt / 2;
-            int max = this.getTotalPages() - cnt;
-            return Math.min(Math.max(min, start), max);
-        }
-
-        public int getEndPage() {
-            if(this.getTotalPages() <= cnt){
-                return getTotalPages() - 1;
-            }
-            int max = this.getTotalPages() - 1;
-            int end = this.getStartPage() + cnt - 1;
-            return Math.min(end, max);
+        public VmsDTO(Page<Vm> vms, int size) {
+            this.pageData = new PageData(
+                    vms.hasPrevious(),
+                    vms.hasNext(),
+                    vms.isEmpty(),
+                    vms.getNumber(),
+                    vms.getTotalPages(),
+                    size
+            );
+            this.vms = vms.stream().map(VmDTO::new).toList();
         }
 
         @Getter

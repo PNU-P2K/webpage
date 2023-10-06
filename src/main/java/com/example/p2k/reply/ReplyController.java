@@ -2,6 +2,7 @@ package com.example.p2k.reply;
 
 import com.example.p2k._core.security.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,17 +19,19 @@ public class ReplyController {
 
     //댓글 저장
     @PostMapping
-    public String saveComment(@ModelAttribute ReplyRequest.SaveCommentDTO requestDTO, @PathVariable Long postId,
+    public String saveComment(@Valid @ModelAttribute ReplyRequest.SaveCommentDTO requestDTO, Error errors,
+                              @PathVariable Long postId,
                               @AuthenticationPrincipal CustomUserDetails userDetails, HttpServletRequest request){
-        replyService.saveComment(requestDTO, userDetails.getUser(), postId);
+        replyService.saveComment(requestDTO, userDetails.getUser().getId(), postId);
         return "redirect:" + request.getHeader("Referer");
     }
 
     //답글 저장
     @PostMapping("/{replyId}")
-    public String saveReply(@ModelAttribute ReplyRequest.SaveReplyDTO requestDTO, @PathVariable Long postId,
+    public String saveReply(@Valid @ModelAttribute ReplyRequest.SaveReplyDTO requestDTO, Error errors,
+                            @PathVariable Long replyId, @PathVariable Long postId,
                             @AuthenticationPrincipal CustomUserDetails userDetails, HttpServletRequest request){
-        replyService.saveReply(requestDTO, userDetails.getUser(), postId);
+        replyService.saveReply(requestDTO, replyId, userDetails.getUser().getId(), postId);
         return "redirect:" + request.getHeader("Referer");
     }
 

@@ -1,25 +1,25 @@
 package com.example.p2k.course;
 
+import com.example.p2k._core.util.PageData;
 import com.example.p2k.user.User;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CourseResponse {
 
     @Getter
-    public static class CoursesDTO {
+    public static class VmCoursesDTO {
 
-        private final List<CoursesDTO.CourseDTO> courses;
+        private final List<CourseDTO> courses;
 
-        public CoursesDTO(List<Course> courses) {
-            this.courses = courses.stream().map(CoursesDTO.CourseDTO::new).collect(Collectors.toList());
+        public VmCoursesDTO(List<Course> courses) {
+            this.courses = courses.stream().map(CourseDTO::new).toList();
         }
 
         @Getter
-        public class CourseDTO {
+        public static class CourseDTO {
             private final Long id;
             private final String name;
 
@@ -33,48 +33,24 @@ public class CourseResponse {
     @Getter
     public static class FindCoursesDTO {
 
-        private final Boolean hasPrevious;
-        private final Boolean hasNext;
-        private final Boolean isEmpty;
-        private final int number;
-        private final int totalPages;
-        private final int startPage;
-        private final int endPage;
+        private final PageData pageData;
         private final List<CourseDTO> courses;
-        private static final int cnt = 5;
 
-        public FindCoursesDTO(Page<Course> courses) {
-            this.hasPrevious = courses.hasPrevious();
-            this.hasNext = courses.hasNext();
-            this.isEmpty = courses.isEmpty();
-            this.number = courses.getNumber();
-            this.totalPages = courses.getTotalPages();
-            this.startPage = getStartPage();
-            this.endPage = getEndPage();
-            this.courses = courses.getContent().stream().map(CourseDTO::new).collect(Collectors.toList());
-        }
-
-        public int getStartPage() {
-            if(this.getTotalPages() <= cnt){
-                return 0;
-            }
-            int min = 0;
-            int start = this.getNumber() - cnt / 2;
-            int max = this.getTotalPages() - cnt;
-            return Math.min(Math.max(min, start), max);
-        }
-
-        public int getEndPage() {
-            if(this.getTotalPages() <= cnt){
-                return getTotalPages() - 1;
-            }
-            int max = this.getTotalPages() - 1;
-            int end = this.getStartPage() + cnt - 1;
-            return Math.min(end, max);
+        public FindCoursesDTO(Page<Course> courses, int size) {
+            this.pageData = new PageData(
+                    courses.hasPrevious(),
+                    courses.hasNext(),
+                    courses.isEmpty(),
+                    courses.getNumber(),
+                    courses.getTotalPages(),
+                    size
+            );
+            this.courses = courses.getContent().stream().map(CourseDTO::new).toList();
         }
 
         @Getter
-        public class CourseDTO{
+        public static class CourseDTO{
+
             private final Long id;
             private final String name;
             private final String description;
@@ -107,11 +83,11 @@ public class CourseResponse {
         private final List<FindStudentsDTO.UserDTO> students;
 
         public FindStudentsDTO(List<User> students) {
-            this.students = students.stream().map(FindStudentsDTO.UserDTO::new).collect(Collectors.toList());
+            this.students = students.stream().map(FindStudentsDTO.UserDTO::new).toList();
         }
 
         @Getter
-        public class UserDTO{
+        public static class UserDTO{
             private final Long id;
             private final String name;
 
@@ -128,11 +104,11 @@ public class CourseResponse {
         private final List<UnAcceptedUserDTO> students;
 
         public FindUnacceptedUserDTO(List<User> students) {
-            this.students = students.stream().map(UnAcceptedUserDTO::new).collect(Collectors.toList());
+            this.students = students.stream().map(UnAcceptedUserDTO::new).toList();
         }
 
         @Getter
-        public class UnAcceptedUserDTO{
+        public static class UnAcceptedUserDTO{
 
             private final Long id;
             private final String name;

@@ -34,7 +34,7 @@ public class Reply extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
 
@@ -50,5 +50,14 @@ public class Reply extends BaseTimeEntity {
         this.answerNum = answerNum;
         this.user = user;
         this.post = post;
+    }
+
+    public void updateAnswerNum(Long answerNum){
+        this.answerNum = answerNum;
+    }
+
+    public void updateDeletedReply(String content, String author){
+        this.content = content;
+        this.author = author;
     }
 }

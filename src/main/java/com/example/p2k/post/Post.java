@@ -23,10 +23,13 @@ public class Post extends BaseTimeEntity {
     @Column(name = "post_id")
     private Long id;
 
+    @Column(length = 100, nullable = false)
     private String title;
 
+    @Column(length = 20, nullable = false)
     private String author;
 
+    @Column(length = 500, nullable = false)
     private String content;
 
     @Enumerated(EnumType.STRING)
@@ -43,7 +46,7 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Reply> replies;
 
     @Builder
@@ -57,5 +60,11 @@ public class Post extends BaseTimeEntity {
         this.course = course;
         this.user = user;
         this.replies = replies;
+    }
+
+    public void updatePost(String title, String content, Scope scope){
+        this.title = title;
+        this.content = content;
+        this.scope = scope;
     }
 }

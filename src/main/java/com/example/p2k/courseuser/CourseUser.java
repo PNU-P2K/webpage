@@ -35,4 +35,8 @@ public class CourseUser extends BaseTimeEntity {
         this.course = course;
         this.accept = accept;
     }
+
+    public void updateAccept(Boolean accept){
+        this.accept = accept;
+    }
 }
