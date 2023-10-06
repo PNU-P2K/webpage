@@ -35,7 +35,7 @@ public class Post extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
 
@@ -57,5 +57,11 @@ public class Post extends BaseTimeEntity {
         this.course = course;
         this.user = user;
         this.replies = replies;
+    }
+
+    public void updatePost(String title, String content, Scope scope){
+        this.title = title;
+        this.content = content;
+        this.scope = scope;
     }
 }

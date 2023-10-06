@@ -47,9 +47,9 @@ public class CourseController {
     //나의 가상 환경 조회
     @GetMapping("/{courseId}/my-vm")
     public String findMyVm(@PathVariable Long courseId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        model.addAttribute("user", userDetails.getUser());
         model.addAttribute("myVms", getMyVmsDTO(courseId, userDetails.getUser()));
         model.addAttribute("courseDTO", getCourseDTO(courseId));
+        model.addAttribute("user", userDetails.getUser());
         return "course/myVm";
     }
 
@@ -57,9 +57,9 @@ public class CourseController {
     @GetMapping("/{courseId}/instructor-vm")
     public String findInstructorVm(@PathVariable Long courseId, Model model,
                                    @AuthenticationPrincipal CustomUserDetails userDetails){
-        model.addAttribute("user", userDetails.getUser());
         model.addAttribute("instructorVms", getInstructorVmsDTO(courseId, userDetails.getUser()));
         model.addAttribute("courseDTO", getCourseDTO(courseId));
+        model.addAttribute("user", userDetails.getUser());
         return "course/instructorVm";
     }
 
@@ -92,9 +92,9 @@ public class CourseController {
     @GetMapping("/{courseId}/students")
     public String findStudents(@PathVariable Long courseId, Model model,
                                @AuthenticationPrincipal CustomUserDetails userDetails){
-        model.addAttribute("user", userDetails.getUser());
         model.addAttribute("studentDTOs", getFindStudentsDTO(courseId, userDetails.getUser()));
         model.addAttribute("courseDTO", getCourseDTO(courseId));
+        model.addAttribute("user", userDetails.getUser());
         return "course/students";
     }
 
@@ -102,10 +102,10 @@ public class CourseController {
     @GetMapping("/{courseId}/setting")
     public String setting(@PathVariable Long courseId, Model model,
                           @AuthenticationPrincipal CustomUserDetails userDetails){
-        model.addAttribute("user", userDetails.getUser());
-        model.addAttribute("courseDTO", getCourseDTO(courseId));
-        model.addAttribute("studentDTOs", getFindStudentsDTO(courseId, userDetails.getUser()));
         model.addAttribute("unacceptedUserDTOs", getFindUnacceptedUserDTO(courseId, userDetails.getUser()));
+        model.addAttribute("studentDTOs", getFindStudentsDTO(courseId, userDetails.getUser()));
+        model.addAttribute("courseDTO", getCourseDTO(courseId));
+        model.addAttribute("user", userDetails.getUser());
         return "course/setting";
     }
 

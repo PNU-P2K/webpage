@@ -31,6 +31,7 @@ import java.util.List;
 public class CourseService {
 
     public static final int DEFAULT_PAGE_SIZE = 10;
+    public static final int DEFAULT_PAGINATION_SIZE = 5;
 
     private final CourseRepository courseRepository;
     private final CourseUserRepository courseUserRepository;
@@ -52,16 +53,16 @@ public class CourseService {
 
     //나의 강좌 조회
     public CourseResponse.FindCoursesDTO findCourses(Long userId, int page){
-        Pageable pageable = getPageable(page);
+        Pageable pageable = getPageable(page, "id");
         Page<Course> courses = courseUserRepository.findByUserIdAndAcceptIsTrue(pageable, userId);
-        return new CourseResponse.FindCoursesDTO(courses, DEFAULT_PAGE_SIZE);
+        return new CourseResponse.FindCoursesDTO(courses, DEFAULT_PAGINATION_SIZE);
     }
 
     //강좌 신청 페이지
     public CourseResponse.FindCoursesDTO findSearchCourses(String keyword, int page){
-        Pageable pageable = getPageable(page);
+        Pageable pageable = getPageable(page, "id");
         Page<Course> courses = courseRepository.findByNameContainingIgnoreCase(pageable, keyword);
-        return new CourseResponse.FindCoursesDTO(courses, DEFAULT_PAGE_SIZE);
+        return new CourseResponse.FindCoursesDTO(courses, DEFAULT_PAGINATION_SIZE);
     }
 
     //강좌 신청
@@ -202,8 +203,8 @@ public class CourseService {
         }
     }
 
-    private static Pageable getPageable(int page) {
-        List<Sort.Order> sorts = Collections.singletonList(Sort.Order.desc("id"));
+    private static Pageable getPageable(int page, String orderBy) {
+        List<Sort.Order> sorts = Collections.singletonList(Sort.Order.desc(orderBy));
         return PageRequest.of(page, DEFAULT_PAGE_SIZE, Sort.by(sorts));
     }
 }
