@@ -1,11 +1,11 @@
 package com.example.p2k.post;
 
 import com.example.p2k._core.security.CustomUserDetails;
-import com.example.p2k.reply.ReplyResponse;
-import com.example.p2k.reply.ReplyService;
 import com.example.p2k.course.CourseResponse;
 import com.example.p2k.course.CourseService;
-import com.example.p2k.user.User;
+import com.example.p2k.reply.ReplyResponse;
+import com.example.p2k.reply.ReplyService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -70,7 +70,8 @@ public class PostController {
 
     //공지사항 글 작성
     @PostMapping("/notice-board/save")
-    public String saveNoticePost(@PathVariable Long courseId, @ModelAttribute PostRequest.SaveDTO requestDTO,
+    public String saveNoticePost(@PathVariable Long courseId,
+                                 @Valid @ModelAttribute PostRequest.SaveDTO requestDTO, Error errors,
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
         postService.savePost(requestDTO, Category.NOTICE, userDetails.getUser().getId(), courseId);
         return "redirect:/courses/{courseId}/notice-board";
@@ -89,7 +90,7 @@ public class PostController {
     //공지사항 글 수정
     @PostMapping("/notice-board/{postId}/update")
     public String updateNoticePost(@PathVariable Long postId,
-                                   @ModelAttribute PostRequest.UpdateDTO requestDTO,
+                                   @Valid @ModelAttribute PostRequest.UpdateDTO requestDTO, Error errors,
                                    @AuthenticationPrincipal CustomUserDetails userDetails){
         postService.updatePost(requestDTO, Category.NOTICE, postId, userDetails.getUser());
         return "redirect:/courses/{courseId}/notice-board/{postId}";
@@ -129,7 +130,8 @@ public class PostController {
 
     //질문 글 작성
     @PostMapping("/question-board/save")
-    public String saveQuestionPost(@PathVariable Long courseId, @ModelAttribute PostRequest.SaveDTO requestDTO,
+    public String saveQuestionPost(@PathVariable Long courseId,
+                                   @Valid @ModelAttribute PostRequest.SaveDTO requestDTO, Error errors,
                                    @AuthenticationPrincipal CustomUserDetails userDetails){
         postService.savePost(requestDTO, Category.QUESTION, userDetails.getUser().getId(), courseId);
         return "redirect:/courses/{courseId}/question-board";
@@ -148,7 +150,7 @@ public class PostController {
     //질문 글 수정
     @PostMapping("/question-board/{postId}/update")
     public String updateQuestionPost(@PathVariable Long postId,
-                                     @ModelAttribute PostRequest.UpdateDTO requestDTO,
+                                     @Valid @ModelAttribute PostRequest.UpdateDTO requestDTO, Error errors,
                                      @AuthenticationPrincipal CustomUserDetails userDetails){
         postService.updatePost(requestDTO, Category.QUESTION, postId, userDetails.getUser());
         return "redirect:/courses/{courseId}/question-board/{postId}";
@@ -185,7 +187,8 @@ public class PostController {
 
     //자유 글 작성
     @PostMapping("/free-board/save")
-    public String saveFreePost(@PathVariable Long courseId, @ModelAttribute PostRequest.SaveDTO requestDTO,
+    public String saveFreePost(@PathVariable Long courseId,
+                               @Valid @ModelAttribute PostRequest.SaveDTO requestDTO, Error errors,
                                @AuthenticationPrincipal CustomUserDetails userDetails){
         postService.savePost(requestDTO, Category.FREE, userDetails.getUser().getId(), courseId);
         return "redirect:/courses/{courseId}/free-board";
@@ -204,7 +207,7 @@ public class PostController {
     //자유 글 수정
     @PostMapping("/free-board/{postId}/update")
     public String updateFreePost(@PathVariable Long postId,
-                                 @ModelAttribute PostRequest.UpdateDTO requestDTO,
+                                 @Valid @ModelAttribute PostRequest.UpdateDTO requestDTO, Error errors,
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
         postService.updatePost(requestDTO, Category.FREE, postId, userDetails.getUser());
         return "redirect:/courses/{courseId}/free-board/{postId}";

@@ -3,6 +3,7 @@ package com.example.p2k.course;
 import com.example.p2k._core.security.CustomUserDetails;
 import com.example.p2k.user.User;
 import com.example.p2k.vm.VmResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -74,7 +75,7 @@ public class CourseController {
 
     //강좌 생성
     @PostMapping("/create")
-    public String create(@ModelAttribute CourseRequest.SaveDTO requestDTO,
+    public String create(@Valid @ModelAttribute CourseRequest.SaveDTO requestDTO, Error errors,
                          @AuthenticationPrincipal CustomUserDetails userDetails){
         courseService.create(requestDTO, userDetails.getUser().getId());
         return "redirect:/courses";
