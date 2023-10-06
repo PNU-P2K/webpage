@@ -21,28 +21,28 @@ public class ExceptionController {
 
     //401
     @ExceptionHandler({ Exception401.class })
-    public ResponseEntity handleException401(final Exception401 ex) {
+    public ResponseEntity<Object>  handleException401(final Exception401 ex) {
         log.warn("error 401", ex);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 
     //403
     @ExceptionHandler({ Exception403.class })
-    public ResponseEntity handleException403(final Exception403 ex) {
+    public ResponseEntity<Object>  handleException403(final Exception403 ex) {
         log.warn("error 403", ex);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
     }
 
     //404
     @ExceptionHandler({ Exception404.class })
-    public ResponseEntity handleException404(final Exception404 ex) {
+    public ResponseEntity<Object>  handleException404(final Exception404 ex) {
         log.warn("error 404", ex);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
     //500
     @ExceptionHandler({ Exception500.class })
-    public ResponseEntity handleException500(final Exception500 ex) {
+    public ResponseEntity<Object>  handleException500(final Exception500 ex) {
         log.warn("error 500", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
     }
