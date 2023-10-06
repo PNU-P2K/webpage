@@ -35,7 +35,7 @@ public class UserService {
                 .password(enPassword)
                 .role(requestDTO.getRole())
                 .build();
-        user.changePending(requestDTO.getRole() == Role.ROLE_INSTRUCTOR);
+        user.updatePending(requestDTO.getRole() == Role.ROLE_INSTRUCTOR);
 
         userRepository.save(user);
     }

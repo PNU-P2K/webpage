@@ -66,7 +66,7 @@ public class User extends BaseTimeEntity {
         return this;
     }
 
-    public void changePending(boolean status){
+    public void updatePending(boolean status){
         this.pending = status;
     }
 }
