@@ -51,4 +51,13 @@ public class Reply extends BaseTimeEntity {
         this.user = user;
         this.post = post;
     }
+
+    public void updateAnswerNum(Long answerNum){
+        this.answerNum = answerNum;
+    }
+
+    public void updateDeletedReply(String content, String author){
+        this.content = content;
+        this.author = author;
+    }
 }

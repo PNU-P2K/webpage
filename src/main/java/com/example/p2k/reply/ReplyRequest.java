@@ -20,8 +20,6 @@ public class ReplyRequest {
 
         @NotBlank(message = "내용은 필수 입력 값입니다.")
         private String content;
-
-        private Long parentId;
     }
 
     @Getter

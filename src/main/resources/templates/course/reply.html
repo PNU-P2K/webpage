@@ -52,19 +52,19 @@
     </div>
     <br>
     <!--페이지 처리-->
-    <div th:if="${!replies.isEmpty}">
+    <div th:if="${!replies.getPageData().isEmpty}">
         <ul class="pagination justify-content-center">
-            <li class="page-item" th:classappend="${!replies.hasPrevious} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${replies.number - 1}|}">
+            <li class="page-item" th:classappend="${!replies.getPageData().hasPrevious} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${replies.getPageData().number - 1}|}">
                     <span>이전</span>
                 </a>
             </li>
-            <li th:each="page : ${#numbers.sequence(replies.getStartPage(), replies.getEndPage())}"
-                th:classappend="${page == replies.number} ? 'active'" class="page-item">
+            <li th:each="page : ${#numbers.sequence(replies.getPageData().getStartPage(), replies.getPageData().getEndPage())}"
+                th:classappend="${page == replies.getPageData().number} ? 'active'" class="page-item">
                 <a th:text="${page + 1}" class="page-link" th:href="@{|?page=${page}|}"></a>
             </li>
-            <li class="page-item" th:classappend="${!replies.hasNext} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${replies.number + 1}|}">
+            <li class="page-item" th:classappend="${!replies.getPageData().hasNext} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${replies.getPageData().number + 1}|}">
                     <span>다음</span>
                 </a>
             </li>
