@@ -29,7 +29,7 @@ spring:
         registration:
           naver:
             client-id: 1FMqz35SFEjTNv7DscnG
-            client-secret: un35KZvfg9
+            client-secret:
             scope:
               - name
               - email
@@ -38,7 +38,7 @@ spring:
             redirect-uri: http://localhost:8080/login/oauth2/code/naver
           kakao:
             client-id: 13a5f7b7156b10c44d58f3a82cb4a933
-            client-secret: w12F4ayPKZSINgb0hCA2cPBC0drtrdgq
+            client-secret:
             scope:
               - profile_nickname
               - account_email
@@ -48,7 +48,7 @@ spring:
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
           google:
             client-id: 465292157857-mcq23sn7krbbol7r8qqrou9dl8f7nd40.apps.googleusercontent.com
-            client-secret: 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
+            client-secret:
             scope:
               - email
               - profile
