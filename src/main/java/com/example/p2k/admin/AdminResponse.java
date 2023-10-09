@@ -101,7 +101,7 @@ public class AdminResponse {
             private final Long id;
             private final String name;
             private final String createdBy;
-            private final int port;
+            private final int nodePort;
             private final String course;
             private final Boolean scope;
             private final Boolean control;
@@ -112,7 +112,7 @@ public class AdminResponse {
                 this.id = vm.getId();
                 this.name = vm.getVmname();
                 this.createdBy = vm.getUser().getName();
-                this.port = vm.getPort();
+                this.nodePort = vm.getNodePort();
                 this.course = vm.getCourse().getName();
                 this.scope = vm.getScope();
                 this.control = vm.getControl();
