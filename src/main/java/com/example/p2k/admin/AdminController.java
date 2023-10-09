@@ -1,7 +1,7 @@
 package com.example.p2k.admin;
 
 import com.example.p2k._core.security.CustomUserDetails;
-import com.example.p2k.user.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -16,41 +16,20 @@ public class AdminController {
     private final AdminService adminService;
     private final CloudWatchService cloudWatchService;
 
-    @GetMapping("/resources")
+    @GetMapping("/k8s-resources")
+    public String manageK8sResources(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+        model.addAttribute("user", userDetails.getUser());
+        return "admin/grafana";
+    }
+
+    @GetMapping("/s3-resources")
     public String manageResources(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
-        MetricDataResponse cpuUtilization = cloudWatchService.getCPUUtilization();
-        MetricDataResponse statusCheckFailedSystem = cloudWatchService.getStatusCheckFailedSystem();
-        MetricDataResponse statusCheckFailedInstance = cloudWatchService.getStatusCheckFailedInstance();
-        MetricDataResponse networkIn = cloudWatchService.getNetworkIn();
-        MetricDataResponse networkOut = cloudWatchService.getNetworkOut();
-        MetricDataResponse networkPacketsIn = cloudWatchService.getNetworkPacketsIn();
-        MetricDataResponse networkPacketsOut = cloudWatchService.getNetworkPacketsOut();
-        MetricDataResponse diskReads = cloudWatchService.getDiskReads();
-        MetricDataResponse diskReadOperations = cloudWatchService.getDiskReadOperations();
-        MetricDataResponse diskWrites = cloudWatchService.getDiskWrites();
-        MetricDataResponse diskWriteOperations = cloudWatchService.getDiskWriteOperations();
-        model.addAttribute("cpuTimestamp", cpuUtilization.getTimestamps());
-        model.addAttribute("cpuValue", cpuUtilization.getValue());
-        model.addAttribute("statusSystemTimestamp", statusCheckFailedSystem.getTimestamps());
-        model.addAttribute("statusSystemValue", statusCheckFailedSystem.getValue());
-        model.addAttribute("statusInstanceTimestamp", statusCheckFailedInstance.getTimestamps());
-        model.addAttribute("statusInstanceValue", statusCheckFailedInstance.getValue());
-        model.addAttribute("networkInTimestamp", networkIn.getTimestamps());
-        model.addAttribute("networkInValue", networkIn.getValue());
-        model.addAttribute("networkOutTimestamp", networkOut.getTimestamps());
-        model.addAttribute("networkOutValue", networkOut.getValue());
-        model.addAttribute("networkPacketsInTimestamp", networkPacketsIn.getTimestamps());
-        model.addAttribute("networkPacketsInValue", networkPacketsIn.getValue());
-        model.addAttribute("networkPacketsOutTimestamp", networkPacketsOut.getTimestamps());
-        model.addAttribute("networkPacketsOutValue", networkPacketsOut.getValue());
-        model.addAttribute("diskReadsTimestamp", diskReads.getTimestamps());
-        model.addAttribute("diskReadsValue", diskReads.getValue());
-        model.addAttribute("diskReadOpsTimestamp", diskReadOperations.getTimestamps());
-        model.addAttribute("diskReadOpsValue", diskReadOperations.getValue());
-        model.addAttribute("diskWritesTimestamp", diskWrites.getTimestamps());
-        model.addAttribute("diskWritesValue", diskWrites.getValue());
-        model.addAttribute("diskWriteOpsTimestamp", diskWriteOperations.getTimestamps());
-        model.addAttribute("diskWriteOpsValue", diskWriteOperations.getValue());
+        MetricDataResponse bucketSize = cloudWatchService.getS3BucketSize();
+        MetricDataResponse numberOfObjects = cloudWatchService.getS3NumberOfObjects();
+        model.addAttribute("bucketSizeTimestamp", bucketSize.getTimestamps());
+        model.addAttribute("bucketSizeValue", bucketSize.getValue());
+        model.addAttribute("numberOfObjectsTimestamp", numberOfObjects.getTimestamps());
+        model.addAttribute("numberOfObjectsValue", numberOfObjects.getValue());
         model.addAttribute("user", userDetails.getUser());
         return "admin/resources";
     }
@@ -64,6 +43,15 @@ public class AdminController {
         return "admin/vms";
     }
 
+    @GetMapping("/courses")
+    public String manageCourses(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                            @AuthenticationPrincipal CustomUserDetails userDetails){
+        AdminResponse.CoursesDTO courses = adminService.findAllCourses(page);
+        model.addAttribute("courses", courses);
+        model.addAttribute("user", userDetails.getUser());
+        return "admin/courses";
+    }
+
     @GetMapping("/users")
     public String manageUsers(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                               @AuthenticationPrincipal CustomUserDetails userDetails){
@@ -74,8 +62,23 @@ public class AdminController {
     }
 
     @PostMapping("/users/{userId}/accept")
-    public String acceptUser(@PathVariable Long userId){
-        adminService.accept(userId);
+    public String acceptUser(@PathVariable Long userId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        adminService.accept(userId, userDetails.getUser());
         return "redirect:/admin/users";
+    }
+
+    @GetMapping("/setting")
+    public String setting(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+        AdminResponse.SettingDTO constants = adminService.getConstants();
+        model.addAttribute("updateDTO", constants);
+        model.addAttribute("user", userDetails.getUser());
+        return "admin/setting";
+    }
+
+    @PostMapping("/setting")
+    public String updateSetting(@Valid @ModelAttribute AdminRequest.UpdateDTO updateDTO, Error errors,
+                                @AuthenticationPrincipal CustomUserDetails userDetails){
+        adminService.updateSetting(updateDTO, userDetails.getUser());
+        return "redirect:/admin/setting";
     }
 }

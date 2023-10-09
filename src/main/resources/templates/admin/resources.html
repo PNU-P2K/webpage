@@ -7,8 +7,8 @@
       max-width: 1300px;
     }
     .chart-wrap{
-      width: 300px;
-      height: 250px;
+      width: 600px;
+      height: 500px;
     }
     .chart-grid {
       display: flex;
@@ -50,23 +50,12 @@
       <div id="page-content-wrapper">
 
         <div class="section-title">
-          <h2>리소스 관리</h2>
+          <h2>S3 리소스 모니터링</h2>
         </div>
         <div class="container2">
           <div class="chart-grid">
             <div class="chart-item"><div class="chart-wrap"><canvas id="chart1"></canvas></div></div>
             <div class="chart-item"><div class="chart-wrap"><canvas id="chart2"></canvas></div></div>
-            <div class="chart-item"><div class="chart-wrap"><canvas id="chart3"></canvas></div></div>
-            <div class="chart-item"><div class="chart-wrap"><canvas id="chart4"></canvas></div></div>
-            <div class="chart-item"><div class="chart-wrap"><canvas id="chart5"></canvas></div></div>
-            <div class="chart-item"><div class="chart-wrap"><canvas id="chart6"></canvas></div></div>
-            <div class="chart-item"><div class="chart-wrap"><canvas id="chart7"></canvas></div></div>
-            <div class="chart-item"><div class="chart-wrap"><canvas id="chart8"></canvas></div></div>
-            <div class="chart-item"><div class="chart-wrap"><canvas id="chart9"></canvas></div></div>
-            <div class="chart-item"><div class="chart-wrap"><canvas id="chart10"></canvas></div></div>
-            <div class="chart-item"><div class="chart-wrap"><canvas id="chart11"></canvas></div></div>
-            <div class="chart-item"><div class="chart-wrap"><canvas id="chart12"></canvas></div></div>
-            <div class="chart-item"><div class="chart-wrap"><canvas id="chart13"></canvas></div></div>
           </div>
         </div>
       </div>
@@ -159,17 +148,8 @@
     });
   }
 
-  createChart('chart1', 'CPU 사용률(%)', /*[[${cpuTimestamp}]]*/, /*[[${cpuValue}]]*/, 'Percent');
-  createChart('chart2', '상태 검사 실패(인스턴스)(개수)', /*[[${statusSystemTimestamp}]]*/, /*[[${statusSystemValue}]]*/, 'Count');
-  createChart('chart3', '상태 검사 실패(시스템)(개수)', /*[[${statusInstanceTimestamp}]]*/, /*[[${statusInstanceValue}]]*/, 'Count');
-  createChart('chart4', '네트워크 입력(바이트)', /*[[${networkInTimestamp}]]*/, /*[[${networkInValue}]]*/, 'Bytes');
-  createChart('chart5', '네트워크 출력(바이트)', /*[[${networkOutTimestamp}]]*/, /*[[${networkOutValue}]]*/, 'Bytes');
-  createChart('chart6', '네트워크 패킷 입력(개수)', /*[[${networkPacketsInTimestamp}]]*/, /*[[${networkPacketsInValue}]]*/, 'Count');
-  createChart('chart7', '네트워크 패킷 출력(개수)', /*[[${networkPacketsOutTimestamp}]]*/, /*[[${networkPacketsOutValue}]]*/, 'Count');
-  createChart('chart8', '디스크 읽기(바이트)', /*[[${diskReadsTimestamp}]]*/, /*[[${diskReadsValue}]]*/, 'Bytes');
-  createChart('chart9', '디스크 읽기 작업(작업)', /*[[${diskReadOpsTimestamp}]]*/, /*[[${diskReadOpsValue}]]*/, 'Count');
-  createChart('chart10', '디스크 쓰기(바이트)', /*[[${diskWritesTimestamp}]]*/, /*[[${diskWritesValue}]]*/, 'Bytes');
-  createChart('chart11', '디스크 쓰기 작업(작업)', /*[[${diskWriteOpsTimestamp}]]*/, /*[[${diskWriteOpsValue}]]*/, 'Count');
+  createChart('chart1', '총 버킷 크기', /*[[${bucketSizeTimestamp}]]*/, /*[[${bucketSizeValue}]]*/, 'Bytes');
+  createChart('chart2', '총 객체 수', /*[[${numberOfObjectsTimestamp}]]*/, /*[[${numberOfObjectsValue}]]*/, 'Count');
   /*]]>*/
 </script>
 </html>

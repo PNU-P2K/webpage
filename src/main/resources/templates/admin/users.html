@@ -10,9 +10,11 @@
   .table th {
     width: 10%;
     background-color: #f8fbfe;
+    font-size: 14px;
   }
   .table td {
     height: 50px;
+    font-size: 14px;
   }
 </style>
 <body>
@@ -48,7 +50,7 @@
                   <th scope="col">가상환경</th>
                   <th scope="col" style="width: 15%;">강좌/글/댓글</th>
                   <th scope="col">가입일</th>
-                  <th scope="col" style="width: 15%;"></th>
+                  <th scope="col" style="width: 15%;">승인</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -63,8 +65,9 @@
                   <td class="align-middle" th:text="${userDTO.createdDate}">가입일</td>
                   <td class="align-middle">
                     <form class="form-inline m-0 p-0" th:if="${userDTO.pending}" th:action="@{/admin/users/{id}/accept(id=${userDTO.id})}" method="post">
-                      <button class="btn btn-outline-primary btn-main btn m-0" type="submit">승인하기</button>
+                      <button class="btn btn-main btn-sm m-0" type="submit">승인하기</button>
                     </form>
+                  </td>
                 </tr>
                 </tbody>
               </table>

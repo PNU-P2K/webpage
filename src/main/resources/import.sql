@@ -1,26 +1,26 @@
-insert into user_tb(email, name, password, role, pending) values('tngus@naver.com', '김수현', '$2a$12$w0VeGEJ7Cj7YE/PU9EHmAOSJsnnTXkOGZi3QE6W4.gJUB5EIVbiDW', 'ROLE_STUDENT', false);
-insert into user_tb(email, name, password, role, pending) values('soso@naver.com', '박소현', '$2a$12$AFOtb0QbI6BcLVTLaiYpuOnBlMDg5jTfGRez9miMYwC0wFCbbXT6q', 'ROLE_STUDENT', false);
-insert into user_tb(email, name, password, role, pending) values('gihae@naver.com', '김기해', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_STUDENT', false);
-insert into user_tb(email, name, password, role, pending) values('gihae2@naver.com', '김기해2', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_INSTRUCTOR', false);
-insert into user_tb(email, name, password, role, pending) values('gihae3@naver.com', '김기해3', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_INSTRUCTOR', true);
-insert into user_tb(email, name, password, role, pending) values('admin@naver.com', 'admin', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_ADMIN', false);
+insert into user_tb(email, name, password, role, pending, created_date) values('tngus@naver.com', '김수현', '$2a$12$w0VeGEJ7Cj7YE/PU9EHmAOSJsnnTXkOGZi3QE6W4.gJUB5EIVbiDW', 'ROLE_STUDENT', false, '2023-10-06 12:00:01');
+insert into user_tb(email, name, password, role, pending, created_date) values('soso@naver.com', '박소현', '$2a$12$AFOtb0QbI6BcLVTLaiYpuOnBlMDg5jTfGRez9miMYwC0wFCbbXT6q', 'ROLE_STUDENT', false, '2023-10-06 12:00:01');
+insert into user_tb(email, name, password, role, pending, created_date) values('gihae@naver.com', '김기해', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_STUDENT', false, '2023-10-06 12:00:01');
+insert into user_tb(email, name, password, role, pending, created_date) values('gihae2@naver.com', '김기해2', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_INSTRUCTOR', false, '2023-10-06 12:00:01');
+insert into user_tb(email, name, password, role, pending, created_date) values('gihae3@naver.com', '김기해3', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_INSTRUCTOR', true, '2023-10-06 12:00:01');
+insert into user_tb(email, name, password, role, pending, created_date) values('admin@naver.com', 'admin', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_ADMIN', false, '2023-10-06 12:00:01');
 
-insert into course_tb(name, description, instructor_id) values('자료구조 059', '2-2', 4);
-insert into course_tb(name, description, instructor_id) values('자료구조 060', '2-2', 4);
-insert into course_tb(name, description, instructor_id) values('C언어', '1-2', 4);
-insert into course_tb(name, description, instructor_id) values('C++', '2-1', 4);
-insert into course_tb(name, description, instructor_id) values('파이썬', '1-1', 4);
-insert into course_tb(name, description, instructor_id) values('자바', '2-2', 4);
-insert into course_tb(name, description, instructor_id) values('알고리즘', '3-1', 4);
-insert into course_tb(name, description, instructor_id) values('DB', '3-2', 4);
-insert into course_tb(name, description, instructor_id) values('사물인터넷', '4-2', 4);
+insert into course_tb(name, description, instructor_id, created_date) values('자료구조 059', '2-2', 4, '2023-10-06 12:00:01');
+insert into course_tb(name, description, instructor_id, created_date) values('자료구조 060', '2-2', 4, '2023-10-06 12:00:01');
+insert into course_tb(name, description, instructor_id, created_date) values('C언어', '1-2', 4, '2023-10-06 12:00:01');
+insert into course_tb(name, description, instructor_id, created_date) values('C++', '2-1', 4, '2023-10-06 12:00:01');
+insert into course_tb(name, description, instructor_id, created_date) values('파이썬', '1-1', 4, '2023-10-06 12:00:01');
+insert into course_tb(name, description, instructor_id, created_date) values('자바', '2-2', 4, '2023-10-06 12:00:01');
+insert into course_tb(name, description, instructor_id, created_date) values('알고리즘', '3-1', 4, '2023-10-06 12:00:01');
+insert into course_tb(name, description, instructor_id, created_date) values('DB', '3-2', 4, '2023-10-06 12:00:01');
+insert into course_tb(name, description, instructor_id, created_date) values('사물인터넷', '4-2', 4, '2023-10-06 12:00:01');
 
-insert into vm_tb(user_id, vmname, password, course_id, port, scope, control, state, description) values(1, '알고리즘', '1234' ,1, 6000, 1, 1, 'stop', '이 가상환경은 알고리즘 수업을 위한 가상환경이다');
-insert into vm_tb(user_id, vmname, password, course_id, port, scope, control, state, description) values(1, '알고리즘1', '1234' ,1, 6001, 1, 1, 'running', '이 가상환경은 알고리즘 수업을 위한 가상환경이다');
-insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(2, '알고리즘059', 1, 6001, 1, 0, 'running', '알고리즘 059수업');
-insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(2, '네트워크', 1, 6002, 1, 1, 'stop', '이 가상환경은 네트워크 공부를 위한 가상환경이다. 지금은 사용하지 않고 있지만, 추후에 많이 수정할 예정이다.');
-insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(3, '자료구조', 1, 6003, 1, 1, 'running', '이 가상환경은 자료구조를 위해 만든 가상환경이다. 아무나 확인할 수 있다.');
-insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description) values(4, '알고리즘(교육자)', 1, 6004, 1, 1, 'stop', '이 가상환경은 알고리즘 수업을 위한 교육자의 가상환경이다');
+insert into vm_tb(user_id, vmname, password, course_id, port, scope, control, state, description, node_port, created_date) values(1, '알고리즘', '1234' ,1, 6000, 1, 1, 'stop', '이 가상환경은 알고리즘 수업을 위한 가상환경이다', 30000, '2023-10-06 12:00:01');
+insert into vm_tb(user_id, vmname, password, course_id, port, scope, control, state, description, node_port, created_date) values(1, '알고리즘1', '1234' ,1, 6001, 1, 1, 'running', '이 가상환경은 알고리즘 수업을 위한 가상환경이다', 30001, '2023-10-06 12:00:02');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(2, '알고리즘059', 1, 6001, 1, 0, 'running', '알고리즘 059수업', 30002, '2023-10-06 12:00:03');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(2, '네트워크', 1, 6002, 1, 1, 'stop', '이 가상환경은 네트워크 공부를 위한 가상환경이다. 지금은 사용하지 않고 있지만, 추후에 많이 수정할 예정이다.', 30003, '2023-10-06 12:00:04');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(3, '자료구조', 1, 6003, 1, 1, 'running', '이 가상환경은 자료구조를 위해 만든 가상환경이다. 아무나 확인할 수 있다.', 30004, '2023-10-06 12:00:05');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(4, '알고리즘(교육자)', 1, 6004, 1, 1, 'stop', '이 가상환경은 알고리즘 수업을 위한 교육자의 가상환경이다', 30005, '2023-10-06 12:00:06');
 
 
 --insert into vm_tb(user_id, vmname, course_id, port, scope, control, state) values(2, '자료구조', 1, 6086, 0, 1, 'stop');

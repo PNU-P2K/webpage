@@ -3,6 +3,7 @@ package com.example.p2k.course;
 import com.example.p2k._core.exception.Exception400;
 import com.example.p2k._core.exception.Exception403;
 import com.example.p2k._core.exception.Exception404;
+import com.example.p2k._core.web.AdminConstants;
 import com.example.p2k.courseuser.CourseUser;
 import com.example.p2k.courseuser.CourseUserRepository;
 import com.example.p2k.post.PostRepository;
@@ -70,6 +71,7 @@ public class CourseService {
     public void apply(Long courseId, Long userId){
         User user = getUser(userId);
         checkStudentAuthorization(user);
+        checkMaxCourseApplication(userId);
 
         courseUserRepository.findByCourseIdAndUserId(courseId, userId)
                 .ifPresent(courseUser -> {
@@ -112,6 +114,7 @@ public class CourseService {
     public void create(CourseRequest.SaveDTO requestDTO, Long userId){
         User user = getUser(userId);
         checkInstructorAuthorization(user);
+        checkMaxCourseCreation(userId);
 
         Course course = Course.builder()
                 .name(requestDTO.getName())
@@ -184,6 +187,20 @@ public class CourseService {
         );
     }
 
+    private void checkMaxCourseCreation(Long userId) {
+        List<Course> courses = courseRepository.findByInstructorId(userId);
+        if(courses.size() >= AdminConstants.COURSE_CREATE_MAX_NUM){
+            throw new Exception400("강좌는 최대 " + AdminConstants.COURSE_CREATE_MAX_NUM + "개까지 생성할 수 있습니다.");
+        }
+    }
+
+    private void checkMaxCourseApplication(Long userId) {
+        List<Course> courses = courseUserRepository.findByUserIdAndAcceptIsTrue(userId);
+        if(courses.size() >= AdminConstants.COURSE_APPLY_MAX_NUM){
+            throw new Exception400("강좌는 최대 " + AdminConstants.COURSE_APPLY_MAX_NUM + "개까지 신청할 수 있습니다.");
+        }
+    }
+
     private void validateInstructorExistence(Long instructorId) {
         if(instructorId == null){
             throw new Exception400("해당 강좌의 교육자가 존재하지 않습니다.");
@@ -192,13 +209,13 @@ public class CourseService {
     }
 
     private static void checkInstructorAuthorization(User user) {
-        if(user.getPending() || user.getRole() != Role.ROLE_INSTRUCTOR){
+        if(user.getPending() || !(user.getRole() == Role.ROLE_INSTRUCTOR || user.getRole() == Role.ROLE_ADMIN)){
             throw new Exception403("교육자 권한이 없는 사용자입니다.");
         }
     }
 
     private static void checkStudentAuthorization(User user) {
-        if(user.getRole() != Role.ROLE_STUDENT){
+        if(!(user.getRole() == Role.ROLE_STUDENT || user.getRole() == Role.ROLE_ADMIN)){
             throw new Exception403("학생 권한이 없는 사용자입니다.");
         }
     }

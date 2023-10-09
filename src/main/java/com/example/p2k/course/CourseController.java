@@ -42,7 +42,7 @@ public class CourseController {
     @PostMapping("/application/{courseId}")
     public String apply(@PathVariable Long courseId, @AuthenticationPrincipal CustomUserDetails userDetails){
         courseService.apply(courseId, userDetails.getUser().getId());
-        return "redirect:/courses";
+        return "redirect:/courses/application";
     }
 
     //나의 가상 환경 조회
