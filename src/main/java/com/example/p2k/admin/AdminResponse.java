@@ -1,6 +1,7 @@
 package com.example.p2k.admin;
 
 import com.example.p2k._core.util.PageData;
+import com.example.p2k.course.Course;
 import com.example.p2k.user.Role;
 import com.example.p2k.user.User;
 import com.example.p2k.vm.Vm;
@@ -118,6 +119,46 @@ public class AdminResponse {
                 this.control = vm.getControl();
                 this.state = vm.getState();
                 this.createdDate = vm.getCreatedDate() != null ? vm.getCreatedDate().toLocalDate() : null;
+            }
+        }
+    }
+
+    @Getter
+    public static class CoursesDTO {
+
+        private final PageData pageData;
+        private final List<CourseDTO> courses;
+
+        public CoursesDTO(Page<Course> courses, int size, List<Integer> studentNums, List<String> instructorNames) {
+            this.pageData = new PageData(
+                    courses.hasPrevious(),
+                    courses.hasNext(),
+                    courses.isEmpty(),
+                    courses.getNumber(),
+                    courses.getTotalPages(),
+                    size
+            );
+            this.courses = courses.stream().map(course -> {
+                int index = courses.toList().indexOf(course);
+                return new CourseDTO(course, instructorNames.get(index), studentNums.get(index));
+            }).toList();
+        }
+
+        @Getter
+        public class CourseDTO {
+            private final Long id;
+            private final String name;
+            private final String instructor;
+            private final int studentsNum;
+
+            private final LocalDate createdDate;
+
+            public CourseDTO(Course course, String instructorName, int studentsNum) {
+                this.id = course.getId();
+                this.name = course.getName();
+                this.instructor = instructorName;
+                this.studentsNum = studentsNum;
+                this.createdDate = course.getCreatedDate() != null ? course.getCreatedDate().toLocalDate() : null;
             }
         }
     }

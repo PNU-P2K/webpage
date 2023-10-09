@@ -209,13 +209,13 @@ public class CourseService {
     }
 
     private static void checkInstructorAuthorization(User user) {
-        if(user.getPending() || user.getRole() != Role.ROLE_INSTRUCTOR){
+        if(user.getPending() || !(user.getRole() == Role.ROLE_INSTRUCTOR || user.getRole() == Role.ROLE_ADMIN)){
             throw new Exception403("교육자 권한이 없는 사용자입니다.");
         }
     }
 
     private static void checkStudentAuthorization(User user) {
-        if(user.getRole() != Role.ROLE_STUDENT){
+        if(!(user.getRole() == Role.ROLE_STUDENT || user.getRole() == Role.ROLE_ADMIN)){
             throw new Exception403("학생 권한이 없는 사용자입니다.");
         }
     }

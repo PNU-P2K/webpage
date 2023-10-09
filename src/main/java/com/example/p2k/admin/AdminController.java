@@ -37,6 +37,15 @@ public class AdminController {
         return "admin/vms";
     }
 
+    @GetMapping("/courses")
+    public String manageCourses(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                            @AuthenticationPrincipal CustomUserDetails userDetails){
+        AdminResponse.CoursesDTO courses = adminService.findAllCourses(page);
+        model.addAttribute("courses", courses);
+        model.addAttribute("user", userDetails.getUser());
+        return "admin/courses";
+    }
+
     @GetMapping("/users")
     public String manageUsers(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                               @AuthenticationPrincipal CustomUserDetails userDetails){
