@@ -16,7 +16,13 @@ public class AdminController {
     private final AdminService adminService;
     private final CloudWatchService cloudWatchService;
 
-    @GetMapping("/resources")
+    @GetMapping("/k8s-resources")
+    public String manageK8sResources(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+        model.addAttribute("user", userDetails.getUser());
+        return "admin/grafana";
+    }
+
+    @GetMapping("/s3-resources")
     public String manageResources(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
         MetricDataResponse bucketSize = cloudWatchService.getS3BucketSize();
         MetricDataResponse numberOfObjects = cloudWatchService.getS3NumberOfObjects();
