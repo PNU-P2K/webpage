@@ -29,11 +29,6 @@ jobs:
     - name: Checkout 
       uses: actions/checkout@v3
 
-    - name: Set Local 
-      run: 
-        sudo locale-gen ko_KR.UTF-8
-        sudo update locale LANG=ko_KR.UTF-8 
-
     - name: Set Timezone 
       uses: szenius/set-timezone@v1.2
       with: 
