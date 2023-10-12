@@ -5,11 +5,11 @@ services:
     image: mariadb
     container_name: mariadb
     ports:
-      - "3307:3306"
+      - 3307:3306
     environment:
-      MYSQL_DATABASE: "p2k"
-      MYSQL_PASSWORD: "p2k"
-      MYSQL_ROOT_PASSWORD: #password
+      - MYSQL_DATABASE=p2k
+      - MYSQL_ROOT_PASSWORD= #password
+      - MYSQL_ROOT_HOST=%
     volumes:
       - ~/docker/mariadb/etc/mysql/conf.d:/etc/mysql/conf.d:ro
       - ~/docker/mariadb/var/lib/mysql:/var/lib/mysql
@@ -18,6 +18,10 @@ services:
 
   application:
     build: .
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/p2k?useUnicode=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: # password
     ports:
       - 8080:8080
     depends_on:
