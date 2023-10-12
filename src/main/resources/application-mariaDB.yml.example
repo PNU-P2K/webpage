@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://http://192.168.200.103/:3306/p2k?useUnicode=true
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: p2k
+    password: # password
+  jpa:
+    hibernate:
+      ddl-auto: create # 또는 다른 옵션 (create, update, none)
+    show-sql: true
+    generate-ddl: true

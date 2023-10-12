@@ -1,0 +1,6 @@
+MYSQL_HOST=localhost
+MYSQL_PORT=3306
+MYSQL_ROOT_PASSWORD= # root password
+MYSQL_DATABASE=p2k_db
+MYSQL_USER=p2k
+MYSQL_PASSWORD= # user password
