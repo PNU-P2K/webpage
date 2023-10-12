@@ -19,7 +19,7 @@ spring:
     password:
 
   thymeleaf:
-    prefix: classpath:/templates/
+    prefix: classpath:/templates
     suffix: .html
     cache: false
 
