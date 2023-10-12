@@ -7,5 +7,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create # 또는 다른 옵션 (create, update, none)
+      dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
     generate-ddl: true
