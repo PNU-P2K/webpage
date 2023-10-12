@@ -40,4 +40,4 @@ out/
 application-mariaDB.yml
 application-aws.yml
 .mariaDB_env
-docker-compose-db.yml
+docker-compose.yml
