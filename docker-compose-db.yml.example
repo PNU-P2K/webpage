@@ -6,7 +6,10 @@ services:
     container_name: mariadb
     ports:
       - "3307:3306"
-    env_file: .mariaDB_env
+    environment:
+      MYSQL_DATABASE: "p2k"
+      MYSQL_PASSWORD: "p2k"
+      MYSQL_ROOT_PASSWORD: #password
     volumes:
       - ~/docker/mariadb/etc/mysql/conf.d:/etc/mysql/conf.d:ro
       - ~/docker/mariadb/var/lib/mysql:/var/lib/mysql
