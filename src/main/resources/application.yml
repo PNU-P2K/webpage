@@ -18,6 +18,11 @@ spring:
     username: sa
     password:
 
+  thymeleaf:
+    prefix: classpath:/templates
+    suffix: .html
+    cache: false
+
   jpa:
     hibernate:
       ddl-auto: create # create update none
