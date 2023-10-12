@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mariadb://http://54.180.98.207/:3306/p2k?useUnicode=true
+    url: jdbc:mariadb://http://mariadb:3306/p2k?useUnicode=true
     driver-class-name: org.mariadb.jdbc.Driver
     username: p2k
     password: # password
