@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <!-- 공통 header -->
-<div th:replace="/fragments/header.html::fragment-header"></div>
+<div th:replace="fragments/header.html::fragment-header"></div>
 <style>
     .container2 {
         max-width: 850px;
@@ -19,7 +19,7 @@
 <body>
 
 <!-- 공통 navigation-->
-<div th:replace="/fragments/nav.html::fragment-nav(${user})"></div>
+<div th:replace="fragments/nav.html::fragment-nav(${user})"></div>
 </br>
 </br>
 
@@ -28,7 +28,7 @@
 
 <div class="d-flex" id="wrapper">
     <!-- 공통 sidebar-->
-    <div th:replace="/course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
+    <div th:replace="course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
 
     <div id="page-content-wrapper">
 
@@ -66,7 +66,7 @@
                         <p th:text="${postDTO.content}">공지사항 글 내용</p>
                     </div>
                 </div>
-                <div th:insert="/course/reply.html::fragment-reply(${repliesDTO}, ${postDTO.id}, ${user.id})"></div>
+                <div th:insert="course/reply.html::fragment-reply(${repliesDTO}, ${postDTO.id}, ${user.id})"></div>
                 <div class="row mt-4 justify-content-center">
                     <div class="col-md-12 text-center">
                         <button class="btn btn-outline-primary"
@@ -83,10 +83,10 @@
 </div>
 </section>
 <!-- 공통 footer -->
-<div th:replace="/fragments/footer.html::fragment-footer"></div>
+<div th:replace="fragments/footer.html::fragment-footer"></div>
 
 <!-- 공통 script -->
-<div th:replace="/fragments/script.html::fragment-script"></div>
+<div th:replace="fragments/script.html::fragment-script"></div>
 </body>
 <script>
     function toggleReplyForm(replyFormId) {

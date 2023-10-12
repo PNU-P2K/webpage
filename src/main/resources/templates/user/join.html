@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <!-- 공통 header -->
-<div th:replace="/fragments/header.html::fragment-header"></div>
+<div th:replace="fragments/header.html::fragment-header"></div>
 <head>
     <style>
         @font-face {
@@ -108,7 +108,7 @@
 </main>
 </section>
 <!--<script src="/js/scripts.js"></script>-->
-<div th:replace="/fragments/script.html::fragment-script"></div>
+<div th:replace="fragments/script.html::fragment-script"></div>
 
 <script>
     function checkEmail() {

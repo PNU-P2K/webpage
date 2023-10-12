@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <!-- 공통 header -->
-<div th:replace="/fragments/header.html::fragment-header"></div>
+<div th:replace="fragments/header.html::fragment-header"></div>
 <style>
     .card{
         padding: 30px 40px;
@@ -44,7 +44,7 @@
 <body>
 
 <!-- 공통 navigation-->
-<div th:replace="/fragments/nav.html::fragment-nav(${user})"></div>
+<div th:replace="fragments/nav.html::fragment-nav(${user})"></div>
 </br>
 </br>
 
@@ -53,7 +53,7 @@
 
 <div class="d-flex" id="wrapper">
     <!-- 공통 sidebar-->
-    <div th:replace="/course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
+    <div th:replace="course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
 
     <div id="page-content-wrapper">
 
@@ -84,7 +84,7 @@
                                 <div class="form-group col-sm-6">
                                     <button class="btn btn-outline-primary" type="submit">저장</button>
                                     <button class="btn btn-outline-danger"
-                                            th:onclick="|location.href='@{/courses/{courseId}/notice-board(courseId=${courseDTO.id})}'|"
+                                            th:onclick="|location.href='@{courses/{courseId}/notice-board(courseId=${courseDTO.id})}'|"
                                             type="button">취소</button>
                                 </div>
                             </div>
@@ -99,10 +99,10 @@
 </section>
 
 <!-- 공통 footer -->
-<div th:replace="/fragments/footer.html::fragment-footer"></div>
+<div th:replace="fragments/footer.html::fragment-footer"></div>
 
 <!-- 공통 script -->
-<div th:replace="/fragments/script.html::fragment-script"></div>
+<div th:replace="fragments/script.html::fragment-script"></div>
 </body>
 
 </html>

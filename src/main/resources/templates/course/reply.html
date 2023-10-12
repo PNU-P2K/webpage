@@ -28,7 +28,7 @@
             <button class="btn btn-outline-primary btn-sm"
                     th:onclick="|javascript:toggleReplyForm('replyForm-' + ${reply.id})|"
                     type="button">답글</button>
-            <div th:insert="~{/course/reply-form.html::fragment-reply-form(${reply}, ${postId})}"></div>
+            <div th:insert="~{course/reply-form.html::fragment-reply-form(${reply}, ${postId})}"></div>
         </div>
         <!-- 나의 댓글 -->
         <div class="card-body" th:if="${userId eq reply.userId}">
@@ -47,7 +47,7 @@
                         th:onclick="|location.href='@{/posts/{postId}/replies/{replyId}/delete(postId=${postDTO.id}, replyId=${reply.id})}'|"
                         type="button" style="display: inline-block;">삭제</button>
             </div>
-            <div th:insert="~{/course/reply-form.html::fragment-reply-form(${reply}, ${postId})}"></div>
+            <div th:insert="~{course/reply-form.html::fragment-reply-form(${reply}, ${postId})}"></div>
         </div>
     </div>
     <br>
