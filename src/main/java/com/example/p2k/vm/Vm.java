@@ -34,6 +34,7 @@ public class Vm extends BaseTimeEntity {
 
     private int port;
     private int nodePort;
+    private String externalNodeIp;
 
     private String containerId;
     private String imageId;
@@ -52,7 +53,7 @@ public class Vm extends BaseTimeEntity {
     private String containerKey;
 
     @Builder
-    public Vm(String vmname, User user, String password, String description, Course course, int port, int nodePort, String containerId, String imageId, String state, Boolean scope, Boolean control, String vmKey, String containerKey) {
+    public Vm(String vmname, User user, String password, String description, Course course, int port, int nodePort, String externalNodeIp, String containerId, String imageId, String state, Boolean scope, Boolean control, String vmKey, String containerKey) {
         this.vmname = vmname;
         this.user = user;
         this.password = password;
@@ -60,6 +61,7 @@ public class Vm extends BaseTimeEntity {
         this.course = course;
         this.port = port;
         this.nodePort = nodePort;
+        this.externalNodeIp = externalNodeIp;
         this.containerId = containerId;
         this.imageId = imageId;
         this.state = state;

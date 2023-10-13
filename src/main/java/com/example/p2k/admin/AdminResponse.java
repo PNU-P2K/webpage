@@ -103,6 +103,7 @@ public class AdminResponse {
             private final String name;
             private final String createdBy;
             private final int nodePort;
+            private final String externalIp;
             private final String course;
             private final Boolean scope;
             private final Boolean control;
@@ -114,6 +115,7 @@ public class AdminResponse {
                 this.name = vm.getVmname();
                 this.createdBy = vm.getUser().getName();
                 this.nodePort = vm.getNodePort();
+                this.externalIp = vm.getExternalNodeIp();
                 this.course = vm.getCourse().getName();
                 this.scope = vm.getScope();
                 this.control = vm.getControl();

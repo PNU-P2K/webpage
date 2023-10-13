@@ -46,6 +46,7 @@
                   <th scope="col">이름</th>
                   <th scope="col">생성자</th>
                   <th scope="col">포트</th>
+                  <th scope="col">접속 ip</th>
                   <th scope="col">연결 강좌</th>
                   <th scope="col">공개 범위</th>
                   <th scope="col" style="width: 10%;">접속자 권한 범위</th>
@@ -60,6 +61,7 @@
                   <td class="align-middle" th:text="${vmDTO.name}">이름</td>
                   <td class="align-middle" th:text="${vmDTO.createdBy}">생성자</td>
                   <td class="align-middle" th:text="${vmDTO.nodePort}">포트</td>
+                  <td class="align-middle" th:text="${vmDTO.externalIp}">접속 IP</td>
                   <td class="align-middle" th:text="${vmDTO.course}">연결 강좌</td>
                   <td class="align-middle" th:text="${vmDTO.scope}">공개 범위</td>
                   <td class="align-middle" th:text="${vmDTO.control}">접속자 권한 범위</td>
@@ -78,7 +80,8 @@
                       </form>
                     </div>
                     <div th:if="${vmDTO.state} == 'running'" class="d-flex">
-                      <form class="form-inline mr-2" th:onclick="|javascript:alert('${vmDTO.nodePort}')|" method="post">
+                      <!--form class="form-inline mr-2" th:onclick="|javascript:alert('${vmDTO.nodePort}')|" method="post"-->
+                      <button class="btn-main btn" th:data-nodePort="${v.nodePort}" th:data-externalIp="${v.externalIp}" onclick="alert(this)">접속</button>
                         <button class="btn btn-main btn-sm m-0" type="submit">접속</button>
                       </form>
                       <form class="form-inline mr-2" th:action="@{/vm/stop/{id}(id=${vmDTO.id})}" method="post">
@@ -124,7 +127,7 @@
 <div th:replace="fragments/script.html::fragment-script"></div>
 </body>
 <script th:inline="javascript">
-  function alert(nodePort) {
+  function alert(parameter) {
     Swal.fire({
       title : "접속하시겠습니까?",
       showCancelButton: true,
@@ -134,7 +137,11 @@
       cancelButtonText: '취소'
     }).then((result) => {
       if(result.isConfirmed) {
-        window.open("https://175.106.99.249:" + nodePort, "_blank")
+
+        var nodePort = parameter.getAttribute('data-nodePort');
+        var externalIp = parameter.getAttribute('data-externalIp');
+
+        window.open("https://"+externalIp+":" + nodePort, "_blank")
       }
     })
   }

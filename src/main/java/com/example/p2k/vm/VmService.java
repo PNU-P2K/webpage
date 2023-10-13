@@ -136,9 +136,16 @@ public class VmService {
         // restTemplate 이용해 요청 보내고 응답 받아옴
         ResponseEntity<?> response = restTemplate.postForEntity(url, entity, VmResponseFtS.createDTO.class);
         String responseBody = ob.writeValueAsString(response.getBody());
+
+        System.out.println("response: "+response);
+        System.out.println("response.getBody: "+response.getBody());
+        System.out.println("responseBody: "+responseBody);
+
         VmResponseFtS.createDTO res = ob.readValue(responseBody, VmResponseFtS.createDTO.class);
         System.out.println("res = " + res.getContainerId());
         System.out.println("res.getImageId() = " + res.getImageId());
+        System.out.println("res: "+ res);
+        System.out.println("res.getIP: " + res.getExternalNodeIp());
 
         // flask에서 받은 응답으로 가상환경 생성하고 저장
         Vm vm = Vm.builder()
@@ -150,6 +157,7 @@ public class VmService {
                 .user(user)
                 .port(portnum)
                 .nodePort(nodePort)
+                .externalNodeIp(res.getExternalNodeIp())
                 .containerId(res.getContainerId())
                 .imageId(res.getImageId())
                 .state("running")

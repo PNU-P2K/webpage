@@ -49,6 +49,7 @@
 
                         <input hidden id="vmId" type="text" th:value="${v.id}"/>
                         <input hidden id="vmNodePort" type="text" th:value="${v.nodePort}"/>
+                        <input hidden id="vmNodeIp" type="text" th:value="${v.externalIp}"/>
                         <input hidden id="vmImageId" type="text" th:value="${v.imageId}"/>
                         <p class="m-0 ms-5 card-text text-start" th:if="${v.state == 'running'}"><span style="font-size: 12px; color: #adb5bd">상태</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;실행 중</span></p>
                         <p class="m-0 ms-5 card-text text-start" th:if="${v.state == 'stop'}"><span style="font-size: 12px; color: #adb5bd">상태</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;중지</span></p>
@@ -62,7 +63,9 @@
                         <div class="btn-wrap p-0">
                             <div class="row d-flex justify-content-center m-0" th:if="${v.state == 'running'}">
                                 <div class="form-inline m-0 p-0 col-4">
-                                    <button class="btn-main btn" th:onclick="|javascript:alert('${v.nodePort}')|">접속</button>
+                                    <!--button-- class="btn-main btn" th:onclick="|javascript:alert('${v.nodePort}')|">접속</button-->
+                                    <button class="btn-main btn" th:data-nodePort="${v.nodePort}" th:data-externalIp="${v.externalIp}" onclick="alert(this)">접속</button>
+
                                 </div>
                                 <form class="form-inline m-0 p-0 col-4" th:action="@{/vm/stop/{id}(id=${v.id})}" method="post">
                                     <button class="btn-main btn" type="submit">중지</button>
@@ -96,7 +99,7 @@
 <div th:replace="fragments/script.html::fragment-script"></div>
 <script th:inline="javascript">
 
-    function alert(nodePort) {
+    function alert(parameter) {
         Swal.fire({
             title : "접속하시겠습니까?",
             showCancelButton: true,
@@ -108,7 +111,10 @@
             if(result.isConfirmed) {
                 //location.href = "http://localhost:"+port; // 기존 창에서 이동
 
-                window.open("https://175.106.99.249:"+nodePort, "_blank") // 새 창에서 켜짐
+                var nodePort = parameter.getAttribute('data-nodePort');
+                var externalIp = parameter.getAttribute('data-externalIp');
+
+                window.open("https://"+externalIp+":"+nodePort, "_blank") // 새 창에서 켜짐
                 // k8s가 동작하는 서버
                 // k8s에게 명령을 내리는 서버와 k8s가 동작되는 서버는 다름
               
