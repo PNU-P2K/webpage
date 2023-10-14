@@ -32,9 +32,4 @@ public interface VmRepository extends JpaRepository<Vm, Long> {
     @Modifying
     @Query("delete from Vm v where v.user.id = :userId")
     void deleteByUserId(@Param("userId") Long userId);
-
-    @Modifying
-    @Query("update Vm v SET v.vmname=:name , v.description=:description, v.course.id=:courseId where v.id=:id")
-    void update(@Param("id") Long id, @Param("name") String name, @Param("description") String description, @Param("courseId") Long courseId);
-
 }
