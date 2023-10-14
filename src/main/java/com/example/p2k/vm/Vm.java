@@ -75,7 +75,7 @@ public class Vm extends BaseTimeEntity {
         this.state = state;
     }
 
-    public void updateContaierId(String containerId) {
+    public void updateContainerId(String containerId) {
         this.containerId = containerId;
     }
 

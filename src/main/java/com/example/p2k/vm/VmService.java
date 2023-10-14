@@ -1,7 +1,6 @@
 package com.example.p2k.vm;
 
 import com.example.p2k._core.exception.Exception400;
-import com.example.p2k._core.exception.Exception401;
 import com.example.p2k._core.exception.Exception404;
 import com.example.p2k._core.web.AdminConstants;
 import com.example.p2k.course.Course;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.InputStream;
 import java.util.List;
 
 @Slf4j
@@ -331,7 +329,7 @@ public class VmService {
         System.out.println("res.getImageId() = " + res.getImageId());
 
         // 새로운 containerid, imageid 업데이트
-        vm.updateContaierId(res.getContainerId());
+        vm.updateContainerId(res.getContainerId());
         vm.updateImageId(res.getImageId());
     }
 
