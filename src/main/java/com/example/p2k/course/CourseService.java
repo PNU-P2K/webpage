@@ -164,8 +164,12 @@ public class CourseService {
     public void delete(Long courseId, User user){
         checkInstructorAuthorization(user);
         Course course = getCourse(courseId);
+
         courseUserRepository.deleteByCourseId(course.getId());
         postRepository.deleteByCourseId(course.getId());
+        vmRepository.findByCourseId(courseId).stream()
+                .filter(vm -> vm.getCourse().getId().equals(courseId))
+                .forEach(Vm::removeCourse);
         courseRepository.deleteById(course.getId());
     }
 

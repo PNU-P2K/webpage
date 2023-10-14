@@ -26,6 +26,9 @@ public interface VmRepository extends JpaRepository<Vm, Long> {
 
     int countByUserId(Long userId);
 
+    @Query("select v from Vm v join fetch v.course")
+    List<Vm> findByCourseId(Long courseId);
+
     @Modifying
     @Query("delete from Vm v where v.user.id = :userId")
     void deleteByUserId(@Param("userId") Long userId);

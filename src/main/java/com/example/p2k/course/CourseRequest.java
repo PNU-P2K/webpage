@@ -15,7 +15,5 @@ public class CourseRequest {
 
         @NotBlank(message = "설명은 필수 입력 값입니다.")
         private String description;
-
-        private Boolean open;
     }
 }

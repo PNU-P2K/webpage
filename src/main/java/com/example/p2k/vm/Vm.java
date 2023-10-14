@@ -91,4 +91,8 @@ public class Vm extends BaseTimeEntity {
         this.control = requestDTO.getControl();
         this.course  = course;
     }
+
+    public void removeCourse(){
+        this.course = null;
+    }
 }
