@@ -12,4 +12,4 @@ COPY ${JAR_FILE} p2k.jar
 ENV PROFILE prod,aws,mariaDB
 
 # p2k.jar 파일을 실행합니다.
-ENTRYPOINT ["java","-Dspring.profiles.active=${PRO}","-jar","/p2k.jar"]
+ENTRYPOINT ["java","-Dspring.profiles.active=${PROFILE}","-jar","/p2k.jar"]
