@@ -20,6 +20,7 @@ services:
 
   application:
     build: .
+    container_name: springboot
     ports:
       - 80:8080
     depends_on:
