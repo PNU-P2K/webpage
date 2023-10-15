@@ -59,5 +59,6 @@ public class Reply extends BaseTimeEntity {
     public void updateDeletedReply(String content, String author){
         this.content = content;
         this.author = author;
+        this.user = null;
     }
 }
