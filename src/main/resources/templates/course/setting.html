@@ -61,14 +61,14 @@
                 <div class="row container2 mx-auto">
                     <div class="col table-responsive">
                         <table class="table table-hover section-bg">
-                            <tr th:each="studentDTO : ${studentDTOs.getStudents()}">
+                            <tr th:each="userDTO : ${usersDTOs.getUsers()}">
                                 <td class="align-middle">
                                     <div class="row">
                                         <div class="col-md-9">
-                                            <span th:text="${studentDTO.name}" class="pl-2">강좌 구성원 이름</span>
+                                            <span th:text="${userDTO.name}" class="pl-2">강좌 구성원 이름</span>
                                         </div>
                                         <div class="col-md-3 text-right">
-                                            <span th:if="${studentDTO.id == courseDTO.instructorId}" class="pr-2" style="color: blue;">교육자</span>
+                                            <span th:if="${userDTO.id == courseDTO.instructorId}" class="pr-2" style="color: blue;">교육자</span>
                                         </div>
                                     </div>
                                 </td>
