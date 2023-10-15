@@ -147,11 +147,10 @@ public class CourseService {
         return new CourseResponse.FindStudentsDTO(users, vmMap);
     }
 
-    public CourseResponse.FindUsersDTO findUsers(Long courseId, User user){
-        checkInstructorAuthorization(user);
-
-        List<User> users = courseUserRepository.findByCourseIdAndAcceptIsTrueAndUserIdNot(courseId, user.getId());
-        User instructor = getUser(user.getId());
+    public CourseResponse.FindUsersDTO findUsers(Long courseId){
+        Course course = getCourse(courseId);
+        List<User> users = courseUserRepository.findByCourseIdAndAcceptIsTrueAndUserIdNot(courseId, course.getInstructorId());
+        User instructor = getUser(course.getInstructorId());
         users.add(instructor);
         return new CourseResponse.FindUsersDTO(users);
     }
