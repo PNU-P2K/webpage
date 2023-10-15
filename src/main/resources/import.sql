@@ -24,10 +24,10 @@ insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, descr
 insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(3, '자료구조', 1, 6004, 1, 1, 'running', '이 가상환경은 자료구조를 위해 만든 가상환경이다. 아무나 확인할 수 있다.', 30004, '2023-10-06 12:00:05');
 insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(4, 'BFS', 7, 6005, 1, 1, 'stop', '이 가상환경은 알고리즘 수업을 위한 교육자의 가상환경이다', 30005, '2023-10-06 12:00:06');
 insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(4, 'DP', 7, 6006, 1, 1, 'running', '이 가상환경은 알고리즘 수업을 위한 교육자의 가상환경이다', 30006, '2023-10-06 12:00:06');
-insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(4, 'CPU 스케쥴러', 11, 6007, 1, 1, 'stop', '이 가상환경은 운영체제 수업을 위한 교육자의 가상환경이다. CPU 스케쥴러 내용을 실습한다.', 30007, '2023-10-06 12:00:06');
-insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(4, '식사하는 철학자들', 11, 6008, 1, 1, 'running', '이 가상환경은 운영체제 수업을 위한 교육자의 가상환경이다. 식사하는 철학자들 문제를 해결한다.', 30008, '2023-10-06 12:00:06');
-insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(3, 'FCFS', 11, 6009, 1, 1, 'stop', 'CPU 스케쥴러 Simulation 예정! FCFS부터~~', 30007, '2023-10-14 12:00:06');
-insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(3, '식사하는 철학자', 11, 6010, 1, 1, 'running', 'Semaphore, Mutex를 이용해서 식사하는 철학자들 문제 풀기', 30008, '2023-10-14 12:00:06');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(4, 'CPU 스케쥴러', 11, 6007, true, true, 'stop', '이 가상환경은 운영체제 수업을 위한 교육자의 가상환경이다. CPU 스케쥴러 내용을 실습한다.', 30007, '2023-10-06 12:00:06');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(4, '식사하는 철학자', 11, 6008, true, false, 'running', '이 가상환경은 운영체제 수업을 위한 교육자의 가상환경이다. 식사하는 철학자들 문제를 해결한다.', 30008, '2023-10-06 12:00:06');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(3, 'FCFS', 11, 6009, true, true, 'stop', 'CPU 스케쥴러 Simulation 예정! FCFS부터~~', 30007, '2023-10-14 12:00:06');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(3, '식사하는 철학자', 11, 6010, false, false, 'running', 'Semaphore, Mutex를 이용해서 식사하는 철학자들 문제 풀기', 30008, '2023-10-14 12:00:06');
 
 
 --insert into vm_tb(user_id, vmname, course_id, port, scope, control, state) values(2, '자료구조', 1, 6086, 0, 1, 'stop');
