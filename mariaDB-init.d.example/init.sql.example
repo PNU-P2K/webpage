@@ -1,5 +1,5 @@
 --CREATE USER 'simple'@'localhost' IDENTIFIED BY 'simple';
-CREATE USER 'p2k'@'%' IDENTIFIED BY 'password';
+CREATE USER 'p2k'@'%' IDENTIFIED BY password;
 
 --GRANT ALL PRIVILEGES ON *.* TO 'simple'@'localhost';
 GRANT ALL PRIVILEGES ON *.* TO 'p2k'@'%';
