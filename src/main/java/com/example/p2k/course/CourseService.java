@@ -23,7 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -123,15 +125,26 @@ public class CourseService {
                 .build();
         courseRepository.save(course);
 
-        CourseUser courseUser = CourseUser.builder().course(course).user(user).accept(true).build();
+        CourseUser courseUser = CourseUser.builder()
+                .course(course)
+                .user(user)
+                .accept(true)
+                .build();
         courseUserRepository.save(courseUser);
     }
 
     //수강생 목록
     public CourseResponse.FindStudentsDTO findStudents(Long courseId, User user){
         checkInstructorAuthorization(user);
+
         List<User> users = courseUserRepository.findByCourseIdAndAcceptIsTrue(courseId);
-        return new CourseResponse.FindStudentsDTO(users);
+        Map<Long, List<Vm>> vmMap = new HashMap<>();
+        users.forEach(u -> {
+            List<Vm> vms = vmRepository.findByUserIdAndCourseIdAndScopeIsTrue(u.getId(), courseId);
+            vmMap.put(u.getId(), vms);
+        });
+
+        return new CourseResponse.FindStudentsDTO(users, vmMap);
     }
 
     //강좌 신청 대기 수강생 목록
