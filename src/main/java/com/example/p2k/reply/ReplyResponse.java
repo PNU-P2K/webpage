@@ -42,7 +42,7 @@ public class ReplyResponse {
                 this.author = reply.getAuthor();
                 this.createdDate = reply.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                 this.step = reply.getStep();
-                this.userId = reply.getUser().getId();
+                this.userId = reply.getUser() == null? null : reply.getUser().getId();
             }
         }
     }

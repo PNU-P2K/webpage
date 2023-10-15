@@ -40,10 +40,10 @@
                 <p th:text="${reply.content}">댓글 내용</p>
             </div>
             <div style="display: flex; align-items: center;">
-                <button class="btn btn-outline-primary btn-sm"
+                <button th:if="${reply.userId} != null" class="btn btn-outline-primary btn-sm"
                         th:onclick="|javascript:toggleReplyForm('replyForm-' + ${reply.id})|"
                         type="button" style="display: inline-block; margin-right: 10px;">답글</button>
-                <button class="btn btn-outline-danger btn-sm"
+                <button th:if="${reply.userId} != null" class="btn btn-outline-danger btn-sm"
                         th:onclick="|location.href='@{/posts/{postId}/replies/{replyId}/delete(postId=${postDTO.id}, replyId=${reply.id})}'|"
                         type="button" style="display: inline-block;">삭제</button>
             </div>
