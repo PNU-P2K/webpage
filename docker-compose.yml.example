@@ -7,11 +7,9 @@ services:
     ports:
       - 3307:3306
     environment:
-      MARIADB_DATABASE: p2k
-      MARIADB_USER: p2k
-      MARIADB_PASSWORD: // password
-      MARIADB_ROOT_PASSWORD: // password
-      MARIADB_ROOT_HOST: "%"
+      MARIADB_DATABASE: 'p2k'
+      MARIADB_ROOT_PASSWORD: 'password'
+      MARIADB_ROOT_HOST: '%'
       TZ: Asia/Seoul
     volumes:
       - ~/docker/mariadb/etc/mysql/conf.d:/etc/mysql/conf.d:ro

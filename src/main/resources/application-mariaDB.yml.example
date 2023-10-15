@@ -1,11 +1,11 @@
 spring:
   datasource:
-    url: jdbc:mariadb://mariaDB:3306/p2k
+    url: jdbc:mariadb://mariaDB:3306/p2k?createDatabaseIfNotExist=true
     driver-class-name: org.mariadb.jdbc.Driver
-    username: p2k
-    password: # password
+    username: root
+    password: password
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
+    database-platform: org.hibernate.dialect.MariaDBDialect
     hibernate:
       ddl-auto: create # 또는 다른 옵션 (create, update, none) - 개발 시에는 create / live는 update
     show-sql: true

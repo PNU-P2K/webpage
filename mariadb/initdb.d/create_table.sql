@@ -1,3 +1,7 @@
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';
+
+CREATE DATABASE p2k DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 create table course_tb (
                            created_date timestamp(6),
                            id bigint,
