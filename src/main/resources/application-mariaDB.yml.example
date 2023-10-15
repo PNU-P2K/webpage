@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mariadb://mariaDB:3306/p2k?useUnicode=true
+    url: jdbc:mariadb://mariaDB:3306/p2k?useUnicode=true&createDatabaseIfNotExist=true
     driver-class-name: org.mariadb.jdbc.Driver
-    username: root
+    username: p2k
     password: # password
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect

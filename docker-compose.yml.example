@@ -2,15 +2,17 @@ version: '3'
 
 services:
   db:
-    image: mariadb
+    image: mariadb:10
     container_name: mariadb
     ports:
       - 3307:3306
     environment:
-      - MARIADB_DATABASE=p2k
-      - MARIADB_ROOT_PASSWORD= #password
-      - MARIADB_ROOT_HOST=%
-      - TZ=Asia/Seoul
+      MARIADB_DATABASE: p2k
+      MARIADB_USER: p2k
+      MARIADB_PASSWORD: // password
+      MARIADB_ROOT_PASSWORD: // password
+      MARIADB_ROOT_HOST: "%"
+      TZ: Asia/Seoul
     volumes:
       - ~/docker/mariadb/etc/mysql/conf.d:/etc/mysql/conf.d:ro
       - ~/docker/mariadb/var/lib/mysql:/var/lib/mysql
