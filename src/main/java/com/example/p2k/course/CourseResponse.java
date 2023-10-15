@@ -116,6 +116,26 @@ public class CourseResponse {
     }
 
     @Getter
+    public static class FindUsersDTO{
+        private final List<UserDTO> users;
+
+        public FindUsersDTO(List<User> users) {
+            this.users = users.stream().map(UserDTO::new).toList();
+        }
+
+        @Getter
+        public static class UserDTO{
+            private final Long id;
+            private final String name;
+
+            public UserDTO(User user) {
+                this.id = user.getId();
+                this.name = user.getName();
+            }
+        }
+    }
+
+    @Getter
     public static class FindUnacceptedUserDTO {
 
         private final List<UnAcceptedUserDTO> students;

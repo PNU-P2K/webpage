@@ -104,7 +104,7 @@ public class CourseController {
     public String setting(@PathVariable Long courseId, Model model,
                           @AuthenticationPrincipal CustomUserDetails userDetails){
         model.addAttribute("unacceptedUserDTOs", getFindUnacceptedUserDTO(courseId, userDetails.getUser()));
-        model.addAttribute("studentDTOs", getFindStudentsDTO(courseId, userDetails.getUser()));
+        model.addAttribute("usersDTOs", getUsersDTO(courseId, userDetails));
         model.addAttribute("courseDTO", getCourseDTO(courseId));
         model.addAttribute("user", userDetails.getUser());
         return "course/setting";
@@ -160,5 +160,9 @@ public class CourseController {
 
     private VmResponse.FindAllDTO getMyVmsDTO(Long courseId, User user) {
         return courseService.findMyVm(courseId, user);
+    }
+
+    private CourseResponse.FindUsersDTO getUsersDTO(Long courseId, CustomUserDetails userDetails) {
+        return courseService.findUsers(courseId, userDetails.getUser());
     }
 }

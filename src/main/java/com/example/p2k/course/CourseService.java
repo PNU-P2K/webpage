@@ -137,7 +137,7 @@ public class CourseService {
     public CourseResponse.FindStudentsDTO findStudents(Long courseId, User user){
         checkInstructorAuthorization(user);
 
-        List<User> users = courseUserRepository.findByCourseIdAndAcceptIsTrue(courseId);
+        List<User> users = courseUserRepository.findByCourseIdAndAcceptIsTrueAndUserIdNot(courseId, user.getId());
         Map<Long, List<Vm>> vmMap = new HashMap<>();
         users.forEach(u -> {
             List<Vm> vms = vmRepository.findByUserIdAndCourseIdAndScopeIsTrue(u.getId(), courseId);
@@ -145,6 +145,15 @@ public class CourseService {
         });
 
         return new CourseResponse.FindStudentsDTO(users, vmMap);
+    }
+
+    public CourseResponse.FindUsersDTO findUsers(Long courseId, User user){
+        checkInstructorAuthorization(user);
+
+        List<User> users = courseUserRepository.findByCourseIdAndAcceptIsTrueAndUserIdNot(courseId, user.getId());
+        User instructor = getUser(user.getId());
+        users.add(instructor);
+        return new CourseResponse.FindUsersDTO(users);
     }
 
     //강좌 신청 대기 수강생 목록
