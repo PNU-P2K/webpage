@@ -7,25 +7,23 @@ services:
     ports:
       - 3307:3306
     environment:
-      - MYSQL_DATABASE=p2k
-      - MYSQL_ROOT_PASSWORD= #password
-      - MYSQL_ROOT_HOST=%
+      - MARIADB_DATABASE=p2k
+      - MARIADB_ROOT_PASSWORD= #password
+      - MARIADB_ROOT_HOST=%
+      - TZ=Asia/Seoul
     volumes:
       - ~/docker/mariadb/etc/mysql/conf.d:/etc/mysql/conf.d:ro
       - ~/docker/mariadb/var/lib/mysql:/var/lib/mysql
       - ~/docker/mariadb/var/log/maria:/var/log/maria
+      - ./mariaDB-init.d:/docker-entrypoint-initdb.d
     command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
   application:
     build: .
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/p2k?useUnicode=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: # password
     ports:
-      - 8080:8080
+      - 80:8080
     depends_on:
-      - database
+      - db
 
   prometheus:
     image: prom/prometheus:latest

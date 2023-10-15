@@ -1,14 +1,14 @@
 spring:
   datasource:
-    url: jdbc:mariadb://54.180.98.207:3307/p2k?useUnicode=true
+    url: jdbc:mariadb://mariaDB:3306/p2k?useUnicode=true
     driver-class-name: org.mariadb.jdbc.Driver
     username: p2k
     password: # password
   jpa:
     hibernate:
-      ddl-auto: create # 또는 다른 옵션 (create, update, none)
+      ddl-auto: create # 또는 다른 옵션 (create, update, none) - 개발 시에는 create / live는 update
     show-sql: true
     generate-ddl: true
     properties:
-      hibernates:
+      hibernate:
         dialect: org.hibernate.dialect.MariaDBDialect
