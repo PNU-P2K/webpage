@@ -8,7 +8,7 @@ services:
       - 3307:3306
     environment:
       MARIADB_DATABASE: 'p2k'
-      MARIADB_ROOT_PASSWORD: 'password'
+      MARIADB_ROOT_PASSWORD: //대문자, 소문자, 숫자, 특수문자를 포함한 암호 길이 8자 이상
       MARIADB_ROOT_HOST: '%'
       TZ: Asia/Seoul
     volumes:

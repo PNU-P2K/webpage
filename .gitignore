@@ -33,7 +33,7 @@ out/
 /nbdist/
 /.nb-gradle/
 /mariaDB-init.d/
-
+/mariadb/initdb.d/init.sql
 ### VS Code ###
 .vscode/
 
