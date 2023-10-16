@@ -63,9 +63,7 @@
                         <div class="btn-wrap p-0">
                             <div class="row d-flex justify-content-center m-0" th:if="${v.state == 'running'}">
                                 <div class="form-inline m-0 p-0 col-4">
-                                    <!--button-- class="btn-main btn" th:onclick="|javascript:alert('${v.nodePort}')|">접속</button-->
                                     <button class="btn-main btn" th:data-nodePort="${v.nodePort}" th:data-externalIp="${v.externalIp}" onclick="alert(this)">접속</button>
-
                                 </div>
                                 <form class="form-inline m-0 p-0 col-4" th:action="@{/vm/stop/{id}(id=${v.id})}" method="post">
                                     <button class="btn-main btn" type="submit">중지</button>
