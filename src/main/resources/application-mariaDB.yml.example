@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mariadb://mariaDB:3306/p2k?useSSL=false #?createDatabaseIfNotExist=true
+    url: jdbc:mariadb://mariadb:3306/p2k?useSSL=false #?createDatabaseIfNotExist=true
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
-    password: //대문자, 소문자, 숫자, 특수문자를 포함한 암호 길이 8자 이상
+    password: # password
   jpa:
     database-platform: org.hibernate.dialect.MariaDBDialect
     hibernate:

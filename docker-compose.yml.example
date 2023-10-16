@@ -8,17 +8,17 @@ services:
       - 3307:3306
     environment:
       MARIADB_DATABASE: 'p2k'
-      MARIADB_ROOT_PASSWORD: //대문자, 소문자, 숫자, 특수문자를 포함한 암호 길이 8자 이상
+      MARIADB_ROOT_PASSWORD: # password
       MARIADB_ROOT_HOST: '%'
       TZ: Asia/Seoul
     volumes:
-      - ~/docker/mariadb/etc/mysql/conf.d:/etc/mysql/conf.d:ro
-      - ~/docker/mariadb/var/lib/mysql:/var/lib/mysql
-      - ~/docker/mariadb/var/log/maria:/var/log/maria
+      #- ~/docker/mariadb/etc/mysql/conf.d:/etc/mysql/conf.d:ro
+      #- ~/docker/mariadb/var/lib/mysql:/var/lib/mysql
+      #- ~/docker/mariadb/var/log/maria:/var/log/maria
       - ./mariadb/conf.d:/etc/mysql/conf.d
       - ./mariadb/data:/var/lib/mysql
       - ./mariadb/initdb.d:/docker-entrypoint-initdb.d
-    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci', '--bind-address=0.0.0.0']
 
   application:
     build: .
