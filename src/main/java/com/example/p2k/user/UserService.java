@@ -9,6 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Transactional
 @RequiredArgsConstructor
 @Service
@@ -38,6 +41,18 @@ public class UserService {
     }
 
     public Boolean checkEmail(String email) {
+        String EMAIL_REGEX = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
+        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+
+        if(email == null){
+            return false;
+        }
+
+        Matcher matcher = pattern.matcher(email);
+        if(matcher.matches() == false){
+            return false;
+        }
+
         return !userRepository.existsByEmail(email);
     }
 
