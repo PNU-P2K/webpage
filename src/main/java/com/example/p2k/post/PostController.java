@@ -107,7 +107,7 @@ public class PostController {
     }
 
     //공지사항 글 삭제
-    @GetMapping("/notice-board/{postId}/delete")
+    @PostMapping("/notice-board/{postId}/delete")
     public String deleteNoticePost(@PathVariable Long postId, Model model,
                                    @AuthenticationPrincipal CustomUserDetails userDetails){
         model.addAttribute("user", userDetails.getUser());
@@ -167,7 +167,7 @@ public class PostController {
     }
 
     //질문 글 삭제
-    @GetMapping("/question-board/{postId}/delete")
+    @PostMapping("/question-board/{postId}/delete")
     public String deleteQuestionPost(@PathVariable Long postId, @AuthenticationPrincipal CustomUserDetails userDetails){
         postService.deletePost(postId, userDetails.getUser());
         return "redirect:/courses/{courseId}/question-board";
@@ -224,7 +224,7 @@ public class PostController {
     }
 
     //자유 글 삭제
-    @GetMapping("/free-board/{postId}/delete")
+    @PostMapping("/free-board/{postId}/delete")
     public String deleteFreePost(@PathVariable Long postId, @AuthenticationPrincipal CustomUserDetails userDetails){
         postService.deletePost(postId, userDetails.getUser());
         return "redirect:/courses/{courseId}/free-board";

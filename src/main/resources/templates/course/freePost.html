@@ -42,7 +42,7 @@
                 <div th:if="${postDTO.userId == user.id}" class="row">
                     <div class="col">
                         <button class="btn btn-outline-danger float-end m-1"
-                                th:onclick="|location.href='@{/courses/{courseId}/free-board/{postId}/delete(courseId=${courseDTO.id}, postId=${postDTO.id})}'|"
+                                th:onclick="|javascript:deletePost(${courseDTO.id}, ${postDTO.id})|"
                                 type="button">삭제</button>
                         <button class="btn btn-outline-primary float-end m-1"
                                 th:onclick="|location.href='@{/courses/{courseId}/free-board/{postId}/update(courseId=${courseDTO.id}, postId=${postDTO.id})}'|"
@@ -94,6 +94,34 @@
         } else {
             replyForm.style.display = "none";
         }
+    }
+    function deletePost(courseId, postId) {
+        Swal.fire({
+            text: '게시글을 삭제하시겠습니까?',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '확인',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if(result.isConfirmed) {
+                $.ajax({
+                    method: 'POST',
+                    url: '/courses/' + courseId + '/free-board/' + postId + '/delete',
+                    success: function() {
+                        Swal.fire({
+                            text: '게시글이 삭제되었습니다.',
+                            confirmButtonColor: '#2487ce',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if(result.isConfirmed) {
+                                location.href = '/courses/' + courseId + '/free-board';
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 </script>
 </html>

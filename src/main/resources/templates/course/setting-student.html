@@ -31,31 +31,6 @@
         <!-- Page content-->
         <div class="container-fluid">
             <div class="row container2 mx-auto">
-                <h4 class="mt-4">강좌 가입 신청</h4>
-                <hr class="my-4">
-                <div class="row container2 mx-auto">
-                    <div class="col table-responsive">
-                        <table class="table table-hover">
-                            <tr th:each="unacceptedUserDTO : ${unacceptedUserDTOs.getStudents()}">
-                                <td class="align-middle">
-                                    <div class="row">
-                                        <div class="col-md-9 d-flex align-items-center">
-                                            <span th:text="${unacceptedUserDTO.name}" class="pl-2">강좌 구성원 이름</span>
-                                        </div>
-                                        <div class="col-md-3 text-right">
-                                            <button type="button" class="btn btn-outline-primary"
-                                                    th:onclick="|javascript:accept(${courseDTO.id}, ${unacceptedUserDTO.id})|">수락</button>
-                                            <button type="button" class="btn btn-outline-danger"
-                                                    th:onclick="|javascript:reject(${courseDTO.id}, ${unacceptedUserDTO.id})|">거절</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                        <br>
-                    </div>
-                </div>
-
                 <h4 class="mt-4">강좌 구성원</h4>
                 <hr class="my-4">
                 <div class="row container2 mx-auto">
@@ -82,9 +57,9 @@
                 <hr class="my-4">
                 <div>
                     <div class="border rounded p-4">
-                        <p>강좌 삭제하기</p>
+                        <p>강좌 취소하기</p>
                         <button type="button" class="btn btn-outline-danger"
-                                th:onclick="|javascript:deleteCourse(${courseDTO.id})|">삭제</button>
+                                th:onclick="|javascript:cancelCourse(${courseDTO.id})|">취소</button>
                     </div>
                 </div>
             </div>
@@ -136,9 +111,9 @@
             }
         });
     }
-    function deleteCourse(courseId) {
+    function cancelCourse(courseId) {
         Swal.fire({
-            text: '강좌를 삭제하시겠습니까?',
+            text: '강좌를 취소하시겠습니까?',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -148,10 +123,10 @@
             if(result.isConfirmed) {
                 $.ajax({
                     method: 'POST',
-                    url: '/courses/' + courseId + '/delete',
+                    url: '/courses/' + courseId + '/cancel',
                     success: function() {
                         Swal.fire({
-                            text: '강좌가 삭제되었습니다.',
+                            text: '강좌가 취소되었습니다.',
                             confirmButtonColor: '#2487ce',
                             confirmButtonText: '확인'
                         }).then((result) => {

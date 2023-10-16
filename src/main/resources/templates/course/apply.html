@@ -120,8 +120,17 @@
                     confirmButtonText: '확인'
                 }).then((result) => {
                     if(result.isConfirmed) {
-                        location.href = '/courses';
+                        location.href = '/courses/application';
                     }
+                });
+            },
+            error: function(xhr) {
+                // 예외 발생 시 모달 표시
+                Swal.fire({
+                    icon: 'error',
+                    text: xhr.responseText,
+                    confirmButtonColor: '#2487ce',
+                    confirmButtonText: '확인'
                 });
             }
         });

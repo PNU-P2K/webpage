@@ -1,6 +1,7 @@
 package com.example.p2k.course;
 
 import com.example.p2k._core.security.CustomUserDetails;
+import com.example.p2k.user.Role;
 import com.example.p2k.user.User;
 import com.example.p2k.vm.VmResponse;
 import jakarta.validation.Valid;
@@ -65,7 +66,7 @@ public class CourseController {
     }
 
     //강좌 취소
-    @GetMapping("/{courseId}/cancel")
+    @PostMapping("/{courseId}/cancel")
     public String cancel(@PathVariable Long courseId, Model model,
                          @AuthenticationPrincipal CustomUserDetails userDetails){
         courseService.cancel(courseId, userDetails.getUser().getId());
@@ -103,11 +104,16 @@ public class CourseController {
     @GetMapping("/{courseId}/setting")
     public String setting(@PathVariable Long courseId, Model model,
                           @AuthenticationPrincipal CustomUserDetails userDetails){
-        model.addAttribute("unacceptedUserDTOs", getFindUnacceptedUserDTO(courseId, userDetails.getUser()));
-        model.addAttribute("studentDTOs", getFindStudentsDTO(courseId, userDetails.getUser()));
+        model.addAttribute("usersDTOs", getUsersDTO(courseId));
         model.addAttribute("courseDTO", getCourseDTO(courseId));
         model.addAttribute("user", userDetails.getUser());
-        return "course/setting";
+
+        if(userDetails.getUser().getRole() == Role.ROLE_STUDENT){
+            return "course/setting-student";
+        }else{
+            model.addAttribute("unacceptedUserDTOs", getFindUnacceptedUserDTO(courseId, userDetails.getUser()));
+            return "course/setting";
+        }
     }
 
     //강좌 신청 수락
@@ -160,5 +166,9 @@ public class CourseController {
 
     private VmResponse.FindAllDTO getMyVmsDTO(Long courseId, User user) {
         return courseService.findMyVm(courseId, user);
+    }
+
+    private CourseResponse.FindUsersDTO getUsersDTO(Long courseId) {
+        return courseService.findUsers(courseId);
     }
 }

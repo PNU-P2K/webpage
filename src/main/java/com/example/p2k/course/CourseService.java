@@ -23,7 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -123,15 +125,34 @@ public class CourseService {
                 .build();
         courseRepository.save(course);
 
-        CourseUser courseUser = CourseUser.builder().course(course).user(user).accept(true).build();
+        CourseUser courseUser = CourseUser.builder()
+                .course(course)
+                .user(user)
+                .accept(true)
+                .build();
         courseUserRepository.save(courseUser);
     }
 
     //수강생 목록
     public CourseResponse.FindStudentsDTO findStudents(Long courseId, User user){
         checkInstructorAuthorization(user);
-        List<User> users = courseUserRepository.findByCourseIdAndAcceptIsTrue(courseId);
-        return new CourseResponse.FindStudentsDTO(users);
+
+        List<User> users = courseUserRepository.findByCourseIdAndAcceptIsTrueAndUserIdNot(courseId, user.getId());
+        Map<Long, List<Vm>> vmMap = new HashMap<>();
+        users.forEach(u -> {
+            List<Vm> vms = vmRepository.findByUserIdAndCourseIdAndScopeIsTrue(u.getId(), courseId);
+            vmMap.put(u.getId(), vms);
+        });
+
+        return new CourseResponse.FindStudentsDTO(users, vmMap);
+    }
+
+    public CourseResponse.FindUsersDTO findUsers(Long courseId){
+        Course course = getCourse(courseId);
+        List<User> users = courseUserRepository.findByCourseIdAndAcceptIsTrueAndUserIdNot(courseId, course.getInstructorId());
+        User instructor = getUser(course.getInstructorId());
+        users.add(instructor);
+        return new CourseResponse.FindUsersDTO(users);
     }
 
     //강좌 신청 대기 수강생 목록
@@ -164,8 +185,12 @@ public class CourseService {
     public void delete(Long courseId, User user){
         checkInstructorAuthorization(user);
         Course course = getCourse(courseId);
+
         courseUserRepository.deleteByCourseId(course.getId());
         postRepository.deleteByCourseId(course.getId());
+        vmRepository.findByCourseId(courseId).stream()
+                .filter(vm -> vm.getCourse().getId().equals(courseId))
+                .forEach(Vm::removeCourse);
         courseRepository.deleteById(course.getId());
     }
 

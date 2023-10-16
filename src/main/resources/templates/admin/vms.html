@@ -81,7 +81,7 @@
                     </div>
                     <div th:if="${vmDTO.state} == 'running'" class="d-flex">
                       <!--form class="form-inline mr-2" th:onclick="|javascript:alert('${vmDTO.nodePort}')|" method="post"-->
-                      <button class="btn-main btn" th:data-nodePort="${v.nodePort}" th:data-externalIp="${v.externalIp}" onclick="alert(this)">접속</button>
+                      <button class="btn-main btn" th:data-nodePort="${vmDTO.nodePort}" th:data-externalIp="${vmDTO.externalIp}" onclick="alert(this)">접속</button>
                         <button class="btn btn-main btn-sm m-0" type="submit">접속</button>
                       </form>
                       <form class="form-inline mr-2" th:action="@{/vm/stop/{id}(id=${vmDTO.id})}" method="post">

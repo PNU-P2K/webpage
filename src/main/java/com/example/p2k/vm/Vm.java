@@ -75,7 +75,7 @@ public class Vm extends BaseTimeEntity {
         this.state = state;
     }
 
-    public void updateContaierId(String containerId) {
+    public void updateContainerId(String containerId) {
         this.containerId = containerId;
     }
 
@@ -90,5 +90,9 @@ public class Vm extends BaseTimeEntity {
         this.scope = requestDTO.getScope();
         this.control = requestDTO.getControl();
         this.course  = course;
+    }
+
+    public void removeCourse(){
+        this.course = null;
     }
 }
