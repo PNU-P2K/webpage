@@ -1,9 +1,9 @@
-insert into user_tb(email, name, password, role, pending, created_date) values('tngus@naver.com', '김수현', '$2a$12$w0VeGEJ7Cj7YE/PU9EHmAOSJsnnTXkOGZi3QE6W4.gJUB5EIVbiDW', 'ROLE_STUDENT', false, '2023-10-06 12:00:01');
-insert into user_tb(email, name, password, role, pending, created_date) values('soso@naver.com', '박소현', '$2a$12$AFOtb0QbI6BcLVTLaiYpuOnBlMDg5jTfGRez9miMYwC0wFCbbXT6q', 'ROLE_STUDENT', false, '2023-10-06 12:00:01');
-insert into user_tb(email, name, password, role, pending, created_date) values('gihae@naver.com', '김기해', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_STUDENT', false, '2023-10-06 12:00:01');
-insert into user_tb(email, name, password, role, pending, created_date) values('gihae2@naver.com', '김기해2', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_INSTRUCTOR', false, '2023-10-06 12:00:01');
-insert into user_tb(email, name, password, role, pending, created_date) values('gihae3@naver.com', '김기해3', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_INSTRUCTOR', true, '2023-10-06 12:00:01');
-insert into user_tb(email, name, password, role, pending, created_date) values('admin@naver.com', 'admin', '$2a$12$0ucbDurCSFuguHpqbQLF9u6BZJKc1IsYf4pR5OUPka2SDHie9MyQe', 'ROLE_ADMIN', false, '2023-10-06 12:00:01');
+insert into user_tb(email, name, password, role, pending, created_date) values('tngus@p2k.com', '김수현', '$2a$12$KZJP10nNi8hOZWbHUM68cOUztR7eRfUu3OIAJdutv5Myh6LfRhRnK', 'ROLE_STUDENT', false, '2023-10-06 12:00:01');
+insert into user_tb(email, name, password, role, pending, created_date) values('soso@p2k.com', '박소현', '$2a$12$GLJVspKOZIF6v/0N/34QFulK1PfDDKcgjd.6/JaPxYQihmXPC9/Ju', 'ROLE_STUDENT', false, '2023-10-06 12:00:01');
+insert into user_tb(email, name, password, role, pending, created_date) values('gihae@p2k.com', '김기해', '$2a$12$1pGEvc7ppaGgQw5KM7HJw.ngC3VQH/jISCaSj5.5HtN2JRwSDAncm', 'ROLE_STUDENT', false, '2023-10-06 12:00:01');
+insert into user_tb(email, name, password, role, pending, created_date) values('gihae2@p2k.com', '김기해2', '$2a$12$YGax8622SDdGWBLRqh9uN.wpZakphNMO6PnRQxn2B4JceH8oJ4/b.', 'ROLE_INSTRUCTOR', false, '2023-10-06 12:00:01');
+insert into user_tb(email, name, password, role, pending, created_date) values('gihae3@p2k.com', '김기해3', '$2a$12$TCw6IkJ0CCBGnOiw9QgiGuSQedX3nettZ8UV75QEi1gfLpvOiNTE2', 'ROLE_INSTRUCTOR', true, '2023-10-06 12:00:01');
+insert into user_tb(email, name, password, role, pending, created_date) values('admin@p2k.com', 'admin', '$2a$12$xLLDK93Bl0.S5mqt3GrNO.FJ6xvKYqp5lD5BsJa1cEhaHVyqtduhe', 'ROLE_ADMIN', false, '2023-10-06 12:00:01');
 
 insert into course_tb(name, description, instructor_id, created_date) values('자료구조 059', '2-2', 4, '2023-10-06 12:00:01');
 insert into course_tb(name, description, instructor_id, created_date) values('자료구조 060', '2-2', 4, '2023-10-06 12:00:01');
@@ -28,6 +28,10 @@ insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, descr
 insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(4, '식사하는 철학자', 11, 6008, true, false, 'running', '이 가상환경은 운영체제 수업을 위한 교육자의 가상환경이다. 식사하는 철학자들 문제를 해결한다.', 30008, '2023-10-06 12:00:06');
 insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(3, 'FCFS', 11, 6009, true, true, 'stop', 'CPU 스케쥴러 Simulation 예정! FCFS부터~~', 30007, '2023-10-14 12:00:06');
 insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(3, '식사하는 철학자', 11, 6010, false, false, 'running', 'Semaphore, Mutex를 이용해서 식사하는 철학자들 문제 풀기', 30008, '2023-10-14 12:00:06');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(2, '데드락', 11, 6011, true, true, 'stop', '이 가상환경은 운영체제 수업을 위한 교육자의 가상환경이다. CPU 스케쥴러 내용을 실습한다.', 30009, '2023-10-06 12:00:06');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(2, '프로세스 생성', 11, 6012, true, true, 'running', '이 가상환경은 운영체제 수업을 위한 교육자의 가상환경이다. 식사하는 철학자들 문제를 해결한다.', 30010, '2023-10-06 12:00:06');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(1, 'CPU 스케쥴러', 11, 6013, true, true, 'stop', 'CPU 스케쥴러 Simulation 예정! FCFS부터~~', 30011, '2023-10-14 12:00:06');
+insert into vm_tb(user_id, vmname, course_id, port, scope, control, state, description, node_port, created_date) values(1, '철학자', 11, 6014, true, true, 'running', 'Semaphore, Mutex를 이용해서 식사하는 철학자들 문제 풀기', 30012, '2023-10-14 12:00:06');
 
 
 --insert into vm_tb(user_id, vmname, course_id, port, scope, control, state) values(2, '자료구조', 1, 6086, 0, 1, 'stop');
@@ -49,6 +53,8 @@ insert into course_user_tb(user_id, course_id, accept) values(4, 9, true);
 insert into course_user_tb(user_id, course_id, accept) values(4, 10, true);
 insert into course_user_tb(user_id, course_id, accept) values(4, 11, true);
 insert into course_user_tb(user_id, course_id, accept) values(3, 11, true);
+insert into course_user_tb(user_id, course_id, accept) values(2, 11, true);
+insert into course_user_tb(user_id, course_id, accept) values(1, 11, true);
 
 insert into post_tb(title, author, content, scope, category, course_id, user_id, created_date) values('공지글1', 'gh', '공지 글이지롱!><', 'PUBLIC', 'NOTICE', 1, 4, '2023-10-06 12:00:01');
 insert into post_tb(title, author, content, scope, category, course_id, user_id, created_date) values('공지글2', 'gh', '공지 글이지롱!><', 'PUBLIC', 'NOTICE', 1, 4, '2023-10-06 12:00:02');
