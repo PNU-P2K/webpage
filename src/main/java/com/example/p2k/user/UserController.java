@@ -61,7 +61,8 @@ public class UserController {
 
     //비밀번호 재설정 페이지
     @GetMapping("/reset")
-    public String resetPasswordForm(Model model) {
+    public String resetPasswordForm(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        model.addAttribute("user",userDetails.getUser());
         model.addAttribute("resetDTO", new UserRequest.ResetDTO());
         return "user/reset";
     }
@@ -70,7 +71,7 @@ public class UserController {
     @PostMapping("/reset")
     public String resetPassword(@Valid @ModelAttribute UserRequest.ResetDTO requestDTO, Error errors) {
         userService.resetPassword(requestDTO);
-        return "redirect:/user/login";
+        return "redirect:/user/info";
     }
 
     //회원 탈퇴
