@@ -42,17 +42,17 @@
               <table class="table table-hover table-responsive section-bg">
                 <thead>
                 <tr>
-                  <th scope="col">NO.</th>
+                  <th scope="col" style="width: 5%;">NO.</th>
                   <th scope="col">이름</th>
                   <th scope="col">생성자</th>
                   <th scope="col">포트</th>
                   <th scope="col">접속 ip</th>
                   <th scope="col">연결 강좌</th>
-                  <th scope="col">공개 범위</th>
+                  <th scope="col" style="width: 7%;">공개 범위</th>
                   <th scope="col" style="width: 10%;">접속자 권한 범위</th>
-                  <th scope="col">상태</th>
+                  <th scope="col" style="width: 5%;">상태</th>
                   <th scope="col">생성일</th>
-                  <th scope="col" style="width: 12%;">가상 환경 설정</th>
+                  <th scope="col" style="width: 13%;">가상 환경 설정</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -81,7 +81,7 @@
                     </div>
                     <div th:if="${vmDTO.state} == 'running'" class="d-flex">
                       <button class="btn btn-main btn-sm m-0" th:data-nodePort="${vmDTO.nodePort}" th:data-externalIp="${vmDTO.externalIp}" onclick="alert(this)">접속</button>
-                      <form class="form-inline mr-2" th:action="@{/vm/stop/{id}(id=${vmDTO.id})}" method="post">
+                      <form class="form-inline ml-2" th:action="@{/vm/stop/{id}(id=${vmDTO.id})}" method="post">
                         <button class="btn btn-main btn-sm m-0" type="submit">중지</button>
                       </form>
                     </div>
