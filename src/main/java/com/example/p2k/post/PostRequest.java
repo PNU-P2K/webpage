@@ -18,7 +18,7 @@ public class PostRequest {
         private String content;
 
         @ValidEnum(enumClass = Scope.class, message = "공개 범위는 필수 입력 값입니다.")
-        private Scope scope;
+        private Scope scope = Scope.PUBLIC;
     }
 
     @Getter
@@ -32,6 +32,6 @@ public class PostRequest {
         private String content;
 
         @ValidEnum(enumClass = Scope.class, message = "공개 범위는 필수 입력 값입니다.")
-        private Scope scope;
+        private Scope scope = Scope.PUBLIC;
     }
 }

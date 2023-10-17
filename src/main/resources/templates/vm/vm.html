@@ -36,7 +36,7 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" th:onclick="exportImage([[${v.imageId}]])">내보내기</a>
                                     <a class="dropdown-item" >
-                                        <form class="form-inline m-0 p-0 col-3" th:onclick="|javascript:deleteVm(${v.id})|" method="post">
+                                        <form class="form-inline m-0 p-0 col-3" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">
                                             <input type="submit" class="m-0 p-0" style="background-color:transparent;border:0px transparent solid;" value="삭제하기">
                                         </form>
                                     </a>
@@ -63,9 +63,7 @@
                         <div class="btn-wrap p-0">
                             <div class="row d-flex justify-content-center m-0" th:if="${v.state == 'running'}">
                                 <div class="form-inline m-0 p-0 col-4">
-                                    <!--button-- class="btn-main btn" th:onclick="|javascript:alert('${v.nodePort}')|">접속</button-->
                                     <button class="btn-main btn" th:data-nodePort="${v.nodePort}" th:data-externalIp="${v.externalIp}" onclick="alert(this)">접속</button>
-
                                 </div>
                                 <form class="form-inline m-0 p-0 col-4" th:action="@{/vm/stop/{id}(id=${v.id})}" method="post">
                                     <button class="btn-main btn" type="submit">중지</button>
@@ -130,35 +128,6 @@
             text: imageId,
             confirmButtonColor: '#2487ce',
             confirmButtonText: '확인'
-        });
-    }
-
-    function deleteVm(vmId) {
-        Swal.fire({
-            text: '삭제하시겠습니까?',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: '확인',
-            cancelButtonText: '취소'
-        }).then((result) => {
-            if(result.isConfirmed) {
-                $.ajax({
-                    method: 'POST',
-                    url: '/vm/delete' + vmId,
-                    success: function() {
-                        Swal.fire({
-                            text: '삭제되었습니다.',
-                            confirmButtonColor: '#2487ce',
-                            confirmButtonText: '확인'
-                        }).then((result) => {
-                            if(result.isConfirmed) {
-                                location.href = '/vms';
-                            }
-                        });
-                    }
-                });
-            }
         });
     }
 
