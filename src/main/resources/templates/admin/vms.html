@@ -80,7 +80,7 @@
                       </form>
                     </div>
                     <div th:if="${vmDTO.state} == 'running'" class="d-flex">
-                      <button class="btn-main btn" th:data-nodePort="${vmDTO.nodePort}" th:data-externalIp="${vmDTO.externalIp}" onclick="alert(this)">접속</button>
+                      <button class="btn btn-main btn-sm m-0" th:data-nodePort="${vmDTO.nodePort}" th:data-externalIp="${vmDTO.externalIp}" onclick="alert(this)">접속</button>
                       <form class="form-inline mr-2" th:action="@{/vm/stop/{id}(id=${vmDTO.id})}" method="post">
                         <button class="btn btn-main btn-sm m-0" type="submit">중지</button>
                       </form>
@@ -141,34 +141,6 @@
         window.open("https://"+externalIp+":" + nodePort, "_blank")
       }
     })
-  }
-  function deleteVm(vmId) {
-    Swal.fire({
-      text: '삭제하시겠습니까?',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '확인',
-      cancelButtonText: '취소'
-    }).then((result) => {
-      if(result.isConfirmed) {
-        $.ajax({
-          method: 'POST',
-          url: '/vm/delete' + vmId,
-          success: function() {
-            Swal.fire({
-              text: '삭제되었습니다.',
-              confirmButtonColor: '#2487ce',
-              confirmButtonText: '확인'
-            }).then((result) => {
-              if(result.isConfirmed) {
-                location.href = '/vms';
-              }
-            });
-          }
-        });
-      }
-    });
   }
 </script>
 </html>
