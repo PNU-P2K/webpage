@@ -11,7 +11,7 @@
 <body>
 
 <!-- 공통 navigation-->
-<div th:replace="fragments/nav-before.html::fragment-nav-before"></div>
+<div th:replace="fragments/nav.html::fragment-nav(${user})"></div>
 </br>
 </br>
 
@@ -38,13 +38,13 @@
                     <div class="row mb-3">
                         <label for="password"  class="col-sm-2 col-form-label">새 비밀번호</label>
                         <div class="col-sm-10">
-                            <input type="text" id="password" th:field="*{password}" class="form-control">
+                            <input type="password" id="password" th:field="*{password}" class="form-control">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="passwordConf"  class="col-sm-2 col-form-label">새 비밀번호 확인</label>
                         <div class="col-sm-10">
-                            <input type="text" id="passwordConf" th:field="*{passwordConf}" class="form-control">
+                            <input type="password" id="passwordConf" th:field="*{passwordConf}" class="form-control">
                         </div>
                     </div>
                     <div class="row justify-content-center">
