@@ -28,7 +28,7 @@ public class CloudWatchService {
     private static final int PERIOD = 86400;
     private static final int MAX_DATA_POINTS = 100;
 
-    private final Instant start = LocalDate.now(ZONE_ID).minusWeeks(4).atStartOfDay(ZONE_ID).toInstant();
+    private final Instant start = LocalDate.now(ZONE_ID).minusWeeks(2).atStartOfDay(ZONE_ID).toInstant();
     private final Instant end = LocalDate.now(ZONE_ID).atStartOfDay(ZONE_ID).toInstant();
 
     @Value("${cloudwatch.s3.bucket-name}")
