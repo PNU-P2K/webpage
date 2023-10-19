@@ -36,8 +36,8 @@ public class VmService {
     private int nodePort = 30000; // 30000~32768까지 사용 가능
     private final String baseImagePath = "registry.p2kcloud.com/base/";
 
-    //private final String baseURL = "http://175.45.203.51:5000"; // k8s에게 명령을 내리는 서버 - test용
-    private final String baseURL = "http://223.130.137.170:5000"; // k8s에게 명령을 내리는 서버 - 실제 서버용
+    private final String baseURL = "http://175.45.203.51:5000"; // k8s에게 명령을 내리는 서버 - test용
+    //private final String baseURL = "http://223.130.137.170:5000"; // k8s에게 명령을 내리는 서버 - 실제 서버용
     //private final String baseURL = "http://localhost:5000";
   
     //private final String baseURL = "http://3.37.62.95:5000";
@@ -301,6 +301,9 @@ public class VmService {
         // 요청을 보낼 flask url
         String url = baseURL+"/save";
 
+        // container 정보가 담길 기본 image
+        String imagePath = baseImagePath+1+":6081";
+
         // 저장할 가상환경 찾기
         Vm vm = vmRepository.findById(id).orElse(null);
 
@@ -313,6 +316,7 @@ public class VmService {
         requestDTOStF.setId(user.getId());
         requestDTOStF.setPort(vm.getPort());
         requestDTOStF.setNodePort(vm.getNodePort());
+        requestDTOStF.setImagePath(imagePath);
         requestDTOStF.setPwd(vm.getPassword());
         requestDTOStF.setImageId(vm.getImageId());
         requestDTOStF.setContainerId(vm.getContainerId());
