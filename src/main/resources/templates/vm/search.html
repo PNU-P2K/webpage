@@ -61,7 +61,7 @@
 
               <div class="row d-flex justify-content-center" th:if="${v.state == 'running'}">
                 <div class="m-0 p-0 col-4">
-                  <button class="btn-main btn mt-0" th:onclick="|javascript:alert('${v.port}')|">접속</button>
+                  <button class="btn-main btn" th:data-nodePort="${v.nodePort}" th:data-externalIp="${v.externalIp}" onclick="alert(this)">접속</button>
                 </div>
               </div>
 
@@ -86,7 +86,7 @@
 <div th:replace="fragments/script.html::fragment-script"></div>
 <script th:inline="javascript">
 
-  function alert(port) {
+  function alert(parameter) {
     Swal.fire({
       title : "접속하시겠습니까?",
       showCancelButton: true,
@@ -96,8 +96,10 @@
       cancelButtonText: '취소'
     }).then((result) => {
       if(result.isConfirmed) {
-        //location.href = "http://localhost:"+port; // 기존 창에서 이동
-        window.open("https://43.200.182.194:"+port, "_blank") // 새 창에서 켜짐
+        var nodePort = parameter.getAttribute('data-nodePort');
+        var externalIp = parameter.getAttribute('data-externalIp');
+
+        window.open("https://"+externalIp+":"+nodePort, "_blank") // 새 창에서 켜짐
       }
     })
   }
