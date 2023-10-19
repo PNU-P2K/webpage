@@ -70,7 +70,7 @@
                         <div class="btn-wrap p-0">
                             <div class="row d-flex justify-content-center m-0" th:if="${v.state == 'running'}">
                                 <div class="form-inline m-0 p-0 col-4">
-                                    <button class="btn-main btn" th:onclick="|javascript:alert('${v.port}')|">접속</button>
+                                    <button class="btn-main btn" th:data-nodePort="${v.nodePort}" th:data-externalIp="${v.externalIp}" onclick="alert(this)">접속</button>
                                 </div>
                                 <form class="form-inline m-0 p-0 col-4" th:action="@{/vm/stop/{id}(id=${v.id})}" method="post">
                                     <button class="btn-main btn" type="submit">중지</button>
@@ -106,17 +106,20 @@
 <div th:replace="fragments/script.html::fragment-script"></div>
 </body>
 <script>
-    function alert(port) {
+    function alert(parameter) {
         Swal.fire({
             title : "접속하시겠습니까?",
             showCancelButton: true,
-            confirmButtonColor: '#2a64a1',
+            confirmButtonColor: '#2487ce',
             cancelButtonColor: '#fa5f5f',
             confirmButtonText: '접속',
             cancelButtonText: '취소'
         }).then((result) => {
             if(result.isConfirmed) {
-                window.open("http://3.34.181.183:"+port, "_blank") // 새 창에서 켜짐
+                var nodePort = parameter.getAttribute('data-nodePort');
+                var externalIp = parameter.getAttribute('data-externalIp');
+
+                window.open("https://"+externalIp+":"+nodePort, "_blank") // 새 창에서 켜짐
             }
         })
     }
