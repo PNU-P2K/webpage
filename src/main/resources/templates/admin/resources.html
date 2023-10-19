@@ -75,11 +75,11 @@
   function createChart(chartName, title, timestamp, value, yAxisLabel){
     const ctx = document.getElementById(chartName);
 
-    // Instant 객체를 hh:mm 형식의 문자열로 변환
     const timeLabels = timestamp.map(instant => {
       const date = new Date(instant);
-      return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false });
+      return date.toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' });
     });
+    timeLabels.reverse();
 
     const data = {
       labels: timeLabels,
