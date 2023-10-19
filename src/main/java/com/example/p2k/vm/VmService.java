@@ -38,8 +38,7 @@ public class VmService {
 
     //private final String baseURL = "http://175.45.203.51:5000"; // k8s에게 명령을 내리는 서버 - test용
     private final String baseURL = "http://223.130.137.170:5000"; // k8s에게 명령을 내리는 서버 - 실제 서버용
-    //private final String baseURL = "http://localhost:5000";
-  
+
     //private final String baseURL = "http://3.37.62.95:5000";
     //private final String baseURL = "http://localhost:5000";
 
@@ -159,7 +158,7 @@ public class VmService {
                 .externalNodeIp(res.getExternalNodeIp())
                 .containerId(res.getContainerId())
                 .imageId(res.getImageId())
-                .state("running")
+                .state("stop")
                 .build();
 
         vmRepository.save(vm);
