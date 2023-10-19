@@ -15,21 +15,20 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
 @Service
 public class CloudWatchService {
 
-    private static final String IDENTIFIER = "BucketName";
     private static final ZoneId ZONE_ID = ZoneId.of("Asia/Seoul");
     private static final Region REGION = Region.AP_NORTHEAST_2;
     private static final String NAMESPACE = "AWS/S3";
-    private static final int PERIOD = 300;
+    private static final String STAT = "Average";
+    private static final int PERIOD = 86400;
     private static final int MAX_DATA_POINTS = 100;
 
-    private final Instant start = LocalDate.now(ZONE_ID).minusDays(1).atStartOfDay(ZONE_ID).toInstant();
+    private final Instant start = LocalDate.now(ZONE_ID).minusWeeks(4).atStartOfDay(ZONE_ID).toInstant();
     private final Instant end = LocalDate.now(ZONE_ID).atStartOfDay(ZONE_ID).toInstant();
 
     @Value("${cloudwatch.s3.bucket-name}")
@@ -42,30 +41,43 @@ public class CloudWatchService {
     private String secretKey;
 
     public MetricDataResponse getS3BucketSize(){
-        return getMetricDataResponse("BucketSizeBytes", "s3BucketSizeQuery");
+        return getMetricDataResponse("BucketSizeBytes", "StandardStorage", "s3BucketSizeQuery");
     }
 
     public MetricDataResponse getS3NumberOfObjects(){
-        return getMetricDataResponse("NumberOfObjects", "s3NumberOfObjectsQuery");
+        return getMetricDataResponse("NumberOfObjects", "AllStorageTypes", "s3NumberOfObjectsQuery");
     }
 
-    private MetricDataResponse getMetricDataResponse(String metricName, String dataQueryId) {
+    private MetricDataResponse getMetricDataResponse(String metricName, String storageType, String dataQueryId) {
         AwsCredentialsProvider credentialsProvider = getCredentialsProvider();
 
-        try (CloudWatchClient cloudWatchClient = createCloudWatchClient(credentialsProvider)) {
-            Dimension dimension = Dimension.builder()
-                    .name(IDENTIFIER)
+        CloudWatchClient cloudWatchClient = CloudWatchClient.builder()
+                .region(REGION)
+                .credentialsProvider(credentialsProvider)
+                .build();
+
+        try{
+            Dimension dimension1 = Dimension.builder()
+                    .name("BucketName")
                     .value(bucketName)
+                    .build();
+
+            Dimension dimension2 = Dimension.builder()
+                    .name("StorageType")
+                    .value(storageType)
                     .build();
 
             Metric metric = Metric.builder()
                     .namespace(NAMESPACE)
                     .metricName(metricName)
-                    .dimensions(dimension)
+                    .dimensions(
+                            dimension1,
+                            dimension2
+                    )
                     .build();
 
             MetricStat metricStat = MetricStat.builder()
-                    .stat("Average")
+                    .stat(STAT)
                     .period(PERIOD)
                     .metric(metric)
                     .build();
@@ -76,44 +88,43 @@ public class CloudWatchService {
                     .returnData(true)
                     .build();
 
+            List<MetricDataQuery> queries = new ArrayList<>();
+            queries.add(dataQuery);
+
             GetMetricDataRequest request = GetMetricDataRequest.builder()
                     .startTime(start)
                     .endTime(end)
-                    .metricDataQueries(Collections.singletonList(dataQuery))
+                    .metricDataQueries(queries)
                     .maxDatapoints(MAX_DATA_POINTS)
                     .build();
 
             GetMetricDataResponse response = cloudWatchClient.getMetricData(request);
-
             List<Instant> timestamps = new ArrayList<>();
             List<Double> values = new ArrayList<>();
 
-            response.metricDataResults().forEach(result -> {
-                timestamps.addAll(result.timestamps());
-                values.addAll(result.values());
+            for (MetricDataResult result : response.metricDataResults()) {
+                timestamps = result.timestamps();
+                values = result.values();
 
                 log.info("id=" + result.id());
                 for (int i = values.size() - 1; i >= 0; i--) {
                     log.info("timestamp=" + timestamps.get(i).atZone(ZONE_ID) + ", value=" + values.get(i));
                 }
-            });
+            }
 
             return new MetricDataResponse(timestamps, values);
-        } catch (CloudWatchException e) {
+
+        }catch(CloudWatchException e){
             log.info(e.awsErrorDetails().errorMessage());
+            System.exit(1);
             return null;
+        }finally{
+            cloudWatchClient.close();
         }
     }
 
     private AwsCredentialsProvider getCredentialsProvider() {
         AwsCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
         return StaticCredentialsProvider.create(credentials);
-    }
-
-    private CloudWatchClient createCloudWatchClient(AwsCredentialsProvider credentialsProvider) {
-        return CloudWatchClient.builder()
-                .region(REGION)
-                .credentialsProvider(credentialsProvider)
-                .build();
     }
 }
