@@ -5,7 +5,7 @@
 <div th:replace="fragments/header.html::fragment-header"></div>
 <style>
     .container2 {
-        max-width: 850px;
+        max-width: 1500px;
     }
     .light-gray-bg {
         background-color: #f0f0f0;
@@ -24,21 +24,16 @@
 </br>
 
 <section id="pricing" class="pricing">
-    <div class="container ms-4" data-aos="fade-up">
-
-<div class="d-flex" id="wrapper">
-    <!-- 공통 sidebar-->
-    <div th:replace="course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
-
-    <div id="page-content-wrapper">
-
-        <!-- Page content-->
-        <div class="container-fluid">
-            <div class="container2 mx-auto">
-                <div class="py-5 text-center">
-                    <h1 class="mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
-                    <h2 class="mt-4">자유 게시판</h2>
-                </div>
+    <div class="row container container2 mx-auto" data-aos="fade-up">
+        <div class="py-5 text-center">
+            <h1 class="mt-4" th:text="${courseDTO.name}">강좌 이름</h1>
+            <h2 class="mt-4">자유 게시판</h2>
+        </div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-2 order-1 order-sm-1">
+            <div th:replace="course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-8 col-lg-8 order-2 order-sm-2">
+            <div  class="mx-auto">
                 <div th:if="${postDTO.userId == user.id}" class="row">
                     <div class="col">
                         <button class="btn btn-outline-danger float-end m-1"
@@ -75,8 +70,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
     </div>
 </section>
 
