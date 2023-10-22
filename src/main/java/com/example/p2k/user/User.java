@@ -40,10 +40,6 @@ public class User extends BaseTimeEntity {
         this.pending = pending;
     }
 
-    public void updateEmail(String email){
-        this.email = email;
-    }
-
     public void updatePending(boolean status){
         this.pending = status;
     }
