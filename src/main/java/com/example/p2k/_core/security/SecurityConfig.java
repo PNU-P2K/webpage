@@ -54,7 +54,7 @@ public class    SecurityConfig {
                 .oauth2Login(
                         oauth2Login -> oauth2Login
                                 .loginPage("/user/login")
-                                .defaultSuccessUrl("/home")
+                                .defaultSuccessUrl("/home", true)
                                 .userInfoEndpoint()
                                 .userService(customOAuth2UserService)
                 );

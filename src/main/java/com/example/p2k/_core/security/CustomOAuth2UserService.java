@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
@@ -31,11 +30,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
-        log.info("userNameAttributeName=" + userNameAttributeName);
 
         OAuthAttributes attributes = OAuthAttributes.oAuthUserInfo(registrationId, userNameAttributeName, oAuth2User.getAttributes());
-        log.info("attributes.getNameAttribute=" + attributes.getNameAttributeKey());
-
 
         User existingUser = userRepository.findByName(attributes.getName()).orElse(null);
         User user = null;
@@ -50,10 +46,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         httpSession.setAttribute("user", new SessionUser(user));
 
-        return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(user.getRole().getValue())),
-                attributes.getAttributes(),
-                attributes.getNameAttributeKey()
-        );
+        return new CustomUserDetails(user, oAuth2User.getAttributes());
     }
 }
