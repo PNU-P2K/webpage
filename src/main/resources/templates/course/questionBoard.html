@@ -5,7 +5,7 @@
 <div th:replace="fragments/header.html::fragment-header"></div>
 <style>
     .container2 {
-        max-width: 850px;
+        max-width: 1500px;
     }
     .table th {
         width: 5%;
@@ -24,24 +24,18 @@
 </br>
 
 <section id="pricing" class="pricing">
-    <div class="container ms-4" data-aos="fade-up">
-
-<div class="d-flex" id="wrapper">
-    <!-- 공통 sidebar-->
-    <div th:replace="course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
-
-    <div id="page-content-wrapper">
-
+    <div class="row container container2 mx-auto" data-aos="fade-up">
         <div class="section-title">
             <h2>질문 게시판</h2>
             <h3 th:text="${courseDTO.name}">강좌 이름</h3>
         </div>
-
-        <!-- Page content-->
-        <div class="container-fluid">
-            <div class="row container2 mx-auto">
+        <div class="col-12 col-sm-12 col-md-4 col-lg-2 order-1 order-sm-1">
+            <div th:replace="course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-8 col-lg-9 order-2 order-sm-2">
+            <div class="row mx-auto">
                 <div class="col">
-                    <button type="button" class="btn btn-outline-primary float-end"
+                    <button type="button" class="btn btn-outline-primary float-end m-1"
                             th:onclick="'javascript:createPost('+${courseDTO.id}+')'">글쓰기</button>
                     <table class="table table-hover table-responsive">
                         <thead>
@@ -83,9 +77,6 @@
             </div>
         </div>
     </div>
-</div>
-
-</div>
 </section>
 
 <!-- 공통 footer -->
