@@ -19,7 +19,7 @@ public class User extends BaseTimeEntity {
     @Column(length = 30, nullable = false, unique = true)
     private String email;
 
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private String name;
 
     @Column(length = 256)
