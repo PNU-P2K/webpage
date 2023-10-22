@@ -1,14 +1,10 @@
 package com.example.p2k.user;
 
-import com.example.p2k.courseuser.CourseUser;
-import com.example.p2k.post.Post;
-import com.example.p2k.reply.Reply;
-import com.example.p2k.vm.Vm;
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
