@@ -14,8 +14,8 @@ public class VmResponseFtS {
 
     @Getter
     public static class loadDTO {
-        private String imageId;
-        private String containerId;
+        private String port;
+        private String externalNodeIp;
     }
 
     @Getter
@@ -36,6 +36,7 @@ public class VmResponseFtS {
     public static class saveDTO {
         private String containerId;
         private String imageId;
+        private String loadKey;
     }
 
     @Getter

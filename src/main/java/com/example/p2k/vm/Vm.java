@@ -79,8 +79,12 @@ public class Vm extends BaseTimeEntity {
         this.containerId = containerId;
     }
 
-    public void updateImageId(String imageId) {
-        this.imageId = imageId;
+//    public void updateImageId(String imageId) {
+//        this.imageId = imageId;
+//    }
+
+    public void updateLoadKey(String loadkey) {
+        this.imageId = loadkey;
     }
 
     public void update(VmRequest.UpdateDTO requestDTO, Course course) {
