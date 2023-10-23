@@ -1,11 +1,8 @@
 package com.example.p2k.vm;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class VmResponse {
 
@@ -37,7 +34,7 @@ public class VmResponse {
         private final List<VmDTO> vms;
 
         public FindAllDTO(List<Vm> vms) {
-            this.vms = vms.stream().map(VmDTO::new).collect(Collectors.toList());
+            this.vms = vms.stream().map(VmDTO::new).toList();
         }
 
         @Getter
@@ -68,11 +65,7 @@ public class VmResponse {
                 this.control = vm.getControl();
                 this.imageId = vm.getImageId();
                 this.key = vm.getVmKey();
-                if (vm.getCourse()!=null) {
-                    this.courseName = vm.getCourse().getName();
-                } else {
-                    this.courseName = null;
-                }
+                this.courseName = vm.getCourse() != null ? vm.getCourse().getName() : null;
                 this.creator = vm.getUser().getName();
                 this.description = vm.getDescription();
             }

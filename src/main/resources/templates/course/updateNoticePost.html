@@ -4,6 +4,9 @@
 <!-- 공통 header -->
 <div th:replace="fragments/header.html::fragment-header"></div>
 <style>
+    .container2 {
+        max-width: 1500px;
+    }
     .card{
         padding: 30px 40px;
         margin-bottom: 60px;
@@ -12,9 +15,6 @@
     }
     .form-control-label{
         margin-bottom: 0
-    }
-    .radio-label{
-        font-size: 15px !important;
     }
     label {
         font-size: 18px !important;
@@ -49,25 +49,18 @@
 </br>
 
 <section id="pricing" class="pricing">
-    <div class="container ms-4" data-aos="fade-up">
-<div class="d-flex" id="wrapper">
-    <!-- 공통 sidebar-->
-    <div th:replace="course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
-
-    <div id="page-content-wrapper">
-        <!-- 공통 navigation-->
-        <div th:replace="fragments/nav.html::fragment-nav(${user})"></div>
-
+    <div class="row container container2 mx-auto" data-aos="fade-up">
         <div class="section-title">
             <h2>공지사항 글 수정하기</h2>
             <h3 th:text="${courseDTO.name}">강좌 이름</h3>
         </div>
-
-        <!-- Page content-->
-        <div class="container-fluid px-1 py-5 mx-auto">
-            <div class="row d-flex justify-content-center">
-                <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
-                    <div class="card">
+        <div class="col-12 col-sm-12 col-md-4 col-lg-2 order-1 order-sm-1">
+            <div th:replace="course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-8 col-lg-8 order-2 order-sm-2">
+            <div class="row">
+                <div class="col">
+                    <div class="card mx-auto">
                         <form class="form-card needs-validation" th:object="${updateDTO}" method="post">
                             <div class="row justify-content-between text-left">
                                 <div class="form-group col-12 flex-column d-flex">
@@ -82,7 +75,7 @@
                                 </div>
                             </div>
                             <div class="row justify-content-center">
-                                <div class="form-group col-sm-6">
+                                <div class="form-group col-sm-6 text-center">
                                     <button class="btn btn-outline-primary" type="submit">저장</button>
                                     <button class="btn btn-outline-danger"
                                             th:onclick="|location.href='@{/courses/{courseId}/notice-board(courseId=${courseDTO.id})}'|"
@@ -95,8 +88,6 @@
             </div>
         </div>
     </div>
-</div>
-</div>
 </section>
 
 <!-- 공통 footer -->

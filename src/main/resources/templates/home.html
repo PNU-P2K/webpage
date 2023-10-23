@@ -3,7 +3,11 @@
 
 <!-- 공통 header -->
 <div th:replace="fragments/header.html::fragment-header"></div>
-
+<style>
+    .btn-home {
+        width: 220px;
+    }
+</style>
 <body>
   <!-- 공통 nav -->
   <div th:replace="fragments/nav.html::fragment-nav(${user})"></div>
@@ -26,8 +30,8 @@
         </div>
       </div>
       <div class="text-center">
-          <a href="/vm/create" class="btn-get-started scrollto">가상환경 생성하기</a>
-          <a href="/courses/apply" class="btn-get-started scrollto">강좌 신청하기</a>
+          <a href="/vm/create" class="btn-get-started scrollto btn-home">가상환경 생성하기</a>
+          <a href="/courses/apply" class="btn-get-started scrollto btn-home">강좌 신청하기</a>
       </div>
 
     </div>

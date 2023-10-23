@@ -5,7 +5,7 @@
 <div th:replace="fragments/header.html::fragment-header"></div>
 <style>
     .container2 {
-        max-width: 850px;
+        max-width: 1500px;
     }
 </style>
 <body>
@@ -16,40 +16,33 @@
 </br>
 
 <section id="pricing" class="pricing">
-    <div class="container ms-4" data-aos="fade-up">
-
-<div class="d-flex" id="wrapper">
-    <!-- 공통 sidebar-->
-    <div th:replace="course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
-
-    <div id="page-content-wrapper">
-
+    <div  class="row container container2 mx-auto" data-aos="fade-up">
         <div class="section-title">
             <h2>나의 가상 환경</h2>
             <h3 th:text="${courseDTO.name}">강좌 이름</h3>
         </div>
-
-        <!-- Page content-->
-        <div class="container-fluid">
-            <div class="row m-5">
+        <div class="col-12 col-sm-12 col-md-4 col-lg-2 order-1 order-sm-1">
+            <div th:replace="course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-8 col-lg-9 order-2 order-sm-2">
+            <div class="row mx-auto">
                 <div class="col-lg-4 col-md-5" data-aos="zoom-im" data-aos-delay="100" th:each="v : ${myVms.getVms()}">
-
                     <div class="box p-3">
                         <div class="row">
                             <div class="dropdown col-2">
                                 <div th:if="${v.state == 'stop'}">
-                                <button class="btn dropdown-toggle z" type="button" data-toggle="dropdown" id="dropdownBtn">
-                                    <!-- <img src="/assets/drop-down.png" width="10px" height="10px"/>-->
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" th:onclick="exportImage([[${v.imageId}]])">내보내기</a>
-                                    <a class="dropdown-item" >
-                                        <form class="form-inline m-0 p-0 col-3" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">
-                                            <input type="submit" class="m-0 p-0" style="background-color:transparent;border:0px transparent solid;" value="삭제하기">
-                                        </form>
-                                    </a>
-                                    <div class="dropdown-item" th:onclick="|location.href='@{/vm/update/{id}(id=${v.id})}'|">수정하기</div>
-                                </div>
+                                    <button class="btn dropdown-toggle z" type="button" data-toggle="dropdown" id="dropdownBtn">
+                                        <!-- <img src="/assets/drop-down.png" width="10px" height="10px"/>-->
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" th:onclick="exportImage([[${v.imageId}]])">내보내기</a>
+                                        <a class="dropdown-item" >
+                                            <form class="form-inline m-0 p-0 col-3" th:action="@{/vm/delete/{id}(id=${v.id})}" method="post">
+                                                <input type="submit" class="m-0 p-0" style="background-color:transparent;border:0px transparent solid;" value="삭제하기">
+                                            </form>
+                                        </a>
+                                        <div class="dropdown-item" th:onclick="|location.href='@{/vm/update/{id}(id=${v.id})}'|">수정하기</div>
+                                    </div>
                                 </div>
                             </div>
                             <h3 class="col-8 mb-4" th:text="${v.name}" style="font-size:25px"></h3>
@@ -93,9 +86,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
     </div>
 </section>
 

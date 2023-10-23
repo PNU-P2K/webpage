@@ -5,7 +5,7 @@
 <div th:replace="fragments/header.html::fragment-header"></div>
 <style>
     .container2 {
-        max-width: 850px;
+        max-width: 1500px;
     }
 </style>
 <body>
@@ -16,21 +16,16 @@
 </br>
 
 <section id="pricing" class="pricing">
-    <div class="container ms-4" data-aos="fade-up">
-<div class="d-flex" id="wrapper">
-    <!-- 공통 sidebar-->
-    <div th:replace="course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
-
-    <div id="page-content-wrapper">
-
+    <div class="row container container2 mx-auto" data-aos="fade-up">
         <div class="section-title">
             <h2>설정 및 관리</h2>
             <h3 th:text="${courseDTO.name}">강좌 이름</h3>
         </div>
-
-        <!-- Page content-->
-        <div class="container-fluid">
-            <div class="row container2 mx-auto">
+        <div class="col-12 col-sm-12 col-md-4 col-lg-2 order-1 order-sm-1">
+            <div th:replace="course/course-sidebar.html::fragment-sidebar(${courseDTO.id}, ${user})"></div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-8 col-lg-9 order-2 order-sm-2">
+            <div class="row mx-auto">
                 <h4 class="mt-4">강좌 구성원</h4>
                 <hr class="my-4">
                 <div class="row container2 mx-auto">
@@ -39,11 +34,9 @@
                             <tr th:each="userDTO : ${usersDTOs.getUsers()}">
                                 <td class="align-middle">
                                     <div class="row">
-                                        <div class="col-md-9">
-                                            <span th:text="${userDTO.name}" class="pl-2">강좌 구성원 이름</span>
-                                        </div>
-                                        <div class="col-md-3 text-right">
-                                            <span th:if="${userDTO.id == courseDTO.instructorId}" class="pr-2" style="color: blue;">교육자</span>
+                                        <div class="col d-flex align-items-center justify-content-between">
+                                            <p th:text="${userDTO.name}" class="pl-2 mb-0">강좌 구성원 이름</p>
+                                            <p th:if="${userDTO.id == courseDTO.instructorId}" class="pr-2 mb-0 text-right" style="color: blue;">교육자</p>
                                         </div>
                                     </div>
                                 </td>
@@ -64,8 +57,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
     </div>
 </section>
 
