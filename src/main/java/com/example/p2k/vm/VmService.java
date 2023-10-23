@@ -158,7 +158,7 @@ public class VmService {
                 .nodePort(nodePort)
                 .externalNodeIp(res.getExternalNodeIp())
                 .containerId(res.getContainerId())
-                .imageId(res.getImageId())
+                .imageId("")
                 .state("stop")
                 .build();
 
@@ -180,14 +180,11 @@ public class VmService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String imagePath = baseImagePath+user.getId()+":latest";
-
         // requestDTO body 만들기 - port, pwd
         VmRequestStF.loadDTO requestDTOStF = new VmRequestStF.loadDTO();
         requestDTOStF.setId(user.getId());
         requestDTOStF.setPort(portnum);
         requestDTOStF.setNodePort(nodePort);
-        requestDTOStF.setImagePath(imagePath);
         requestDTOStF.setPassword(requestDTO.getPassword());
         requestDTOStF.setScope(requestDTO.getScope());
         requestDTOStF.setControl(requestDTO.getControl());
@@ -221,7 +218,9 @@ public class VmService {
                 .user(user)
                 .port(portnum)
                 .nodePort(nodePort)
+                .externalNodeIp(res.getExternalNodeIp())
                 .state("stop")
+                .imageId("")
                 .vmKey(key)
                 .build();
 
@@ -333,7 +332,7 @@ public class VmService {
 
         // 새로운 containerid, imageid 업데이트
         vm.updateContainerId(res.getContainerId());
-        vm.updateLoadKey(res.getImageId());
+        vm.updateLoadKey(res.getLoadKey());
     }
 
     @Transactional
