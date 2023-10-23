@@ -9,6 +9,8 @@ ARG JAR_FILE="./build/libs/p2k-0.0.1-SNAPSHOT.jar"
 # 지정한 jar 파일을 p2k.jar 라는 이름으로 Docker Container에 추가합니다.
 COPY ${JAR_FILE} p2k.jar
 
+COPY ./init.sql /docker-entrypoint-initdb.d/init.sql
+
 ENV PROFILE prod,aws,mariaDB
 
 # p2k.jar 파일을 실행합니다.
