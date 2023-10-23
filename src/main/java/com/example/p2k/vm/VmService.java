@@ -203,9 +203,9 @@ public class VmService {
         VmResponseFtS.loadDTO res = ob.readValue(responseBody, VmResponseFtS.loadDTO.class);
 
         // key값으로 가상환경을 찾을 수 없는 경우
-        if (res.getContainerId() == "null") {
-            throw new Exception404("해당 가상환경은 존재하지 않습니다. ");
-        }
+//        if (res.getContainerId() == "null") {
+//            throw new Exception404("해당 가상환경은 존재하지 않습니다. ");
+//        }
 
         // 임시로 제어권은 true로 설정
         if (requestDTO.getControl()==null) {
@@ -221,8 +221,6 @@ public class VmService {
                 .user(user)
                 .port(portnum)
                 .nodePort(nodePort)
-                .containerId(res.getContainerId())
-                .imageId(res.getImageId())
                 .state("stop")
                 .vmKey(key)
                 .build();
@@ -335,7 +333,7 @@ public class VmService {
 
         // 새로운 containerid, imageid 업데이트
         vm.updateContainerId(res.getContainerId());
-        vm.updateImageId(res.getImageId());
+        vm.updateLoadKey(res.getImageId());
     }
 
     @Transactional
