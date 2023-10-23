@@ -61,6 +61,7 @@ public class OAuthAttributes {
                .name(name)
                .email(email)
                .role(Role.ROLE_STUDENT)
+               .pending(false)
                .build();
    }
 }

@@ -1,14 +1,10 @@
 package com.example.p2k.user;
 
-import com.example.p2k.courseuser.CourseUser;
-import com.example.p2k.post.Post;
-import com.example.p2k.reply.Reply;
-import com.example.p2k.vm.Vm;
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,7 +19,7 @@ public class User extends BaseTimeEntity {
     @Column(length = 30, nullable = false, unique = true)
     private String email;
 
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private String name;
 
     @Column(length = 256)
@@ -42,10 +38,6 @@ public class User extends BaseTimeEntity {
         this.password = password;
         this.role = role;
         this.pending = pending;
-    }
-
-    public void updateEmail(String email){
-        this.email = email;
     }
 
     public void updatePending(boolean status){

@@ -35,7 +35,9 @@ public class    SecurityConfig {
                                                 new AntPathRequestMatcher("/resources/**"),
                                                 new AntPathRequestMatcher("/error"),
                                                 new AntPathRequestMatcher("/@sweetalert2"),
-                                                new AntPathRequestMatcher("/user/**")).permitAll()
+                                                new AntPathRequestMatcher("/user/check-email/**"),
+                                                new AntPathRequestMatcher("/user/login"),
+                                                new AntPathRequestMatcher("/user/join")).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(
@@ -54,7 +56,7 @@ public class    SecurityConfig {
                 .oauth2Login(
                         oauth2Login -> oauth2Login
                                 .loginPage("/user/login")
-                                .defaultSuccessUrl("/home")
+                                .defaultSuccessUrl("/home", true)
                                 .userInfoEndpoint()
                                 .userService(customOAuth2UserService)
                 );

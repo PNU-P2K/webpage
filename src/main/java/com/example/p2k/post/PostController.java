@@ -124,7 +124,6 @@ public class PostController {
         model.addAttribute("repliesDTO", getRepliesDTO(postId, page));
         model.addAttribute("courseDTO", getCourseDTO(courseId));
         model.addAttribute("user", userDetails.getUser());
-
         return "course/questionPost";
     }
 
