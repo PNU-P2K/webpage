@@ -37,6 +37,9 @@ out/
 ### VS Code ###
 .vscode/
 
+# hidden file
+init.sql
+
 #hidden yml
 application-mariaDB.yml
 application-aws.yml
