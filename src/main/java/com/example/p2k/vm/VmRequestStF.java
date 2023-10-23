@@ -25,7 +25,6 @@ public class VmRequestStF {
         private String password;
         private String key;
         private int nodePort;
-        private String imagePath;
         private Boolean scope;
         private Boolean control;
     }
