@@ -116,7 +116,7 @@ public class AdminResponse {
                 this.createdBy = vm.getUser().getName();
                 this.nodePort = vm.getNodePort();
                 this.externalIp = vm.getExternalNodeIp();
-                this.course = vm.getCourse().getName();
+                this.course = vm.getCourse() != null ? vm.getCourse().getName() : null;
                 this.scope = vm.getScope();
                 this.control = vm.getControl();
                 this.state = vm.getState();
