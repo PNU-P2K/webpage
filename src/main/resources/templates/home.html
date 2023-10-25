@@ -31,7 +31,9 @@
       </div>
       <div class="text-center">
           <a href="/vm/create" class="btn-get-started scrollto btn-home">가상환경 생성하기</a>
-          <a href="/courses/apply" class="btn-get-started scrollto btn-home">강좌 신청하기</a>
+
+          <a th:if="${user.role.name() == 'ROLE_INSTRUCTOR'}" href="/courses/create" class="btn-get-started scrollto btn-home">강좌 생성하기</a>
+          <a th:if="${user.role.name() != 'ROLE_INSTRUCTOR'}" href="/courses/application" class="btn-get-started scrollto btn-home">강좌 신청하기</a>
       </div>
 
     </div>
