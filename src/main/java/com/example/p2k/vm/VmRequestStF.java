@@ -54,7 +54,6 @@ public class VmRequestStF {
         private String containerId;
         private String imageId;
         private int nodePort;
-        private String imagePath;
     }
 
     @Getter @Setter
