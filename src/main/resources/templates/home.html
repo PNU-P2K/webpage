@@ -125,7 +125,8 @@
         </br>
 
         <div class="section-title">
-          <h2><a th:text="${user.name}"></a>님이 신청한 강좌 목록</h2>
+          <h2 th:if="${user.role.name() == 'ROLE_INSTRUCTOR'}"><a th:text="${user.name}"></a>님이 생성한 강좌 목록</h2>
+            <h2 th:if="${user.role.name() != 'ROLE_INSTRUCTOR'}"><a th:text="${user.name}"></a>님이 신청한 강좌 목록</h2>
         </div>
         </br>
 
