@@ -23,6 +23,7 @@ public class VmResponseFtS {
 
         private int port;
         private String containerId;
+        private String externalNodeIp;
     }
 
     @Getter

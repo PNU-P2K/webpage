@@ -35,8 +35,8 @@ public class VmService {
     private int nodePort = 30000; // 30000~32768까지 사용 가능
     private final String baseImagePath = "registry.p2kcloud.com/base/1/kasmweb:v1";
 
-    //private final String baseURL = "http://175.45.203.51:5000"; // k8s에게 명령을 내리는 서버 - test용
-    private final String baseURL = "http://223.130.137.170:5000"; // k8s에게 명령을 내리는 서버 - 실제 서버용
+    private final String baseURL = "http://175.45.203.51:5000"; // k8s에게 명령을 내리는 서버 - test용
+    //private final String baseURL = "http://223.130.137.170:5000"; // k8s에게 명령을 내리는 서버 - 실제 서버용
     //private final String baseURL = "http://localhost:5000";
 
     @Transactional
@@ -137,7 +137,6 @@ public class VmService {
         System.out.println("res = " + res.getContainerId());
         System.out.println("res.getImageId() = " + res.getImageId());
         System.out.println("res: "+ res);
-        System.out.println("res.getIP: " + res.getExternalNodeIp());
 
         // flask에서 받은 응답으로 가상환경 생성하고 저장
         Vm vm = Vm.builder()
@@ -149,7 +148,7 @@ public class VmService {
                 .user(user)
                 .port(portnum)
                 .nodePort(nodePort)
-                .externalNodeIp(res.getExternalNodeIp())
+                .externalNodeIp("")
                 .containerId(res.getContainerId())
                 .imageId("")
                 .state("stop")
@@ -206,7 +205,7 @@ public class VmService {
                 .user(user)
                 .port(portnum)
                 .nodePort(nodePort)
-                .externalNodeIp(res.getExternalNodeIp())
+                .externalNodeIp("")
                 .state("stop")
                 .imageId("")
                 .vmKey(key)
@@ -244,10 +243,14 @@ public class VmService {
         // header, body로 requestDTO 만들기
         HttpEntity<String> entity = new HttpEntity<>(jsonStr ,headers);
 
-        // flask로 요청보냄
-        restTemplate.postForEntity(url, entity, VmResponseFtS.startDTO.class);
+        // flask로 요청보내고 받아옴
+        ResponseEntity<?> response = restTemplate.postForEntity(url, entity, VmResponseFtS.startDTO.class);
+        String responseBody = ob.writeValueAsString(response.getBody());
+        VmResponseFtS.startDTO res = ob.readValue(responseBody, VmResponseFtS.startDTO.class);
+
 
         vm.updateState("running");
+        vm.setExternalNodeIp(res.getExternalNodeIp());
     }
 
     @Transactional
