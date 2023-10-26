@@ -39,6 +39,7 @@ out/
 
 # hidden file
 init.sql
+/src/main/resources/ssl/
 
 #hidden yml
 application-mariaDB.yml
