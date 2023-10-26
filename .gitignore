@@ -44,5 +44,6 @@ init.sql
 #hidden yml
 application-mariaDB.yml
 application-aws.yml
+application-server.yml
 .mariaDB_env
 docker-compose.yml
