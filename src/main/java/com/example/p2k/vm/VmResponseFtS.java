@@ -9,13 +9,11 @@ public class VmResponseFtS {
         private int port;
         private String containerId;
         private String imageId;
-        private String externalNodeIp;
     }
 
     @Getter
     public static class loadDTO {
         private String port;
-        private String externalNodeIp;
     }
 
     @Getter

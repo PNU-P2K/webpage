@@ -35,8 +35,8 @@ public class VmService {
     private int nodePort = 30000; // 30000~32768까지 사용 가능
     private final String baseImagePath = "registry.p2kcloud.com/base/1/kasmweb:v1";
 
-    private final String baseURL = "http://175.45.203.51:5000"; // k8s에게 명령을 내리는 서버 - test용
-    //private final String baseURL = "http://223.130.137.170:5000"; // k8s에게 명령을 내리는 서버 - 실제 서버용
+    //private final String baseURL = "http://175.45.203.51:5000"; // k8s에게 명령을 내리는 서버 - test용
+    private final String baseURL = "http://223.130.137.170:5000"; // k8s에게 명령을 내리는 서버 - 실제 서버용
     //private final String baseURL = "http://localhost:5000";
 
     @Transactional
@@ -148,7 +148,6 @@ public class VmService {
                 .user(user)
                 .port(portnum)
                 .nodePort(nodePort)
-                .externalNodeIp("")
                 .containerId(res.getContainerId())
                 .imageId("")
                 .state("stop")
@@ -205,7 +204,6 @@ public class VmService {
                 .user(user)
                 .port(portnum)
                 .nodePort(nodePort)
-                .externalNodeIp("")
                 .state("stop")
                 .imageId("")
                 .vmKey(key)
