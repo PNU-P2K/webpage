@@ -1,14 +1,10 @@
 package com.example.p2k;
 
 import com.example.p2k._core.security.CustomUserDetails;
-import com.example.p2k.course.Course;
 import com.example.p2k.course.CourseResponse;
 import com.example.p2k.course.CourseService;
-import com.example.p2k.courseuser.CourseUserRepository;
 import com.example.p2k.user.UserResponse;
 import com.example.p2k.user.UserService;
-import com.example.p2k.vm.Vm;
-import com.example.p2k.vm.VmRequest;
 import com.example.p2k.vm.VmResponse;
 import com.example.p2k.vm.VmService;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
