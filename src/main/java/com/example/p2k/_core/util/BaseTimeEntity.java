@@ -1,4 +1,4 @@
-package com.example.p2k.user;
+package com.example.p2k._core.util;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

@@ -2,7 +2,7 @@ package com.example.p2k.post;
 
 import com.example.p2k.reply.Reply;
 import com.example.p2k.course.Course;
-import com.example.p2k.user.BaseTimeEntity;
+import com.example.p2k._core.util.BaseTimeEntity;
 import com.example.p2k.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
