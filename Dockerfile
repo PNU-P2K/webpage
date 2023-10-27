@@ -11,7 +11,7 @@ COPY ${JAR_FILE} p2k.jar
 
 COPY ./init.sql /docker-entrypoint-initdb.d/init.sql
 
-ENV PROFILE prod,aws,mariaDB
+ENV PROFILE prod,aws,mariaDB,server
 
 # p2k.jar 파일을 실행합니다.
 ENTRYPOINT ["java","-Dspring.profiles.active=${PROFILE}","-jar","/p2k.jar"]
