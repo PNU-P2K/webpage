@@ -20,7 +20,6 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
-    private final JoinValidator joinValidator;
 
     // 사용자 회원가입 페이지 GET
     @GetMapping("/join")
